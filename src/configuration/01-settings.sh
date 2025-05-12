@@ -14,7 +14,6 @@ sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applica
 sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Console.desktop
 
 # Включаем сервисы
-systemctl --global enable flatpak-install.service
 systemctl --global enable pipewire{,-pulse}{,.socket} wireplumber
 systemctl enable bluetooth
 systemctl enable gdm
