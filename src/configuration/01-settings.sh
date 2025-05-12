@@ -4,12 +4,6 @@ set -e
 
 echo "::group:: ===$(basename "$0")==="
 
-# копируем службы
-cp /src/configuration/user_exec/systemd/user/* /usr/lib/systemd/user/
-
-# копируем скрипты
-cp /src/configuration/user_exec/libexec/* /usr/libexec/
-
 # Неожиданно Alt linux в /var/lib/openvpn/dev записывает устройство urandom
 # устройства запрещено включать в коммит, только файлы и сим-линки
 rm -f /var/lib/openvpn/dev/urandom
