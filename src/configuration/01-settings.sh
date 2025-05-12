@@ -4,14 +4,24 @@ set -e
 
 echo "::group:: ===$(basename "$0")==="
 
+# Create overrides
+cat > /usr/share/glib-2.0/schemas/99_atomic.gschema.override << EOF
+[com.github.stunkymonkey.nautilus-open-any-terminal]
+terminal=ptyxis
+new-tab=true
+
+[org.gnome.desktop.interface]
+gtk-theme=adw-gtk3-dark
+icon-theme=MoreWaita
+EOF
+
 # Неожиданно Alt linux в /var/lib/openvpn/dev записывает устройство urandom
 # устройства запрещено включать в коммит, только файлы и сим-линки
 rm -f /var/lib/openvpn/dev/urandom
 ln -s /dev/urandom /var/lib/openvpn/dev/urandom
 
-# Спрячем приложения
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/nvtop.desktop
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Console.desktop
+# Hide unnecessary apps
+sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/xterm.desktop
 
 # Включаем сервисы
 systemctl --global enable pipewire{,-pulse}{,.socket} wireplumber

@@ -7,7 +7,6 @@ echo "::group:: ===$(basename "$0")==="
 BASIC_PACKAGES=(
   htop
   fastfetch
-  nvtop
   notify-send
   zsh
   zsh-completions
@@ -18,6 +17,7 @@ BASIC_PACKAGES=(
   iucode_tool
   systemd-ssh-agent
   ptyxis
+  xterm
 )
 
 # Генератор ZRAM
@@ -60,7 +60,6 @@ GNOME_DESKTOP_APPS=(
   gnome-maps
   gnome-browser-connector
   gnome-software
-  gnome-console
   gnome-disk-usage
   resources
   sushi
@@ -94,6 +93,7 @@ NAUTILUS_PACKAGES=(
   nautilus-share
   samba-usershares
   file-roller
+  nautilus-open-any-terminal
 )
 
 # Прочие приложения
