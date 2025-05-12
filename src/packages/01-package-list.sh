@@ -48,7 +48,6 @@ GNOME_SHELL_PACKAGES=(
 GNOME_DESKTOP_APPS=(
   gnome-user-docs
   gnome-tour
-  gnome-system-monitor
   gnome-logs
   gnome-calculator
   gnome-calendar
@@ -62,11 +61,17 @@ GNOME_DESKTOP_APPS=(
   gnome-browser-connector
   gnome-software
   gnome-console
+  gnome-disk-usage
+  resources
+  sushi
+  pika-backup
+  papers
 )
 
 # GNOME — темы, шрифты и оформление
 GNOME_THEMES=(
   gtk3-theme-adw-gtk3
+  icon-theme-morewaita
   gnome-backgrounds
   pinentry-gnome3
   yelp
@@ -93,9 +98,7 @@ NAUTILUS_PACKAGES=(
 
 # Прочие приложения
 MISC_APPS=(
-  virt-manager
   firefox
-  papers
   power-profiles-daemon
 )
 
