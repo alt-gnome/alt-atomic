@@ -12,8 +12,6 @@ ln -s /dev/urandom /var/lib/openvpn/dev/urandom
 # Спрячем приложения
 sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/nvtop.desktop
 sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Console.desktop
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Vte.App.Gtk4.desktop
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Vte.App.Gtk3.desktop
 
 # Включаем сервисы
 systemctl --global enable flatpak-install.service
