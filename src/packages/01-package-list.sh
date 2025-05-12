@@ -53,7 +53,7 @@ GNOME_DESKTOP_APPS=(
   gnome-calendar
   gnome-characters
   gnome-text-editor
-  clapper
+  showtime
   loupe
   gnome-weather
   gnome-clocks
