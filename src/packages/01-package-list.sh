@@ -65,6 +65,8 @@ GNOME_DESKTOP_APPS=(
   sushi
   pika-backup
   papers
+  foldy
+  key-rack
 )
 
 # GNOME — темы, шрифты и оформление
