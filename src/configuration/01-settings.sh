@@ -7,12 +7,12 @@ echo "::group:: ===$(basename "$0")==="
 # Create overrides
 cat > /usr/share/glib-2.0/schemas/99_atomic.gschema.override << EOF
 [com.github.stunkymonkey.nautilus-open-any-terminal]
-terminal=ptyxis
+terminal="ptyxis"
 new-tab=true
 
 [org.gnome.desktop.interface]
-gtk-theme=adw-gtk3-dark
-icon-theme=MoreWaita
+gtk-theme="adw-gtk3-dark"
+icon-theme="MoreWaita"
 EOF
 
 # Неожиданно Alt linux в /var/lib/openvpn/dev записывает устройство urandom
