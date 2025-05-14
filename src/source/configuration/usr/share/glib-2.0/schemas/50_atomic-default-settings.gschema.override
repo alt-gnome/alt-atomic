@@ -1,0 +1,7 @@
+[com.github.stunkymonkey.nautilus-open-any-terminal]
+terminal='ptyxis'
+new-tab=false
+
+[org.gnome.desktop.interface]
+gtk-theme='adw-gtk3-dark'
+icon-theme='MoreWaita'
