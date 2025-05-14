@@ -41,6 +41,7 @@ rsync -av --progress /src/source/configuration/etc/ /etc/
 rsync -av --progress /src/source/configuration/usr/ /usr/
 
 # Обновление dconf
+glib-compile-schemas /usr/share/glib-2.0/schemas
 dconf update
 
 # Обновление шрифтов
