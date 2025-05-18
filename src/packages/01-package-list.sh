@@ -36,7 +36,6 @@ GNOME_SHELL_PACKAGES=(
   gnome-control-center
   gnome-shell
   gnome-shell-extensions
-  gnome-tweaks
   dconf-editor
   gnome-keyring-ssh
   gnome-extension-manager
@@ -66,6 +65,8 @@ GNOME_DESKTOP_APPS=(
   pika-backup
   papers
   foldy
+  tuner
+  tuner-tweaks
   key-rack
 )
 
