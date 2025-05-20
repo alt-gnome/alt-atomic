@@ -5,19 +5,19 @@ echo "::group:: ===$(basename "$0")==="
 
 # Базовые утилиты и инструменты
 BASIC_PACKAGES=(
-  htop
+  bash-completion
   fastfetch
+  htop
+  inxi
+  iucode_tool
   notify-send
+  openssh-server
+  ptyxis
+  starship
+  systemd-ssh-agent
+  xterm
   zsh
   zsh-completions
-  starship
-  bash-completion
-  inxi
-  openssh-server
-  iucode_tool
-  systemd-ssh-agent
-  ptyxis
-  xterm
 )
 
 # Генератор ZRAM
@@ -33,71 +33,71 @@ GNOME_SESSION_PACKAGES=(
 
 # GNOME — основные компоненты Shell и связанные пакеты
 GNOME_SHELL_PACKAGES=(
-  gnome-control-center
-  gnome-shell
-  gnome-shell-extensions
   dconf-editor
-  gnome-keyring-ssh
+  gnome-control-center
   gnome-extension-manager
+  gnome-keyring-ssh
+  gnome-shell
   gnome-shell-extension-appindicator
   gnome-shell-extension-dash-to-dock
+  gnome-shell-extensions
 )
 
 # GNOME — приложения и утилиты
 GNOME_DESKTOP_APPS=(
-  gnome-user-docs
-  gnome-tour
-  gnome-logs
+  foldy
+  g4music
+  gnome-browser-connector
   gnome-calculator
   gnome-calendar
   gnome-characters
-  gnome-text-editor
-  showtime
-  loupe
-  gnome-weather
   gnome-clocks
-  gnome-maps
-  gnome-browser-connector
-  gnome-software
   gnome-disk-usage
-  resources
-  sushi
-  pika-backup
+  gnome-logs
+  gnome-maps
+  gnome-software
+  gnome-text-editor
+  gnome-tour
+  gnome-user-docs
+  gnome-weather
+  key-rack
+  loupe
   papers
-  foldy
+  pika-backup
+  resources
+  showtime
+  sushi
   tuner
   tuner-tweaks
-  key-rack
-  g4music
 )
 
 # GNOME — темы, шрифты и оформление
 GNOME_THEMES=(
-  gtk3-theme-adw-gtk3
-  icon-theme-morewaita
+  fonts-otf-abattis-cantarell
+  fonts-ttf-cjkuni-ukai
+  fonts-ttf-dejavu
+  fonts-ttf-liberation
   gnome-backgrounds
-  pinentry-gnome3
-  yelp
   gnome-icon-theme
   gnome-icon-theme-symbolic
   gnome-themes-extra
+  gtk3-theme-adw-gtk3
+  icon-theme-morewaita
   libgtk2-engine-adwaita
-  fonts-otf-abattis-cantarell
-  fonts-ttf-cjkuni-ukai
-  fonts-ttf-liberation
-  fonts-ttf-dejavu
+  pinentry-gnome3
+  yelp
 )
 
 # Nautilus (файловый менеджер) и связанные пакеты
 NAUTILUS_PACKAGES=(
-  nautilus-python
-  gvfs-backends
+  file-roller
   fuse-gvfs
+  gvfs-backends
   nautilus
+  nautilus-open-any-terminal
+  nautilus-python
   nautilus-share
   samba-usershares
-  file-roller
-  nautilus-open-any-terminal
 )
 
 # Прочие приложения
@@ -108,21 +108,21 @@ MISC_APPS=(
 
 # Xorg-драйверы для различных GPU и устройств
 DRIVERS=(
+  xorg-drv-amdgpu
+  xorg-drv-intel
   xorg-drv-libinput
+  xorg-drv-nouveau
   xorg-drv-qxl
   xorg-drv-spiceqxl
-  xorg-drv-intel
-  xorg-drv-amdgpu
   xorg-drv-vmware
-  xorg-drv-nouveau
 )
 
 # Wayland/Qt/Vulkan утилиты
 WAYLAND_QT=(
   qt5-wayland
   qt6-wayland
-  wayland-utils
   vulkan-tools
+  wayland-utils
 )
 
 # Аудиоподсистема (PipeWire)
