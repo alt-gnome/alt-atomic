@@ -68,6 +68,7 @@ GNOME_DESKTOP_APPS=(
   tuner
   tuner-tweaks
   key-rack
+  g4music
 )
 
 # GNOME — темы, шрифты и оформление
