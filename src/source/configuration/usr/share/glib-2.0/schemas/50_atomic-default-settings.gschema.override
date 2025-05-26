@@ -5,3 +5,38 @@ new-tab=false
 [org.gnome.desktop.interface]
 gtk-theme='adw-gtk3-dark'
 icon-theme='MoreWaita'
+
+[org.gnome.desktop.default-applications.terminal]
+exec='ptyxis'
+
+[org.gnome.shell]
+favorite-apps=['firefox.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Ptyxis.desktop', 'org.gnome.Software.desktop']
+enabled-extensions=['appindicatorsupport@rgcjonas.gmail.com', 'dash-to-dock@micxgx.gmail.com']
+
+[org.gnome.desktop.background]
+picture-uri='file:///usr/share/backgrounds/gnome/map-l.svg'
+picture-uri-dark='file:///usr/share/backgrounds/gnome/map-d.svg'
+
+[org.gnome.software]
+allow-system-install=false
+
+[org.gnome.desktop.input-sources]
+sources=[('xkb', 'us'), ('xkb', 'ru')]
+
+[org.gnome.desktop.wm.preferences]
+button-layout=':minimize,maximize,close'
+
+[org.gnome.shell.extensions.dash-to-dock]
+apply-custom-theme=true
+
+[org.gnome.Ptyxis]
+default-profile-uuid='f91d440d07cd15857f91abf0677f7d3c'
+profile-uuids=['f91d440d07cd15857f91abf0677f7d3c']
+
+[org.gnome.Ptyxis.Profiles.f91d440d07cd15857f91abf0677f7d3c]
+custom-command='/bin/zsh'
+login-shell=false
+use-custom-command=true
+
+[org.gnome.mutter]
+center-new-windows=true

@@ -73,7 +73,7 @@ GNOME_DESKTOP_APPS=(
 
 # GNOME — темы, шрифты и оформление
 GNOME_THEMES=(
-  fonts-otf-abattis-cantarell
+  icon-theme-adwaita
   fonts-ttf-cjkuni-ukai
   fonts-ttf-dejavu
   fonts-ttf-liberation
@@ -140,18 +140,25 @@ NETWORK_PRINT_PACKAGES=(
   wsdd
 )
 
+FONTS=(
+  fonts-ttf-jetbrains-mono-nl
+  fonts-otf-abattis-cantarell
+  fonts-ttf-fira-code-nerd
+)
+
 apt-get install -y \
+  "${AUDIO_PACKAGES[@]}" \
   "${BASIC_PACKAGES[@]}" \
-  "${ZRAM_PACKAGES[@]}" \
+  "${DRIVERS[@]}" \
+  "${FONTS[@]}"
+  "${GNOME_DESKTOP_APPS[@]}" \
   "${GNOME_SESSION_PACKAGES[@]}" \
   "${GNOME_SHELL_PACKAGES[@]}" \
-  "${GNOME_DESKTOP_APPS[@]}" \
   "${GNOME_THEMES[@]}" \
-  "${NAUTILUS_PACKAGES[@]}" \
   "${MISC_APPS[@]}" \
-  "${DRIVERS[@]}" \
+  "${NAUTILUS_PACKAGES[@]}" \
+  "${NETWORK_PRINT_PACKAGES[@]}" \
   "${WAYLAND_QT[@]}" \
-  "${AUDIO_PACKAGES[@]}" \
-  "${NETWORK_PRINT_PACKAGES[@]}"
+  "${ZRAM_PACKAGES[@]}" \
 
 echo "::endgroup::"
