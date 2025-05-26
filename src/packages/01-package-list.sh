@@ -150,7 +150,7 @@ apt-get install -y \
   "${AUDIO_PACKAGES[@]}" \
   "${BASIC_PACKAGES[@]}" \
   "${DRIVERS[@]}" \
-  "${FONTS[@]}"
+  "${FONTS[@]}" \
   "${GNOME_DESKTOP_APPS[@]}" \
   "${GNOME_SESSION_PACKAGES[@]}" \
   "${GNOME_SHELL_PACKAGES[@]}" \
@@ -159,6 +159,6 @@ apt-get install -y \
   "${NAUTILUS_PACKAGES[@]}" \
   "${NETWORK_PRINT_PACKAGES[@]}" \
   "${WAYLAND_QT[@]}" \
-  "${ZRAM_PACKAGES[@]}" \
+  "${ZRAM_PACKAGES[@]}"
 
 echo "::endgroup::"
