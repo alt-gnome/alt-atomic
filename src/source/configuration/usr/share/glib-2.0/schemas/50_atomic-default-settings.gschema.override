@@ -23,6 +23,9 @@ allow-system-install=false
 [org.gnome.desktop.input-sources]
 sources=[('xkb', 'us'), ('xkb', 'ru')]
 
+[org.gnome.desktop.interface]
+monospace-font-name='FiraCode Nerd Font 11'
+
 [org.gnome.desktop.wm.preferences]
 button-layout=':minimize,maximize,close'
 
