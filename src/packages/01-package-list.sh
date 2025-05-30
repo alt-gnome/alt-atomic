@@ -102,6 +102,7 @@ NAUTILUS_PACKAGES=(
 
 # Прочие приложения
 MISC_APPS=(
+  virt-manager
   firefox
   power-profiles-daemon
 )
