@@ -12,7 +12,7 @@ RUN --mount=type=bind,source=./src,target=/src \
 FROM scratch
 
 # Копируем всё содержимое из предыдущего образа
-COPY --from=atomicBase / /
+COPY --from=atomic-base / /
 
 WORKDIR /
 
@@ -22,7 +22,7 @@ LABEL containers.bootc=1
 CMD ["/sbin/init"]
 
 
-FROM atomicBase AS atomic-nvidia-base
+FROM atomic-base AS atomic-nvidia-base
 
 # Определяем тип сборки
 ARG BUILD_TYPE="default"
