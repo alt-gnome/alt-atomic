@@ -1,4 +1,4 @@
-FROM ghcr.io/alt-atomic/alt-image:latest AS atomicBase
+FROM ghcr.io/alt-atomic/alt-image:latest AS atomic-base
 
 # Определяем тип сборки
 ARG BUILD_TYPE="default"
@@ -22,7 +22,7 @@ LABEL containers.bootc=1
 CMD ["/sbin/init"]
 
 
-FROM atomicBase AS atomicNvidiaBase
+FROM atomicBase AS atomic-nvidia-base
 
 # Определяем тип сборки
 ARG BUILD_TYPE="default"
