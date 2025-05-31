@@ -1,4 +1,4 @@
-name: Build Base image
+name: Build Base images
 
 on:
   schedule:
@@ -30,6 +30,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push base image
+        id: build
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -37,4 +38,19 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
           platforms: linux/amd64
-          build-args: BUILD_TYPE=default
+          build-args: |
+            BUILD_TYPE=default
+
+      - name: Build and push NVIDIA base image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile.nv
+          target: atomic-nvidia-base
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest-nv
+          platforms: linux/amd64
+          build-args: |
+            BUILD_TYPE=nvidia
+            IMAGE_ID=${{ steps.build.outputs.imageid }}
+  
