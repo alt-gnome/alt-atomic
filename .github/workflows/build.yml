@@ -46,7 +46,6 @@ jobs:
         with:
           context: .
           file: ./Dockerfile.nv
-          target: atomic-nvidia-base
           push: ${{ github.event_name != 'pull_request' }}
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest-nv
           platforms: linux/amd64
