@@ -1,7 +1,6 @@
 ARG BUILD_TYPE="default"
-ARG IMAGE_ID="ghcr.io/alt-gnome/alt-atomic:latest"
 
-FROM $IMAGE_ID
+FROM alt-gnome/alt-atomic:latest
 
 ENV BUILD_TYPE=$BUILD_TYPE
 
