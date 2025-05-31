@@ -1,6 +1,6 @@
 ARG BUILD_TYPE="default"
 
-FROM alt-gnome/alt-atomic:latest
+FROM ghcr.io/alt-gnome/alt-atomic:latest-nv
 
 ENV BUILD_TYPE=$BUILD_TYPE
 
