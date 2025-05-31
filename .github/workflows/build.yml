@@ -5,6 +5,8 @@ on:
     - cron: '0 0 * * 0'  # Каждую неделю
   push:
     branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -31,7 +33,8 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          push: true
+          target: atomicBase
+          push: ${{ github.event_name == 'pull_request' }}
           tags: ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:latest
           platforms: linux/amd64
           build-args: BUILD_TYPE=default

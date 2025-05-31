@@ -20,3 +20,18 @@ WORKDIR /
 LABEL containers.bootc=1
 
 CMD ["/sbin/init"]
+
+
+FROM atomicBase AS atomicNvidiaBase
+
+# Определяем тип сборки
+ARG BUILD_TYPE="default"
+ENV BUILD_TYPE=$BUILD_TYPE
+
+RUN --mount=type=bind,source=./src,target=/src \
+    apt-get update && \
+    /src/make/00-atomic-actions.sh && \
+    /src/packages/02-nvidia-packages.sh && \
+    /src/configuration/02-nvidia.sh && \
+    /src/configuration/03-kernel.sh && \
+    /src/packages/03-apt-ending.sh
