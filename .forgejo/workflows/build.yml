@@ -1,0 +1,46 @@
+name: Build Base images
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every week
+    - cron: '0 0 * * 0'
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  REGISTRY: altlinux.space
+
+jobs:
+  build:
+    name: Build image
+    runs-on: alt-sisyphus
+    container:
+      image: altlinux.space/actions/runner/containers:sisyphus
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to registry
+        run: |
+          podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
+
+      - name: Build sisyphus default image
+        run: |
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:latest --platform linux/amd64 --build-args BUILD_TYPE=default .
+
+      - name: Push default image
+        if: github.event_name != 'pull_request'
+        run: |
+          podman push $REGISTRY/$GITHUB_REPOSITORY:latest
+
+      - name: Build sisyphus NVIDIA image
+        run: |
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:latest-nv --platform linux/amd64 -f Containerfile.nv --build-args BUILD_TYPE=nvidia .
+
+      - name: Push NVIDIA image
+        if: github.event_name != 'pull_request'
+        run: |
+          podman push $REGISTRY/$GITHUB_REPOSITORY:latest-nv
