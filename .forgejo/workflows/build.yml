@@ -42,7 +42,7 @@ jobs:
 
       - name: Build sisyphus NVIDIA image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME .
 
       - name: Push NVIDIA image
         if: github.event_name != 'pull_request'
