@@ -1,6 +1,7 @@
 ARG BUILD_TYPE="default"
+ARG IMAGE="altlinux.space/alt-atomic/onyx:stable"
 
-FROM altlinux.space/alt-atomic/onyx:latest
+FROM $IMAGE
 
 ENV BUILD_TYPE=$BUILD_TYPE
 
