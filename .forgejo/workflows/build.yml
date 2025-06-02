@@ -7,11 +7,11 @@ on:
     - cron: '0 0 * * 0'
   push:
     branches:
-      - "main"
+      - "stable"
       - "nightly"
   pull_request:
     branches:
-      - "main"
+      - "stable"
       - "nightly"
 
 env:
