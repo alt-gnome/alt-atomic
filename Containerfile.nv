@@ -1,6 +1,6 @@
 ARG BUILD_TYPE="default"
 
-FROM ghcr.io/alt-gnome/alt-atomic:latest
+FROM altlinux.space/alt-atomic/onyx:latest
 
 ENV BUILD_TYPE=$BUILD_TYPE
 
