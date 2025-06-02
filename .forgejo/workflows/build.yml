@@ -33,18 +33,18 @@ jobs:
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_BASE_REF --platform linux/amd64 --build-arg BUILD_TYPE=default .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default .
 
       - name: Push default image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_BASE_REF
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
 
       - name: Build sisyphus NVIDIA image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_BASE_REF-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia .
 
       - name: Push NVIDIA image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_BASE_REF-nv
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME-nv
