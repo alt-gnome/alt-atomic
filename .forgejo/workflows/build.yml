@@ -34,7 +34,7 @@ jobs:
       - name: Push default image
         if: github.event_name != 'pull_request'
         run: |
-          podman push $REGISTRY/$GITHUB_REPOSITORY:latest
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:latest
 
       - name: Build sisyphus NVIDIA image
         run: |
@@ -43,4 +43,4 @@ jobs:
       - name: Push NVIDIA image
         if: github.event_name != 'pull_request'
         run: |
-          podman push $REGISTRY/$GITHUB_REPOSITORY:latest-nv
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:latest-nv
