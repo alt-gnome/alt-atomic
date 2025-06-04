@@ -7,7 +7,6 @@ echo "Running scripts"
 directories=(
   "/src/packages"
   "/src/configuration"
-  "/src/make"
 )
 
 run_scripts_in_dir() {
