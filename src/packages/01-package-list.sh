@@ -17,6 +17,7 @@ BASIC_PACKAGES=(
   systemd-ssh-agent
   xterm
   zsh
+  zsh-autosuggestions
   zsh-completions
 )
 

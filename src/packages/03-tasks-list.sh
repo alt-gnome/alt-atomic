@@ -2,8 +2,10 @@
 
 echo "::group:: ===$(basename "$0")==="
 
-apt-get update
-apt-get -y dist-upgrade
-apt-get -y install apt-repo
+TASKS=(
+  386243
+)
+
+apt-repo test -y "${TASKS[@]}"
 
 echo "::endgroup::"
