@@ -33,7 +33,7 @@ jobs:
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:$GITHUB_REF_NAME .
 
       - name: Push default image
         if: github.event_name != 'pull_request'
