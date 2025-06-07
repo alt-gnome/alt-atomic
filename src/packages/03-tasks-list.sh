@@ -6,6 +6,8 @@ TASKS=(
 
 )
 
-# apt-repo test -y "${TASKS[@]}"
+for task in "${TASKS[@]}"; do
+  apt-repo test "$task"
+done
 
 echo "::endgroup::"
