@@ -5,4 +5,4 @@ if [ -n "$DISTROBOX_ENTER_PATH" ]; then
 fi
 
 # zsh-autosuggestions
-source /usr/local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
