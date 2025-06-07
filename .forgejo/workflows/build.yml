@@ -10,9 +10,14 @@ on:
       - "stable"
       - "nightly"
   pull_request:
+    types:
+      - assigned
+      - edited
+      - opened
+      - synchronize
+      - reopened
     branches:
       - "stable"
-      - "nightly"
 
 env:
   REGISTRY: altlinux.space
@@ -33,7 +38,13 @@ jobs:
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default .
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            branch_name="stable"
+          else
+            branch_name=$GITHUB_REF_NAME
+          fi
+
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:$branch_name .
 
       - name: Push default image
         if: github.event_name != 'pull_request'

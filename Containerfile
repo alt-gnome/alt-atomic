@@ -1,6 +1,7 @@
 ARG BUILD_TYPE="default"
+ARG IMAGE="altlinux.space/alt-atomic/base:stable"
 
-FROM ghcr.io/alt-atomic/alt-image:latest AS atomic-base
+FROM $IMAGE AS atomic-base
 
 ENV BUILD_TYPE=$BUILD_TYPE
 
