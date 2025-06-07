@@ -12,6 +12,8 @@ for task in "${TASKS[@]}"; do
     apt-repo add task "$task"
 done
 
+apt-get update
+
 TASKS_PACKAGES=(
 
 )
