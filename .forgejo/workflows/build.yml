@@ -9,7 +9,7 @@ on:
     branches:
       - "stable"
       - "nightly"
-  pull_request_target:
+  pull_request:
     types:
       - assigned
       - edited
@@ -18,7 +18,6 @@ on:
       - reopened
     branches:
       - "stable"
-      - "nightly"
 
 env:
   REGISTRY: altlinux.space
@@ -40,7 +39,7 @@ jobs:
       - name: Build sisyphus default image
         run: |
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
-            branch_name=$GITHUB_HEAD_REF
+            branch_name="stable"
           else
             branch_name=$GITHUB_REF_NAME
           fi
