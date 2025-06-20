@@ -14,8 +14,7 @@ BASIC_PACKAGES=(
   openssh-server
   ptyxis
   starship
-  systemd-ssh-agent
-  xterm
+  systemd-ssh-agent  
   zsh
   zsh-autosuggestions
   zsh-completions
