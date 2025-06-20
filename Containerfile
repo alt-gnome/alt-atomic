@@ -1,7 +1,8 @@
-ARG BUILD_TYPE="default"
 ARG IMAGE="altlinux.space/alt-atomic/base:stable"
 
 FROM $IMAGE AS atomic-base
+
+ARG BUILD_TYPE="default"
 
 ENV BUILD_TYPE=$BUILD_TYPE
 
