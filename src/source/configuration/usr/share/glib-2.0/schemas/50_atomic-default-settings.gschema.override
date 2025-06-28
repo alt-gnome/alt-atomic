@@ -17,9 +17,6 @@ enabled-extensions=['appindicatorsupport@rgcjonas.gmail.com', 'dash-to-dock@micx
 picture-uri='file:///usr/share/backgrounds/gnome/map-l.svg'
 picture-uri-dark='file:///usr/share/backgrounds/gnome/map-d.svg'
 
-[org.gnome.software]
-allow-system-install=false
-
 [org.gnome.desktop.input-sources]
 sources=[('xkb', 'us'), ('xkb', 'ru')]
 
