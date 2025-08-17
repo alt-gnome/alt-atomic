@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Login to registry
+        if: github.event_name != 'pull_request'
         run: |
           podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
 
