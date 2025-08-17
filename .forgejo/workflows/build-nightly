@@ -7,7 +7,6 @@ on:
     - cron: '0 0 * * 0'
   push:
     branches:
-      - "stable"
       - "nightly"
   pull_request:
     types:
@@ -17,7 +16,6 @@ on:
       - synchronize
       - reopened
     branches:
-      - "stable"
       - "nightly"
 
 env:
@@ -34,24 +32,23 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Login to registry
-        if: github.event_name != 'pull_request'
         run: |
           podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:$GITHUB_REF_NAME .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:nightly .
 
       - name: Push default image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:nightly
 
       - name: Build sisyphus NVIDIA image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:nightly .
 
       - name: Push NVIDIA image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:$GITHUB_REF_NAME-nv
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:nightly-nv
