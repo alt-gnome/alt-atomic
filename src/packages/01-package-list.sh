@@ -81,7 +81,6 @@ GNOME_THEMES=(
   gnome-icon-theme
   gnome-icon-theme-symbolic
   gnome-themes-extra
-  gtk3-theme-adw-gtk3
   icon-theme-morewaita
   libgtk2-engine-adwaita
   pinentry-gnome3

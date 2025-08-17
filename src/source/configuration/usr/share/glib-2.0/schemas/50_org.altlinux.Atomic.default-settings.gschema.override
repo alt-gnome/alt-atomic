@@ -3,7 +3,6 @@ terminal='ptyxis'
 new-tab=false
 
 [org.gnome.desktop.interface]
-gtk-theme='adw-gtk3-dark'
 icon-theme='MoreWaita'
 
 [org.gnome.desktop.default-applications.terminal]
