@@ -40,6 +40,7 @@ GNOME_SHELL_PACKAGES=(
   gnome-shell
   gnome-shell-extension-appindicator
   gnome-shell-extension-clipboard-indicator
+  gnome-shell-extension-dash-to-dock
   gnome-shell-extensions
 )
 
