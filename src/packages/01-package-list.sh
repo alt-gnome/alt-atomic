@@ -39,7 +39,9 @@ GNOME_SHELL_PACKAGES=(
   gnome-keyring-ssh
   gnome-shell
   gnome-shell-extension-appindicator
+  gnome-shell-extension-clipboard-indicator
   gnome-shell-extension-dash-to-dock
+  gnome-shell-extension-session-keeper
   gnome-shell-extensions
 )
 
@@ -81,7 +83,6 @@ GNOME_THEMES=(
   gnome-icon-theme
   gnome-icon-theme-symbolic
   gnome-themes-extra
-  gtk3-theme-adw-gtk3
   icon-theme-morewaita
   libgtk2-engine-adwaita
   pinentry-gnome3
