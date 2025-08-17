@@ -30,15 +30,15 @@ MODULES=$(find "${KERNEL_DIR}/${KERNEL_VERSION}/kernel/drivers" \( \
         -o -path "${KERNEL_DIR}/${KERNEL_VERSION}/kernel/drivers/video/fbdev/*" \
     \) -type f -name '*.ko*' | sed 's:.*/::')
 
-NVIDIA_EXTRA=()
-if [ "$BUILD_TYPE" = "nvidia" ]; then
-    # Удаляем nvidiafb.* только для NVIDIA сборки
-    MODULES=$(echo "$MODULES" | grep -v 'nvidiafb\.ko')
-    # Явное включение директории с драйверами
-    NVIDIA_EXTRA+=(
-        --include "${KERNEL_DIR}/${KERNEL_VERSION}/nVidia" "/usr/lib/modules/${KERNEL_VERSION}/nVidia"
-    )
-fi
+# NVIDIA_EXTRA=()
+# if [ "$BUILD_TYPE" = "nvidia" ]; then
+#     # Удаляем nvidiafb.* только для NVIDIA сборки
+#     MODULES=$(echo "$MODULES" | grep -v 'nvidiafb\.ko')
+#     # Явное включение директории с драйверами
+#     NVIDIA_EXTRA+=(
+#         --include "${KERNEL_DIR}/${KERNEL_VERSION}/nVidia" "/usr/lib/modules/${KERNEL_VERSION}/nVidia"
+#     )
+# fi
 
 dracut --force \
        --no-hostonly \
