@@ -39,7 +39,6 @@ GNOME_SHELL_PACKAGES=(
   gnome-keyring-ssh
   gnome-shell
   gnome-shell-extension-appindicator
-  gnome-shell-extension-dash-to-dock
   gnome-shell-extension-clipboard-indicator
   gnome-shell-extensions
 )
