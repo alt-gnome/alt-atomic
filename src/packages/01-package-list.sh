@@ -71,6 +71,7 @@ GNOME_DESKTOP_APPS=(
   sushi
   tuner
   tuner-tweaks
+  gnome-boxes
 )
 
 # GNOME — темы, шрифты и оформление
@@ -103,7 +104,6 @@ NAUTILUS_PACKAGES=(
 
 # Прочие приложения
 MISC_APPS=(
-  virt-manager
   firefox
   power-profiles-daemon
 )
