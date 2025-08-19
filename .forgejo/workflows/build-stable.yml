@@ -11,21 +11,37 @@ on:
 
 env:
   REGISTRY: altlinux.space
+  REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
     name: Build image
     runs-on: alt-sisyphus
+    permissions:
+      packages: write
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
+      - name: Check PR source
+        if: github.event_name == 'pull_request'
+        run: |
+          if [ "${{ github.event.pull_request.head.ref }}" != "nightly" ]; then
+            echo "PR not from nightly branch"
+            exit 1
+          fi
+
+          if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
+            echo "PR not from this repository"
+            exit 1
+          fi
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Login to registry
         if: github.event_name != 'pull_request'
         run: |
-          podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
+          podman login --username="<token>" --password=$REGISTRY_TOKEN $REGISTRY
 
       - name: Build sisyphus default image
         run: |

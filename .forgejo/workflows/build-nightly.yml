@@ -20,11 +20,14 @@ on:
 
 env:
   REGISTRY: altlinux.space
+  REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
     name: Build image
     runs-on: alt-sisyphus
+    permissions:
+      packages: write
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -34,7 +37,7 @@ jobs:
       - name: Login to registry
         if: github.event_name != 'pull_request'
         run: |
-          podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
+          podman login --username="<token>" --password=$REGISTRY_TOKEN $REGISTRY
 
       - name: Build sisyphus default image
         run: |
