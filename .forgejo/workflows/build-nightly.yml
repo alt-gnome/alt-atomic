@@ -20,7 +20,7 @@ on:
 
 env:
   REGISTRY: altlinux.space
-  REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
 
 jobs:
   build:
