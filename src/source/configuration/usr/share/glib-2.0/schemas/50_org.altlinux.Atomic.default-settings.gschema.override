@@ -19,9 +19,6 @@ picture-uri-dark='file:///usr/share/backgrounds/gnome/map-d.svg'
 [org.gnome.desktop.input-sources]
 sources=[('xkb', 'us'), ('xkb', 'ru')]
 
-[org.gnome.desktop.interface]
-monospace-font-name='FiraCode Nerd Font 11'
-
 [org.gnome.shell.extensions.dash-to-dock]
 apply-custom-theme=true
 
