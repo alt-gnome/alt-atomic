@@ -14,6 +14,8 @@ ln -s /dev/urandom /var/lib/openvpn/dev/urandom
 #sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Vte.App.Gtk3.desktop
 
 # Включаем сервисы
+systemctl --global enable gnome-keyring-daemon.service
+systemctl --global enable gnome-keyring-daemon.socket
 systemctl --global enable pipewire{,-pulse}{,.socket} wireplumber
 systemctl enable bluetooth
 systemctl enable gdm
