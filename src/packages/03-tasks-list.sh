@@ -3,7 +3,7 @@
 echo "::group:: ===$(basename "$0")==="
 
 TASKS=(
-    392850
+
 )
 
 for task in "${TASKS[@]}"; do 
@@ -13,8 +13,7 @@ done
 apt-get update
 
 TASKS_PACKAGES=(
-    branding-alt-atomic-onyx-*
-    alt-atomic-logos
+
 )
 
 if [ ${#TASKS_PACKAGES[@]} -gt 0 ]; then

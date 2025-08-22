@@ -18,6 +18,8 @@ BASIC_PACKAGES=(
   zsh
   zsh-autosuggestions
   zsh-completions
+  branding-alt-atomic-onyx-*
+  alt-atomic-logos
 )
 
 # Генератор ZRAM
