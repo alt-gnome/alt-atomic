@@ -39,7 +39,7 @@ jobs:
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:nightly IMAGE_TYPE=nightly .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:nightly --build-arg IMAGE_TYPE=nightly .
 
       - name: Push default image
         if: github.event_name != 'pull_request'
@@ -48,7 +48,7 @@ jobs:
 
       - name: Build sisyphus NVIDIA image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:nightly IMAGE_TYPE=nightly .
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:nightly --build-arg IMAGE_TYPE=nightly .
 
       - name: Push NVIDIA image
         if: github.event_name != 'pull_request'
