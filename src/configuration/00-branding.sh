@@ -13,11 +13,11 @@ else
 fi
 
 # Fix os-release file with current image info
-sed -i "s/NAME=\".*\"/NAME=\"ALT Atomic Onyx$postfix\"/g" /usr/lib/os-release
-sed -i "s/VERSION=\".*\"/VERSION=\"$curver-$IMAGE_TYPE\"/g" /usr/lib/os-release
-sed -i "s/VERSION_ID=\".*\"/VERSION_ID=$curver)/g" /usr/lib/os-release
-sed -i "s/BUILD_ID=\".*\"/BUILD_ID=\"Sisyphus $curver\"/g" /usr/lib/os-release
-sed -i "s/CPE_NAME=\".*\"/CPE_NAME=\"cpe:/o:alt:atomic-onyx:$curver\"/g" /usr/lib/os-release
+sed -i "s|NAME=\".*\"|NAME=\"ALT Atomic Onyx$postfix\"|g" /usr/lib/os-release
+sed -i "s|VERSION=\".*\"|VERSION=\"$curver-$IMAGE_TYPE\"|g" /usr/lib/os-release
+sed -i "s|VERSION_ID=\".*\"|VERSION_ID=$curver)|g" /usr/lib/os-release
+sed -i "s|BUILD_ID=\".*\"|BUILD_ID=\"Sisyphus $curver\"|g" /usr/lib/os-release
+sed -i "s|CPE_NAME=\".*\"|CPE_NAME=\"cpe:/o:alt:atomic-onyx:$curver\"|g" /usr/lib/os-release
 
 # Replace file with link
 rm -rf /etc/os-release
