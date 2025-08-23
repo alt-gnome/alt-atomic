@@ -1,8 +1,12 @@
-ARG BUILD_TYPE="default"
+ARG IMAGE_TYPE="stable"
 ARG IMAGE="altlinux.space/alt-atomic/onyx:stable"
 
 FROM $IMAGE
 
+ARG BUILD_TYPE="default"
+ARG IMAGE_TYPE="stable"
+
+ENV IMAGE_TYPE=$IMAGE_TYPE
 ENV BUILD_TYPE=$BUILD_TYPE
 
 RUN --mount=type=bind,source=./src,target=/src \

@@ -10,11 +10,12 @@ rm -f /var/lib/openvpn/dev/urandom
 ln -s /dev/urandom /var/lib/openvpn/dev/urandom
 
 # Hide unnecessary apps
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/xterm.desktop
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Vte.App.Gtk4.desktop
-sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Vte.App.Gtk3.desktop
+#sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Vte.App.Gtk4.desktop
+#sed -i 's@\[Desktop Entry\]@\[Desktop Entry\]\nHidden=true@g' /usr/share/applications/org.gnome.Vte.App.Gtk3.desktop
 
 # Включаем сервисы
+systemctl --global enable gnome-keyring-daemon.service
+systemctl --global enable gnome-keyring-daemon.socket
 systemctl --global enable pipewire{,-pulse}{,.socket} wireplumber
 systemctl enable bluetooth
 systemctl enable gdm

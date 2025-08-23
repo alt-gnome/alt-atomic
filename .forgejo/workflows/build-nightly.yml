@@ -1,0 +1,56 @@
+name: Build Base images
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every week
+    - cron: '0 0 * * 0'
+  push:
+    branches:
+      - "nightly"
+  pull_request:
+    types:
+      - assigned
+      - edited
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - "nightly"
+
+env:
+  REGISTRY: altlinux.space
+  REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
+
+jobs:
+  build:
+    name: Build image
+    runs-on: alt-sisyphus
+    container:
+      image: altlinux.space/actions/runner/containers:sisyphus
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to registry
+        if: github.event_name != 'pull_request'
+        run: |
+          podman login --username="<token>" --password=$REGISTRY_TOKEN $REGISTRY
+
+      - name: Build sisyphus default image
+        run: |
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:nightly --build-arg IMAGE_TYPE=nightly .
+
+      - name: Push default image
+        if: github.event_name != 'pull_request'
+        run: |
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:nightly
+
+      - name: Build sisyphus NVIDIA image
+        run: |
+          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:nightly --build-arg IMAGE_TYPE=nightly .
+
+      - name: Push NVIDIA image
+        if: github.event_name != 'pull_request'
+        run: |
+          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:nightly-nv
