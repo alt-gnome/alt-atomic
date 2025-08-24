@@ -14,7 +14,7 @@ BASIC_PACKAGES=(
   openssh-server
   ptyxis
   starship
-  systemd-ssh-agent  
+  systemd-ssh-agent
   zsh
   zsh-autosuggestions
   zsh-completions
@@ -49,6 +49,7 @@ GNOME_SHELL_PACKAGES=(
 
 # GNOME — приложения и утилиты
 GNOME_DESKTOP_APPS=(
+  authenticator
   foldy
   g4music
   gnome-browser-connector
@@ -148,6 +149,8 @@ FONTS=(
   fonts-ttf-jetbrains-mono-nl
   fonts-otf-abattis-cantarell
   fonts-ttf-fira-code-nerd
+  fonts-ttf-fira-code-nerd
+  fonts-ttf-google-noto-emoji
 )
 
 apt-get install -y \
