@@ -49,6 +49,7 @@ GNOME_SHELL_PACKAGES=(
 
 # GNOME — приложения и утилиты
 GNOME_DESKTOP_APPS=(
+  authenticator
   foldy
   g4music
   gnome-browser-connector
