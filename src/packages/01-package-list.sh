@@ -14,7 +14,7 @@ BASIC_PACKAGES=(
   openssh-server
   ptyxis
   starship
-  systemd-ssh-agent  
+  systemd-ssh-agent
   zsh
   zsh-autosuggestions
   zsh-completions
@@ -148,6 +148,8 @@ FONTS=(
   fonts-ttf-jetbrains-mono-nl
   fonts-otf-abattis-cantarell
   fonts-ttf-fira-code-nerd
+  fonts-ttf-fira-code-nerd
+  fonts-ttf-google-noto-emoji
 )
 
 apt-get install -y \
