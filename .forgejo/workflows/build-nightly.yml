@@ -27,10 +27,11 @@ jobs:
       - name: Get date
         id: date
         run: |
-          if [[ -z "${{ github.event.inputs.date }}" || ${{ github.event.inputs.date }} == "latest" ]]; then
+          DATE=${{ github.event.inputs.date }}
+          if [[ -z "$DATE" || "$DATE" == "latest" ]]; then
             echo "::set-output name=date::$(date +%Y%m%d)"
           else
-            echo "::set-output name=date::${{ github.event.inputs.date }}"
+            echo "::set-output name=date::$DATE"
           fi
 
       - name: Checkout repository
