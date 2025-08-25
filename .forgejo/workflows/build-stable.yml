@@ -2,16 +2,18 @@ name: Build Base images
 
 on:
   workflow_dispatch:
-  schedule:
-    # Every week
-    - cron: '0 0 * * 0'
-  push:
-    branches:
-      - "stable"
+    inputs:
+      date:
+        description: 'Date tag of Core in format YYYYMMDD. Can be `latest`'
+        required: true
+        type: string
+        default: latest
+  # Also schedule but from core image trigger
 
 env:
+  LOCAL_BUILD_NAME: localhost/build
+  LOCAL_BUILD_NAME_NV: localhost/build-nv
   REGISTRY: altlinux.space
-  REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
 
 jobs:
   build:
@@ -20,17 +22,14 @@ jobs:
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
-      - name: Check PR source
-        if: github.event_name == 'pull_request'
+      - name: Get date
+        id: date
         run: |
-          if [ "${{ github.event.pull_request.head.ref }}" != "nightly" ]; then
-            echo "PR not from nightly branch"
-            exit 1
-          fi
-
-          if [ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]; then
-            echo "PR not from this repository"
-            exit 1
+          DATE=${{ github.event.inputs.date }}
+          if [[ "$DATE" == "latest" ]]; then
+            echo "::set-output name=date::$(date +%Y%m%d)"
+          else
+            echo "::set-output name=date::$DATE"
           fi
 
       - name: Checkout repository
@@ -39,22 +38,30 @@ jobs:
       - name: Login to registry
         if: github.event_name != 'pull_request'
         run: |
-          podman login --username="<token>" --password=$REGISTRY_TOKEN $REGISTRY
+          podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:stable --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:stable .
+          podman build --tag $LOCAL_BUILD_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/core/stable:${{ steps.date.outputs.date }} .
 
       - name: Push default image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:stable
+          # For onyx:stable, legacy compatobility
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/alt-atomic/onyx:stable
+
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:${{ steps.date.outputs.date }}
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:latest
 
       - name: Build sisyphus NVIDIA image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:stable-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:stable .
+          podman build --tag $LOCAL_BUILD_NAME_NV --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$LOCAL_BUILD_NAME --build-arg IMAGE_TYPE=stable .
 
       - name: Push NVIDIA image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:stable-nv
+          # For onyx:stable-nv, legacy compatobility
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/alt-atomic/onyx:stable-nv
+
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/stable:${{ steps.date.outputs.date }}
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/stable:latest
