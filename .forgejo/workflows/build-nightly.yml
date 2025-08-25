@@ -27,7 +27,7 @@ jobs:
       - name: Get date
         id: date
         run: |
-          if [[ -z "${github.event.inputs.date}" || ${{ github.event.inputs.date }} == "latest" ]]; then
+          if [[ -z "${{ github.event.inputs.date }}" || ${{ github.event.inputs.date }} == "latest" ]]; then
             echo "::set-output name=date::$(date +%Y%m%d)"
           else
             echo "::set-output name=date::${{ github.event.inputs.date }}"
