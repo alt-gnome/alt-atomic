@@ -21,6 +21,8 @@ jobs:
   check-core-image:
     name: Check Core image exists
     runs-on: alt-sisyphus
+    outputs:
+      core_exists: ${{ steps.check-core-image.outputs.exists }}
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -62,7 +64,7 @@ jobs:
   build:
     name: Build image
     runs-on: alt-sisyphus
-    if: steps.check-core-image.outputs.exists == 'Yes'
+    if: needs.check-core-image.outputs.core_exists == 'Yes'
     needs: check-core-image
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
