@@ -87,22 +87,6 @@ jobs:
         run: |
           podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
 
-      - name: Trigger Core image build
-        if: steps.check-core-image.outputs.exists == 'No'
-        uses: actions/forgejo-script@v1
-        with:
-          github-token: ${{ secrets.REBUILD }}
-          script: |
-            await forgejo.repos.dispatchWorkflow(
-              "alt-atomic",
-              "core",
-              "build-nightly.yml", 
-              {
-                ref: "main",
-                date: "${{ steps.date.outputs.date }}",
-              },
-            );
-
       - name: Build sisyphus default image
         run: |
           podman build --tag $LOCAL_BUILD_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} --build-arg IMAGE_TYPE=nightly .
