@@ -48,7 +48,7 @@ jobs:
         run: |
           podman build --tag $LOCAL_BUILD_NAME_NV --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$LOCAL_BUILD_NAME --build-arg IMAGE_TYPE=stable .
 
-      - name: Push NVIDIA image
+      - name: Push images
         if: github.event_name != 'pull_request'
         run: |
           # For onyx:stable, legacy compatobility
