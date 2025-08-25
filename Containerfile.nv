@@ -1,5 +1,5 @@
 ARG IMAGE_TYPE="stable"
-ARG IMAGE="altlinux.space/alt-atomic/onyx:stable"
+ARG IMAGE="altlinux.space/alt-atomic/onyx/stable:latest"
 
 FROM $IMAGE
 

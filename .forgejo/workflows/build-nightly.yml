@@ -1,26 +1,15 @@
-name: Build Base images
+name: Build nightly images
 
 on:
   workflow_dispatch:
-  schedule:
-    # Every week
-    - cron: '0 0 * * 0'
   push:
-    branches:
-      - "nightly"
   pull_request:
-    types:
-      - assigned
-      - edited
-      - opened
-      - synchronize
-      - reopened
-    branches:
-      - "nightly"
+  # Also schedule but from core image trigger
 
 env:
+  LOCAL_BUILD_NAME: localhost/build
+  LOCAL_BUILD_NAME_NV: localhost/build-nv
   REGISTRY: altlinux.space
-  REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
 
 jobs:
   build:
@@ -35,22 +24,34 @@ jobs:
       - name: Login to registry
         if: github.event_name != 'pull_request'
         run: |
-          podman login --username="<token>" --password=$REGISTRY_TOKEN $REGISTRY
+          podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/base:nightly --build-arg IMAGE_TYPE=nightly .
+          podman build --tag $LOCAL_BUILD_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:latest --build-arg IMAGE_TYPE=nightly .
 
       - name: Push default image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:nightly
+          DATE_TAG=$(date +"%Y%m%d")
+
+          # For onyx:nightly, legacy compatobility
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/alt-atomic/onyx:nightly
+
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:$DATE_TAG
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:latest
 
       - name: Build sisyphus NVIDIA image
         run: |
-          podman build --tag $REGISTRY/$GITHUB_REPOSITORY:nightly-nv --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY:nightly --build-arg IMAGE_TYPE=nightly .
+          podman build --tag $LOCAL_BUILD_NAME_NV --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$REGISTRY/$GITHUB_REPOSITORY/nightly:latest --build-arg IMAGE_TYPE=nightly .
 
       - name: Push NVIDIA image
         if: github.event_name != 'pull_request'
         run: |
-          podman push --compression-format zstd --compress $REGISTRY/$GITHUB_REPOSITORY:nightly-nv
+          DATE_TAG=$(date +"%Y%m%d")
+
+          # For onyx:nightly-nv, legacy compatobility
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/alt-atomic/onyx:nightly-nv
+
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/nightly:$DATE_TAG
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/nightly:latest

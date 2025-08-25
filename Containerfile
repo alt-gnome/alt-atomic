@@ -1,4 +1,4 @@
-ARG IMAGE="altlinux.space/alt-atomic/base:stable"
+ARG IMAGE="altlinux.space/alt-atomic/base/stable:latest"
 
 FROM $IMAGE AS atomic-base
 
