@@ -18,9 +18,52 @@ env:
   REGISTRY: altlinux.space
 
 jobs:
+  check-core-image:
+    name: Check Core image exists
+    runs-on: alt-sisyphus
+    container:
+      image: altlinux.space/actions/runner/containers:sisyphus
+    steps:
+      - name: Get date
+        id: date
+        run: |
+          DATE=${{ github.event.inputs.date }}
+          if [[ -z "$DATE" || "$DATE" == "latest" ]]; then
+            echo "::set-output name=date::$(date +%Y%m%d)"
+          else
+            echo "::set-output name=date::$DATE"
+          fi
+
+      - name: Check Core image exists
+        id: check-core-image
+        run: |
+          if podman pull "$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }}" >/dev/null 2>&1; then
+            echo "::set-output name=exists::Yes"
+          else
+            echo "::set-output name=exists::No"
+          fi
+
+      - name: Trigger Core rebuild
+        if: steps.check-core-image.outputs.exists == 'No'
+        uses: actions/forgejo-script@v1
+        with:
+          github-token: ${{ secrets.REBUILD }}
+          script: |
+            await forgejo.repos.dispatchWorkflow(
+              "alt-atomic",
+              "core",
+              "build-nightly.yml", 
+              {
+                ref: "main",
+                date: "${{ steps.date.outputs.date }}",
+              },
+            );
+
   build:
     name: Build image
     runs-on: alt-sisyphus
+    if: steps.check-core-image.outputs.exists == 'Yes'
+    needs: check-core-image
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -41,6 +84,22 @@ jobs:
         if: github.event_name != 'pull_request'
         run: |
           podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
+
+      - name: Trigger Core image build
+        if: steps.check-core-image.outputs.exists == 'No'
+        uses: actions/forgejo-script@v1
+        with:
+          github-token: ${{ secrets.REBUILD }}
+          script: |
+            await forgejo.repos.dispatchWorkflow(
+              "alt-atomic",
+              "core",
+              "build-nightly.yml", 
+              {
+                ref: "main",
+                date: "${{ steps.date.outputs.date }}",
+              },
+            );
 
       - name: Build sisyphus default image
         run: |
