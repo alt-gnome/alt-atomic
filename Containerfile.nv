@@ -15,3 +15,9 @@ RUN --mount=type=bind,source=./src,target=/src \
     /src/configuration/02-nvidia.sh && \
     /src/configuration/03-kernel.sh && \
     /src/packages/99-apt-ending.sh
+
+LABEL org.opencontainers.image.title="ALT Atomic Onyx (NVIDIA)"
+LABEL org.opencontainers.image.description="ALT Atomic with GNOME (with NVIDIA drivers)"
+LABEL org.opencontainers.image.source="https://altlinux.space/alt-atomic/onyx"
+LABEL org.opencontainers.image.licenses="GPL-3.0-or-later"
+LABEL org.opencontainers.image.vendor="ALT Linux Team"
