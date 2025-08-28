@@ -13,7 +13,6 @@ BASIC_PACKAGES=(
   notify-send
   openssh-server
   ptyxis
-  starship
   systemd-ssh-agent
   zsh
   zsh-autosuggestions
