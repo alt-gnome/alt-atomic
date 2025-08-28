@@ -1,6 +1,7 @@
 [username]
 style_user = "bold fg:10"
 show_always = true
+format = "[$user]($style)"
 
 [aws]
 symbol = "  "
@@ -22,6 +23,7 @@ symbol = " "
 
 [directory]
 read_only = " 󰌾"
+format = " in [$path]($style)[$read_only]($read_only_style) "
 
 [docker_context]
 symbol = " "
@@ -60,7 +62,9 @@ symbol = " "
 symbol = " "
 
 [hostname]
-ssh_symbol = " "
+ssh_symbol = "@"
+format = "[$ssh_symbol$hostname]($style)"
+style = "green bold"
 
 [java]
 symbol = " "
