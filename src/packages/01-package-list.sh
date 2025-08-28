@@ -19,11 +19,6 @@ BASIC_PACKAGES=(
   alt-atomic-logos
 )
 
-# Генератор ZRAM
-ZRAM_PACKAGES=(
-  zram-generator
-)
-
 # GNOME — базовые сеансы (Wayland/X11)
 GNOME_SESSION_PACKAGES=(
   gnome-session-wayland
@@ -162,7 +157,6 @@ apt-get install -y \
   "${MISC_APPS[@]}" \
   "${NAUTILUS_PACKAGES[@]}" \
   "${NETWORK_PRINT_PACKAGES[@]}" \
-  "${WAYLAND_QT[@]}" \
-  "${ZRAM_PACKAGES[@]}"
+  "${WAYLAND_QT[@]}"
 
 echo "::endgroup::"
