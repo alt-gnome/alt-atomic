@@ -1,3 +1,7 @@
+[username]
+style_user = "bold fg:10"
+show_always = true
+
 [aws]
 symbol = "  "
 
