@@ -5,8 +5,6 @@ echo "::group:: ===$(basename "$0")==="
 
 # Базовые утилиты и инструменты
 BASIC_PACKAGES=(
-  bash-completion
-  fastfetch
   htop
   inxi
   iucode_tool
