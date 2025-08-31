@@ -7,7 +7,6 @@ on:
         description: 'Date tag of Core in format YYYYMMDD. Can be `latest`'
         required: true
         type: string
-        default: latest
   # Also schedule but from core image trigger
 
 env:
