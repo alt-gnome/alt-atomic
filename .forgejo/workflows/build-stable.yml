@@ -28,6 +28,7 @@ jobs:
         id: date
         run: |
           DATE=${{ github.event.inputs.date }}
+          echo "Input date: $DATE"
           if [[ -z "$DATE" || "$DATE" == "latest" ]]; then
             echo "::set-output name=date::$(date +%Y%m%d)"
           else
