@@ -265,7 +265,7 @@ if [ -n "${enter_flags}" ]; then
 fi
 
 # Command to execute
-container_command_suffix="'${exported_bin}' ${extra_flags} --env=DE=flatpak --env=XDG_CURRENT_DESKTOP= \"\$@\""
+container_command_suffix="'${exported_bin}' ${extra_flags} \"\$@\""
 
 # Check if exported application/binary should be run with sudo privileges
 if [ "${is_sudo}" -ne 0 ]; then
