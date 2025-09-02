@@ -17,6 +17,7 @@ BASIC_PACKAGES=(
   zsh-completions
   branding-alt-atomic-onyx-*
   alt-atomic-logos
+  distrobox
 )
 
 # GNOME — базовые сеансы (Wayland/X11)
