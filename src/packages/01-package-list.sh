@@ -18,6 +18,10 @@ BASIC_PACKAGES=(
   branding-alt-atomic-onyx-*
   alt-atomic-logos
   distrobox
+  flatpak
+  flatpak-repo-flathub
+  plymouth
+  plymouth-theme-bgrt
 )
 
 # GNOME — базовые сеансы (Wayland/X11)

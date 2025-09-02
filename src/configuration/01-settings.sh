@@ -36,6 +36,19 @@ for dir in /usr/lib64/gnome-software/plugins-*; do
     fi
 done
 
+# TODO: Move to branding package
+# Update plymouth theme
+cat << EOF > /etc/plymouth/plymouthd.conf
+[Daemon]
+Theme=bgrt
+ShowDelay=0
+DeviceTimeout=10
+EOF
+
+if [ "$IMAGE_TYPE" = "nightly" ]; then
+    echo "kargs = [\"plymouth.debug\"]" > /usr/lib/bootc/kargs.d/00_plymouth-debug.toml
+fi
+
 # Включаем создание домашних папок
 sed -i 's/^[[:space:]]*enabled=false/enabled=True/i' /etc/xdg/user-dirs.conf
 
