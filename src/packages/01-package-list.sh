@@ -5,23 +5,25 @@ echo "::group:: ===$(basename "$0")==="
 
 # Базовые утилиты и инструменты
 BASIC_PACKAGES=(
+  alt-atomic-logos
+  branding-alt-atomic-onyx-*
+  distrobox
+  fastfetch
+  flatpak
+  flatpak-repo-flathub
   htop
   inxi
   iucode_tool
   notify-send
   openssh-server
+  plymouth
+  plymouth-theme-bgrt
   ptyxis
+  starship
   systemd-ssh-agent
   zsh
   zsh-autosuggestions
   zsh-completions
-  branding-alt-atomic-onyx-*
-  alt-atomic-logos
-  distrobox
-  flatpak
-  flatpak-repo-flathub
-  plymouth
-  plymouth-theme-bgrt
 )
 
 # GNOME — базовые сеансы (Wayland/X11)
