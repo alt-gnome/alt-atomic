@@ -20,6 +20,7 @@ BASIC_PACKAGES=(
   plymouth-theme-bgrt
   ptyxis
   starship
+  stplr
   systemd-ssh-agent
   zsh
   zsh-autosuggestions
