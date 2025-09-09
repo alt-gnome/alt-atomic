@@ -18,55 +18,55 @@ env:
   REGISTRY: altlinux.space
 
 jobs:
-  check-core-image:
-    name: Check Core image exists
-    runs-on: alt-sisyphus
-    outputs:
-      core_exists: ${{ steps.check-core-image.outputs.exists }}
-    container:
-      image: altlinux.space/actions/runner/containers:sisyphus
-    steps:
-      - name: Get date
-        id: date
-        run: |
-          DATE=${{ github.event.inputs.date }}
-          if [[ -z "$DATE" || "$DATE" == "latest" ]]; then
-            echo "::set-output name=date::$(date +%Y%m%d)"
-          else
-            echo "::set-output name=date::$DATE"
-          fi
+  # check-core-image:
+  #   name: Check Core image exists
+  #   runs-on: alt-sisyphus
+  #   outputs:
+  #     core_exists: ${{ steps.check-core-image.outputs.exists }}
+  #   container:
+  #     image: altlinux.space/actions/runner/containers:sisyphus
+  #   steps:
+  #     - name: Get date
+  #       id: date
+  #       run: |
+  #         DATE=${{ github.event.inputs.date }}
+  #         if [[ -z "$DATE" || "$DATE" == "latest" ]]; then
+  #           echo "::set-output name=date::$(date +%Y%m%d)"
+  #         else
+  #           echo "::set-output name=date::$DATE"
+  #         fi
 
-      - name: Check Core image exists
-        id: check-core-image
-        run: |
-          if podman pull "$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }}" >/dev/null 2>&1; then
-            echo "::set-output name=exists::Yes"
-          else
-            echo "::set-output name=exists::No"
-          fi
+  #     - name: Check Core image exists
+  #       id: check-core-image
+  #       run: |
+  #         if podman pull "$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }}" >/dev/null 2>&1; then
+  #           echo "::set-output name=exists::Yes"
+  #         else
+  #           echo "::set-output name=exists::No"
+  #         fi
 
-      - name: Trigger Core rebuild
-        if: steps.check-core-image.outputs.exists == 'No'
-        uses: actions/forgejo-script@v1
-        with:
-          github-token: ${{ secrets.REBUILD }}
-          script: |
-            await forgejo.repos.dispatchWorkflow(
-              "alt-atomic",
-              "core",
-              "build-nightly.yml", 
-              {
-                ref: "main",
-                date: "${{ steps.date.outputs.date }}",
-                latest: false,
-              },
-            );
+  #     - name: Trigger Core rebuild
+  #       if: steps.check-core-image.outputs.exists == 'No'
+  #       uses: actions/forgejo-script@v1
+  #       with:
+  #         github-token: ${{ secrets.REBUILD }}
+  #         script: |
+  #           await forgejo.repos.dispatchWorkflow(
+  #             "alt-atomic",
+  #             "core",
+  #             "build-nightly.yml", 
+  #             {
+  #               ref: "main",
+  #               date: "${{ steps.date.outputs.date }}",
+  #               latest: false,
+  #             },
+  #           );
 
   build:
     name: Build image
     runs-on: alt-sisyphus
-    if: needs.check-core-image.outputs.core_exists == 'Yes'
-    needs: check-core-image
+    # if: needs.check-core-image.outputs.core_exists == 'Yes'
+    # needs: check-core-image
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
