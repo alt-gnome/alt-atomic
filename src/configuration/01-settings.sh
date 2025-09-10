@@ -63,4 +63,6 @@ dconf update
 # Обновление шрифтов
 fc-cache -fv
 
+flatpak mask org.freedesktop.Platform.openh264
+
 echo "::endgroup::"
