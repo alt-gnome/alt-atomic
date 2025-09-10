@@ -40,7 +40,7 @@ done
 # Update plymouth theme
 cat << EOF > /etc/plymouth/plymouthd.conf
 [Daemon]
-Theme=atomic
+Theme=bgrt
 ShowDelay=0
 DeviceTimeout=10
 EOF
