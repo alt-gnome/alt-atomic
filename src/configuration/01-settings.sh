@@ -60,9 +60,6 @@ rsync -av --progress /src/source/configuration/usr/ /usr/
 glib-compile-schemas /usr/share/glib-2.0/schemas
 dconf update
 
-# Обновление шрифтов
-fc-cache -fv
-
 flatpak mask org.freedesktop.Platform.openh264
 
 echo "::endgroup::"
