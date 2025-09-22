@@ -11,6 +11,9 @@ on:
   push:
   pull_request:
   # Also schedule but from core image trigger
+  schedule:
+    # Every day at 6 a.m.
+    - cron: '0 9 * * *'
 
 env:
   LOCAL_BUILD_NAME: localhost/build
