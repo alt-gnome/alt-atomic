@@ -17,6 +17,7 @@ BASIC_PACKAGES=(
   notify-send
   openssh-server
   plymouth
+  plymouth-theme-atomic
   ptyxis
   starship
   stplr
