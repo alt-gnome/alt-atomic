@@ -5,7 +5,6 @@ echo "::group:: ===$(basename "$0")==="
 
 # Базовые утилиты и инструменты
 BASIC_PACKAGES=(
-  alt-atomic-logos
   branding-alt-atomic-onyx-*
   distrobox
   fastfetch
