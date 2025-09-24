@@ -18,10 +18,11 @@ else
 fi
 
 # Fix os-release file with current image info
+sed -i "s|ID=.*|ID=\"alt-atomic-onyx-$IMAGE_TYPE\"|g" /usr/lib/os-release
 sed -i "s|PRETTY_NAME=.*|PRETTY_NAME=\"ALT Atomic Onyx$postfix\"|g" /usr/lib/os-release
 sed -i "s|VERSION=.*|VERSION=\"$pretty_curver $pretty_type\"|g" /usr/lib/os-release
-sed -i "s|VERSION_ID=.*|VERSION_ID=$curver-$IMAGE_TYPE$|g" /usr/lib/os-release
-sed -i "s|CPE_NAME=.*|CPE_NAME=\"cpe:/o:alt:atomic:$IMAGE_TYPE:$curver\"|g" /usr/lib/os-release
+sed -i "s|VERSION_ID=.*|VERSION_ID=$curver|g" /usr/lib/os-release
+sed -i "s|CPE_NAME=.*|CPE_NAME=\"cpe:/o:alt:atomic:onyx:$IMAGE_TYPE:$curver\"|g" /usr/lib/os-release
 sed -i "s|RELEASE_TYPE=.*|RELEASE_TYPE=$release_type|g" /usr/lib/os-release
 
 # Replace file with link
