@@ -45,6 +45,9 @@ if [ "$IMAGE_TYPE" = "nightly" ]; then
     echo "kargs = [\"plymouth.debug\"]" > /usr/lib/bootc/kargs.d/00_plymouth-debug.toml
 fi
 
+# Включаем создание домашних папок
+sed -i 's/^[[:space:]]*enabled=false/enabled=True/i' /etc/xdg/user-dirs.conf
+
 # Синхронизируем файлы
 rsync -av --progress /src/source/configuration/etc/ /etc/
 rsync -av --progress /src/source/configuration/usr/ /usr/
