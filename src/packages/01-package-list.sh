@@ -10,6 +10,7 @@ BASIC_PACKAGES=(
   fastfetch
   flatpak
   flatpak-repo-flathub
+  git
   htop
   inxi
   iucode_tool
