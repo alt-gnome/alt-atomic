@@ -1,0 +1,45 @@
+name: Publish release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    name: Publish release
+    runs-on: alt-sisyphus
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: latest_tag
+        run: |
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          echo "::set-output name=tag::$LATEST_TAG"
+
+      - name: Checkout latest tag
+        run: |
+          git fetch --all --tags --force
+          git checkout ${{ steps.latest_tag.outputs.tag }}
+
+      - name: Get changes between tags
+        id: changes
+        uses: https://github.com/simbo/changes-between-tags-action@v1
+        with:
+          tag-pattern: '^.*$'
+          include-hashes: false
+
+      - name: Publish release
+        id: create_release
+        uses: https://github.com/softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.changes.outputs.tag }}
+          name: "Release ${{ steps.changes.outputs.tag }}"
+          body: "${{ steps.changes.outputs.changes }}"
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}

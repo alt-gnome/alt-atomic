@@ -7,69 +7,23 @@ on:
         description: 'Date tag of Core in format YYYYMMDD. Can be `latest`'
         required: true
         type: string
-        default: latest
-  push:
-  pull_request:
-  # Also schedule but from core image trigger
   schedule:
     # Every day at 6 a.m.
-    - cron: '0 9 * * *'
+    - cron: '0 6 * * *'
+  push:
+    branches:
+      - '*'
+  pull_request:
 
 env:
-  LOCAL_BUILD_NAME: localhost/build
-  LOCAL_BUILD_NAME_NV: localhost/build-nv
+  LOCAL_BUILD_NAME: localhost/onyx
+  LOCAL_BUILD_NAME_NV: localhost/onyx-nvidia
   REGISTRY: altlinux.space
 
 jobs:
-  # check-core-image:
-  #   name: Check Core image exists
-  #   runs-on: alt-sisyphus
-  #   outputs:
-  #     core_exists: ${{ steps.check-core-image.outputs.exists }}
-  #   container:
-  #     image: altlinux.space/actions/runner/containers:sisyphus
-  #   steps:
-  #     - name: Get date
-  #       id: date
-  #       run: |
-  #         DATE=${{ github.event.inputs.date }}
-  #         if [[ -z "$DATE" || "$DATE" == "latest" ]]; then
-  #           echo "::set-output name=date::$(date +%Y%m%d)"
-  #         else
-  #           echo "::set-output name=date::$DATE"
-  #         fi
-
-  #     - name: Check Core image exists
-  #       id: check-core-image
-  #       run: |
-  #         if podman pull "$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }}" >/dev/null 2>&1; then
-  #           echo "::set-output name=exists::Yes"
-  #         else
-  #           echo "::set-output name=exists::No"
-  #         fi
-
-  #     - name: Trigger Core rebuild
-  #       if: steps.check-core-image.outputs.exists == 'No'
-  #       uses: actions/forgejo-script@v1
-  #       with:
-  #         github-token: ${{ secrets.REBUILD }}
-  #         script: |
-  #           await forgejo.repos.dispatchWorkflow(
-  #             "alt-atomic",
-  #             "core",
-  #             "build-nightly.yml", 
-  #             {
-  #               ref: "main",
-  #               date: "${{ steps.date.outputs.date }}",
-  #               latest: false,
-  #             },
-  #           );
-
   build:
     name: Build image
     runs-on: alt-sisyphus
-    # if: needs.check-core-image.outputs.core_exists == 'Yes'
-    # needs: check-core-image
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -93,24 +47,41 @@ jobs:
 
       - name: Build sisyphus default image
         run: |
-          podman build --tag $LOCAL_BUILD_NAME --platform linux/amd64 --build-arg BUILD_TYPE=default --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} --build-arg IMAGE_TYPE=nightly .
+          podman build \
+            --tag $LOCAL_BUILD_NAME \
+            --platform linux/amd64 \
+            --build-arg BUILD_TYPE=default \
+            --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} \
+            --build-arg IMAGE_TYPE=nightly \
+            --file ./container-files/main \
+            .
 
       - name: Build sisyphus NVIDIA image
         run: |
-          podman build --tag $LOCAL_BUILD_NAME_NV --platform linux/amd64 -f Containerfile.nv --build-arg BUILD_TYPE=nvidia --build-arg IMAGE=$LOCAL_BUILD_NAME --build-arg IMAGE_TYPE=nightly .
+          podman build \
+            --tag $LOCAL_BUILD_NAME_NV \
+            --platform linux/amd64 \
+            --build-arg BUILD_TYPE=nvidia \
+            --build-arg IMAGE=$LOCAL_BUILD_NAME \
+            --build-arg IMAGE_TYPE=nightly \
+            --file ./container-files/main-nvidia \
+            .
 
-      - name: Push images
-        if: github.event_name != 'pull_request'
+      - name: Push main branch images
+        if: >
+          (github.event_name == 'push' && github.ref_name == 'main') ||
+          github.event_name == 'schedule' ||
+          github.event_name == 'workflow_dispatch'
         run: |
-          # For onyx:nightly, legacy compatobility
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/alt-atomic/onyx:nightly
-
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:${{ steps.date.outputs.date }}
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:latest
 
-
-          # For onyx:nightly-nv, legacy compatobility
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/alt-atomic/onyx:nightly-nv
-
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/nightly:${{ steps.date.outputs.date }}
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/nightly:latest
+
+      - name: Push not main branches images
+        if: github.event_name == 'push' && github.ref_name != 'main'
+        run: |
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly-branch:$GITHUB_REF_NAME
+
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY/nightly-branch:$GITHUB_REF_NAME-nvidia
