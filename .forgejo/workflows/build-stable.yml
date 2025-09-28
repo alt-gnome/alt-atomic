@@ -140,7 +140,9 @@ jobs:
       - name: Push images
         run: |
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:${{ steps.date.outputs.date }}
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:${{ steps.target_tag.outputs.tag }}
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:latest
 
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/stable:${{ steps.date.outputs.date }}
+          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:${{ steps.target_tag.outputs.tag }}
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/stable:latest
