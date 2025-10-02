@@ -149,7 +149,6 @@ FONTS=(
   fonts-ttf-jetbrains-mono-nl
   fonts-otf-abattis-cantarell
   fonts-ttf-fira-code-nerd
-  fonts-ttf-fira-code-nerd
   fonts-ttf-google-noto-emoji
 )
 
