@@ -152,12 +152,6 @@ FONTS=(
   fonts-ttf-google-noto-emoji
 )
 
-# --- Ядро и связанные модули ---
-KERNEL_PACKAGES=(
-    kernel-image-6.12
-    kernel-modules-drm-6.12
-)
-
 apt-get install -y \
   "${AUDIO_PACKAGES[@]}" \
   "${BASIC_PACKAGES[@]}" \
@@ -170,7 +164,6 @@ apt-get install -y \
   "${MISC_APPS[@]}" \
   "${NAUTILUS_PACKAGES[@]}" \
   "${NETWORK_PRINT_PACKAGES[@]}" \
-  "${KERNEL_PACKAGES[@]}" \
   "${WAYLAND_QT[@]}"
 
 echo "::endgroup::"
