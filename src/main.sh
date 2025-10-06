@@ -17,7 +17,7 @@ run_scripts_in_dir() {
   if ls "$dir"/*.sh &> /dev/null; then
     for script in $(ls "$dir"/*.sh | sort); do
       echo "==> Running $script"
-      bash "$script"
+      bash -euo pipefail "$script"
     done
   else
     echo "==> No .sh files found in $dir"
