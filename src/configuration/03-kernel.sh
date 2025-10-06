@@ -3,6 +3,6 @@ set -euo pipefail
 
 echo "::group:: ===$(basename "$0")==="
 
-/usr/libexec/update-initramfs
+/usr/libexec/update-bootc-kernel.sh
 
 echo "::endgroup::"
