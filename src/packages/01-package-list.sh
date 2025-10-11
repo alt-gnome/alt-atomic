@@ -139,6 +139,7 @@ AUDIO_PACKAGES=(
 # Сеть и печать (Avahi, CUPS, fwupd, etc.)
 NETWORK_PRINT_PACKAGES=(
   avahi-daemon
+  cups
   cups-browsed
   fwupd
   libnss-mdns
