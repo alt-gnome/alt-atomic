@@ -45,15 +45,15 @@ jobs:
         id: target_tag
         run: |
           LATEST_TAG=$(git describe --tags --abbrev=0)
-          if [[ "${{ github.event.inputs.date }}" == "latest" ]]; then
+          if [[ "${{ github.event.inputs.git-tag }}" == "latest" ]]; then
             echo "::set-output name=tag::$LATEST_TAG"
           else
-            echo "::set-output name=date::${{ github.event.inputs.date }}"
+            echo "::set-output name=date::${{ github.event.inputs.git-tag }}"
           fi
 
       - name: Check if tag exists in repository
         run: |
-          if [[ "${{ steps.target_tag.outputs.tag }}" != "latest" ]]; then
+          if [[ "${{ github.event.inputs.git-tag }}" != "latest" ]]; then
             git fetch --tags
             if git show-ref --tags "refs/tags/${{ steps.target_tag.outputs.tag }}"; then
               exit 0
