@@ -117,6 +117,10 @@ jobs:
 
       - name: Build sisyphus default image
         run: |
+          YEAR=$(date --date="${{ steps.date.outputs.date }}" +"%Y")
+          MONTH=$(date --date="${{ steps.date.outputs.date }}" +"%m")
+          DAY=$(date --date="${{ steps.date.outputs.date }}" +"%d")
+
           podman build \
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
@@ -124,10 +128,15 @@ jobs:
             --build-arg IMAGE=$REGISTRY/alt-atomic/core/stable:${{ steps.date.outputs.date }} \
             --build-arg IMAGE_TYPE=stable \
             --file ./container-files/main \
+            --label "org.altlinux.repo.date=$YEAR-$MONTH-$DAY" \
             .
 
       - name: Build sisyphus NVIDIA image
         run: |
+          YEAR=$(date --date="${{ steps.date.outputs.date }}" +"%Y")
+          MONTH=$(date --date="${{ steps.date.outputs.date }}" +"%m")
+          DAY=$(date --date="${{ steps.date.outputs.date }}" +"%d")
+
           podman build \
             --tag $LOCAL_BUILD_NAME_NV \
             --platform linux/amd64 \
@@ -135,6 +144,7 @@ jobs:
             --build-arg IMAGE=$LOCAL_BUILD_NAME \
             --build-arg IMAGE_TYPE=stable \
             --file ./container-files/main-nvidia \
+            --label "org.altlinux.repo.date=$YEAR-$MONTH-$DAY" \
             .
 
       - name: Push images
