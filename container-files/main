@@ -1,16 +1,16 @@
-ARG IMAGE="altlinux.space/alt-atomic/base/stable:latest"
+ARG IMAGE
 
-FROM $IMAGE AS atomic-base
+FROM $IMAGE
 
-ARG BUILD_TYPE="default"
-ARG IMAGE_TYPE="stable"
+ARG IMAGE
+ARG IMAGE_TYPE
 
-ENV IMAGE_TYPE=$IMAGE_TYPE
-ENV BUILD_TYPE=$BUILD_TYPE
+ENV NVIDIA="no"
+ENV APM_BUILD_BUILD_TYPE=$IMAGE_TYPE
+ENV APM_BUILD_IMAGE=$IMAGE
 
-# Run in one layer
-RUN --mount=type=bind,source=./src,target=/src \
-    /src/main.sh
+RUN --mount=type=bind,source=./src,target=/etc/apm \
+    apm system image build
 
 WORKDIR /
 

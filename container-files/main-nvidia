@@ -1,23 +1,28 @@
-ARG IMAGE_TYPE="stable"
-ARG IMAGE="altlinux.space/alt-atomic/onyx/stable:latest"
+ARG IMAGE
 
 FROM $IMAGE
 
-ARG BUILD_TYPE="default"
-ARG IMAGE_TYPE="stable"
+ARG IMAGE
+ARG IMAGE_TYPE
 
-ENV IMAGE_TYPE=$IMAGE_TYPE
-ENV BUILD_TYPE=$BUILD_TYPE
+ENV NVIDIA="yes"
+ENV APM_BUILD_BUILD_TYPE=$IMAGE_TYPE
+ENV APM_BUILD_IMAGE=$IMAGE
 
-RUN --mount=type=bind,source=./src,target=/src \
-    apt-get update && \
-    /src/packages/02-nvidia-packages.sh && \
-    /src/configuration/02-nvidia.sh && \
-    /src/configuration/03-kernel.sh && \
-    /src/packages/99-apt-ending.sh
+RUN --mount=type=bind,source=./src,target=/etc/apm \
+    apm system image build
 
 LABEL org.opencontainers.image.title="ALT Atomic Onyx (NVIDIA)"
 LABEL org.opencontainers.image.description="ALT Atomic with GNOME (with NVIDIA drivers)"
 LABEL org.opencontainers.image.source="https://altlinux.space/alt-atomic/onyx"
 LABEL org.opencontainers.image.licenses="GPL-3.0-or-later"
 LABEL org.opencontainers.image.vendor="ALT Linux Team"
+
+CMD ["/sbin/init"]
+
+# RUN --mount=type=bind,source=./src,target=/src \
+#     apt-get update && \
+#     /src/packages/02-nvidia-packages.sh && \
+#     /src/configuration/02-nvidia.sh && \
+#     /src/configuration/03-kernel.sh && \
+#     /src/packages/99-apt-ending.sh
