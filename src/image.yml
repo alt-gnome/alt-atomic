@@ -1,6 +1,10 @@
 name: onyx
 hostname: alt-atomic-onyx
 
+repos:
+  tasks:
+    - 397468
+
 branding:
   name: alt-atomic-onyx
   plymouth-theme: atomic
