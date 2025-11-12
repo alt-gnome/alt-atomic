@@ -42,7 +42,7 @@ modules:
         - gnome-extension-manager
         - gnome-icon-theme
         - gnome-icon-theme-symbolic
-        - gnome-keyring-ssh
+        - gnome-keyring
         - gnome-logs
         - gnome-maps
         - gnome-session-wayland
