@@ -25,7 +25,8 @@ modules:
     body:
       target: /etc/modprobe.d/nvidia_common.conf
       pattern: ^#?(options nvidia NVreg_PreserveVideoMemoryAllocations=).*
-      repl: options nvidia NVreg_PreserveVideoMemoryAllocations=1
+      # TODO: Replace text with repl
+      text: options nvidia NVreg_PreserveVideoMemoryAllocations=1
 
   - type: systemd
     body:
