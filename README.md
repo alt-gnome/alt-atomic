@@ -1,6 +1,6 @@
 # ALT Atomic Onyx
 
-Immutable image with GNOME based on https://altlinux.space/alt-atomic/base
+Immutable image with GNOME based on https://altlinux.space/alt-atomic/core
 
 Doc: https://atomic.alt-gnome.ru/
 
