@@ -32,7 +32,7 @@ modules:
       targets:
         - nvidia-suspend
         - nvidia-hibernate
-        - suspend-then-hibernate
+        - nvidia-suspend-then-hibernate
         - nvidia-resume
         - nvidia-powerd
         - switcheroo-control
