@@ -19,6 +19,7 @@ modules:
         - avahi-daemon
         - wsdd
       enabled: true
-  - type: shell
+  - type: systemd
     body:
-      command: systemctl mask packagekit
+      target: packagekit
+      masked: true
