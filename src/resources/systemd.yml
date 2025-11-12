@@ -1,0 +1,25 @@
+modules:
+  - type: systemd
+    body:
+      targets:
+        - gnome-keyring-daemon
+        - gnome-keyring-daemon.socket
+        - wireplumber
+        - pipewire
+        - pipewire.socket
+        - pipewire-pulse
+        - pipewire-pulse.socket
+      enabled: true
+      global: true
+  - type: systemd
+    body:
+      targets:
+        - bluetooth
+        - gdm
+        - avahi-daemon
+        - wsdd
+      enabled: true
+  - type: systemd
+    body:
+      target: packagekit
+      masked: true

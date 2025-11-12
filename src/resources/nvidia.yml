@@ -1,0 +1,39 @@
+modules:
+  - type: packages
+    body:
+      install:
+        - blacklist-nouveau
+        - kernel-modules-nvidia-6.12
+        - libcuda
+        - libnvcuvid
+        - libnvidia-container-tools
+        - libnvidia-container1
+        - libnvidia-encode
+        - libnvidia-opticalflow
+        - libnvidia-vksc-core
+        - libnvoptix
+        - nvidia-modprobe
+        - nvidia-powerd
+        - nvidia-settings
+        - nvidia-settings
+        - nvidia-smi
+        - nvidia-vaapi-driver
+        - ocl-nvidia
+        - switcheroo-control
+
+  - type: replace
+    body:
+      target: /etc/modprobe.d/nvidia_common.conf
+      pattern: ^#?(options nvidia NVreg_PreserveVideoMemoryAllocations=).*
+      repl: options nvidia NVreg_PreserveVideoMemoryAllocations=1
+
+  - type: systemd
+    body:
+      targets:
+        - nvidia-suspend
+        - nvidia-hibernate
+        - nvidia-suspend-then-hibernate
+        - nvidia-resume
+        - nvidia-powerd
+        - switcheroo-control
+      enabled: true

@@ -1,0 +1,38 @@
+modules:
+  # Неожиданно Alt linux в /var/lib/openvpn/dev записывает устройство urandom
+  # устройства запрещено включать в коммит, только файлы и сим-линки
+  - type: link
+    body:
+      target: /var/lib/openvpn/dev/urandom
+      destination: /dev/urandom
+      replace: true
+
+  - name: Fix gnome-software
+    type: shell
+    body:
+      command: |
+        for dir in /usr/lib64/gnome-software/plugins-*; do
+          if [ -d "$dir" ]; then
+            file="$dir/libgs_plugin_packagekit.so"
+            if [ -e "$file" ]; then
+              mv "$file" "${file}.disabled"
+            fi
+          fi
+        done
+
+  - type: copy
+    if: Config.BuildType == "nightly"
+    body:
+      target: files/00-plymouth-debug.toml
+      destination: /usr/lib/bootc/kargs.d/00-plymouth-debug.toml
+
+  - type: shell
+    body:
+      command: |
+        glib-compile-schemas /usr/share/glib-2.0/schemas
+        dconf update
+
+  - name: Mask not available openh264 flatpak package
+    type: shell
+    body:
+      command: flatpak mask org.freedesktop.Platform.openh264

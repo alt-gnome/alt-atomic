@@ -54,7 +54,6 @@ jobs:
           podman build \
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
-            --build-arg BUILD_TYPE=default \
             --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} \
             --build-arg IMAGE_TYPE=nightly \
             --file ./container-files/main \
@@ -70,7 +69,6 @@ jobs:
           podman build \
             --tag $LOCAL_BUILD_NAME_NV \
             --platform linux/amd64 \
-            --build-arg BUILD_TYPE=nvidia \
             --build-arg IMAGE=$LOCAL_BUILD_NAME \
             --build-arg IMAGE_TYPE=nightly \
             --file ./container-files/main-nvidia \
@@ -79,9 +77,8 @@ jobs:
 
       - name: Push main branch images
         if: >
-          (github.event_name == 'push' && github.ref_name == 'main') ||
-          github.event_name == 'schedule' ||
-          github.event_name == 'workflow_dispatch'
+          ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main') ||
+          github.event_name == 'schedule'
         run: |
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:${{ steps.date.outputs.date }}
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:latest
@@ -90,7 +87,7 @@ jobs:
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/nightly:latest
 
       - name: Push not main branches images
-        if: github.event_name == 'push' && github.ref_name != 'main'
+        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name != 'main'
         run: |
           podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly-branch:$GITHUB_REF_NAME
 

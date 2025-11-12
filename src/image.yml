@@ -1,0 +1,42 @@
+name: onyx
+hostname: alt-atomic-onyx
+
+branding:
+  name: alt-atomic-onyx
+  plymouth-theme: atomic
+
+modules:
+  - name: Copy root
+    if: Env.NVIDIA == "no"
+    type: copy
+    body:
+      target: root
+      destination: /
+      replace: true
+
+  - type: include
+    if: Env.NVIDIA == "no"
+    body:
+      targets:
+        - packages.yml
+        - systemd.yml
+        - settings.yml
+
+  - name: Copy NV root
+    if: Env.NVIDIA == "yes"
+    type: copy
+    body:
+      target: root-nv
+      destination: /
+      replace: true
+
+  - type: include
+    if: Env.NVIDIA == "yes"
+    body:
+      targets:
+        - nvidia.yml
+
+  - name: Cleanup
+    type: include
+    body:
+      target: https://altlinux.space/alt-atomic/core/raw/branch/main/src/resources/cleanup.yml

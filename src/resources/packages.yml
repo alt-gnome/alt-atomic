@@ -1,0 +1,121 @@
+modules:
+  - type: packages
+    body:
+      install:
+        # Base
+        - distrobox
+        - fastfetch
+        - flatpak
+        - flatpak-repo-flathub
+        - git
+        - htop
+        - inxi
+        - iucode_tool
+        - notify-send
+        - openssh-server
+        - ptyxis
+        - starship
+        - stplr
+        - systemd-ssh-agent
+        - zsh
+        - zsh-autosuggestions
+        - zsh-completions
+
+        # GNOME
+        - authenticator
+        - dconf-editor
+        - file-roller
+        - fonts-ttf-cjkuni-ukai
+        - fonts-ttf-dejavu
+        - fonts-ttf-liberation
+        - fuse-gvfs
+        - g4music
+        - gnome-backgrounds
+        - gnome-boxes
+        - gnome-browser-connector
+        - gnome-calculator
+        - gnome-calendar
+        - gnome-characters
+        - gnome-clocks
+        - gnome-control-center
+        - gnome-disk-usage
+        - gnome-extension-manager
+        - gnome-icon-theme
+        - gnome-icon-theme-symbolic
+        - gnome-keyring
+        - gnome-logs
+        - gnome-maps
+        - gnome-session-wayland
+        - gnome-session-xsession
+        - gnome-shell
+        - gnome-shell-extension-appindicator
+        - gnome-shell-extension-clipboard-indicator
+        - gnome-shell-extension-dash-to-dock
+        - gnome-shell-extension-session-keeper
+        - gnome-shell-extensions
+        - gnome-software
+        - gnome-text-editor
+        - gnome-themes-extra
+        - gnome-tour
+        - gnome-user-docs
+        - gnome-weather
+        - gvfs-backends
+        - icon-theme-adwaita
+        - icon-theme-morewaita
+        - key-rack
+        - libgtk2-engine-adwaita
+        - loupe
+        - nautilus
+        - nautilus-open-any-terminal
+        - nautilus-python
+        - nautilus-share
+        - papers
+        - pika-backup
+        - pinentry-gnome3
+        - resources
+        - samba-usershares
+        - showtime
+        - sushi
+        - yelp
+
+        # ALT
+        - foldy
+        - tuner
+        - tuner-tweaks
+
+        # Misc
+        - firefox
+        - power-profiles-daemon
+
+        # Drivers
+        - xorg-drv-amdgpu
+        - xorg-drv-intel
+        - xorg-drv-libinput
+        - xorg-drv-nouveau
+        - xorg-drv-qxl
+        - xorg-drv-spiceqxl
+        - xorg-drv-vmware
+        
+        # Wayland utils
+        - qt5-wayland
+        - qt6-wayland
+        - vulkan-tools
+        - wayland-utils
+        
+        # Sound
+        - pipewire
+        - wireplumber
+        
+        # Print
+        - avahi-daemon
+        - cups
+        - cups-browsed
+        - fwupd
+        - libnss-mdns
+        - wsdd
+        
+        # Fonts
+        - fonts-otf-abattis-cantarell
+        - fonts-ttf-fira-code-nerd
+        - fonts-ttf-google-noto-emoji
+        - fonts-ttf-jetbrains-mono-nl
