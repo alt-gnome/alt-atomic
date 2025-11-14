@@ -1,9 +1,21 @@
+name: onyx
+
+kernel:
+  modules:
+    - nvidia
+
 modules:
+  - name: Copy NV root
+    type: copy
+    body:
+      target: root-nv
+      destination: /
+      replace: true
+
   - type: packages
     body:
       install:
         - blacklist-nouveau
-        - kernel-modules-nvidia-6.12
         - libcuda
         - libnvcuvid
         - libnvidia-container-tools
@@ -25,7 +37,7 @@ modules:
     body:
       target: /etc/modprobe.d/nvidia_common.conf
       pattern: ^#?(options nvidia NVreg_PreserveVideoMemoryAllocations=).*
-      repl: options nvidia NVreg_PreserveVideoMemoryAllocations=1
+      repl: $11
 
   - type: systemd
     body:
@@ -37,3 +49,8 @@ modules:
         - nvidia-powerd
         - switcheroo-control
       enabled: true
+
+  - name: Cleanup
+    type: include
+    body:
+      target: https://altlinux.space/alt-atomic/core/raw/branch/main/src/resources/cleanup.yml
