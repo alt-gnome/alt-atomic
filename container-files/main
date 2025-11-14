@@ -11,6 +11,7 @@ ENV APM_BUILD_IMAGE=$IMAGE
 
 RUN --mount=type=bind,source=./src,target=/etc/apm \
     apm system image build
+RUN bootc container lint
 
 WORKDIR /
 

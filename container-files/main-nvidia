@@ -11,6 +11,7 @@ ENV APM_BUILD_IMAGE=$IMAGE
 
 RUN --mount=type=bind,source=./src,target=/etc/apm \
     apm system image build
+RUN bootc container lint
 
 LABEL org.opencontainers.image.title="ALT Atomic Onyx (NVIDIA)"
 LABEL org.opencontainers.image.description="ALT Atomic with GNOME (with NVIDIA drivers)"
