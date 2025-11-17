@@ -76,6 +76,7 @@ modules:
         - samba-usershares
         - showtime
         - sushi
+        - xdg-user-dirs-gtk
         - yelp
 
         # ALT
