@@ -86,6 +86,7 @@ modules:
 
         # Misc
         - firefox
+        - fprintd
         - power-profiles-daemon
 
         # Drivers
