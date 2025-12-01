@@ -5,11 +5,12 @@ FROM $IMAGE
 ARG IMAGE
 ARG IMAGE_TYPE
 
-ENV NVIDIA="yes"
-ENV APM_BUILD_BUILD_TYPE=$IMAGE_TYPE
-ENV APM_BUILD_IMAGE=$IMAGE
+ENV WITH_NVIDIA="yes"
+ENV IMAGE_NAME="onyx"
+ENV IMAGE_TYPE=$IMAGE_TYPE
+ENV IMAGE=$IMAGE
 
-RUN --mount=type=bind,source=./src/image-nv.yml,target=/etc/apm/image.yml \
+RUN --mount=type=bind,source=./src/image.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./src/resources,target=/etc/apm/resources \
     apm system image build
 RUN bootc container lint

@@ -1,10 +1,10 @@
-name: onyx
-
-kernel:
-  modules:
-    - nvidia
-
 modules:
+  - name: Install nvidia module
+    type: kernel
+    body:
+      modules:
+        - nvidia
+
   - name: Copy NV root
     type: copy
     body:
@@ -49,8 +49,3 @@ modules:
         - nvidia-powerd
         - switcheroo-control
       enabled: true
-
-  - name: Cleanup
-    type: include
-    body:
-      target: https://altlinux.space/alt-atomic/core/raw/branch/main/src/resources/cleanup.yml

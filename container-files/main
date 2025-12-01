@@ -5,9 +5,10 @@ FROM $IMAGE
 ARG IMAGE
 ARG IMAGE_TYPE
 
-ENV NVIDIA="no"
-ENV APM_BUILD_BUILD_TYPE=$IMAGE_TYPE
-ENV APM_BUILD_IMAGE=$IMAGE
+ENV WITH_NVIDIA="no"
+ENV IMAGE_NAME="onyx"
+ENV IMAGE_TYPE=$IMAGE_TYPE
+ENV IMAGE=$IMAGE
 
 RUN --mount=type=bind,source=./src/image.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./src/resources,target=/etc/apm/resources \

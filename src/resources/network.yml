@@ -1,0 +1,4 @@
+modules:
+  - type: network
+    body:
+      hostname: alt-atomic-${{ Env.IMAGE_NAME }}

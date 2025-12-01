@@ -28,13 +28,9 @@ jobs:
     steps:
       - name: Get date
         id: date
-        run: |
-          DATE=${{ github.event.inputs.date }}
-          if [[ "$DATE" == "latest" ]]; then
-            echo "::set-output name=date::$(date +%Y%m%d)"
-          else
-            echo "::set-output name=date::$DATE"
-          fi
+        uses: alt-atomic/actions/parse-date@main
+        with:
+          date: ${{ github.event.inputs.date }}
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -43,26 +39,10 @@ jobs:
 
       - name: Get latest tag
         id: target_tag
-        run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          if [[ "${{ github.event.inputs.git-tag }}" == "latest" ]]; then
-            echo "::set-output name=tag::$LATEST_TAG"
-          else
-            echo "::set-output name=date::${{ github.event.inputs.git-tag }}"
-          fi
+        uses: alt-atomic/actions/get-tag@main
+        with:
+          desired-tag: ${{ github.event.inputs.git-tag }}
 
-      - name: Check if tag exists in repository
-        run: |
-          if [[ "${{ github.event.inputs.git-tag }}" != "latest" ]]; then
-            git fetch --tags
-            if git show-ref --tags "refs/tags/${{ steps.target_tag.outputs.tag }}"; then
-              exit 0
-            else
-              echo "Tag does not exist in repository"
-              exit 1
-            fi
-          fi
-          
       - name: Check Docker image existence
         run: |
           if [[ "${{ steps.date.outputs.date }}" != "latest" ]]; then
@@ -81,15 +61,14 @@ jobs:
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
+      - name: Prepare env
+        uses: alt-atomic/actions/prepare-env@main
+
       - name: Get date
         id: date
-        run: |
-          DATE=${{ github.event.inputs.date }}
-          if [[ "$DATE" == "latest" ]]; then
-            echo "::set-output name=date::$(date +%Y%m%d)"
-          else
-            echo "::set-output name=date::$DATE"
-          fi
+        uses: alt-atomic/actions/parse-date@main
+        with:
+          date: ${{ github.event.inputs.date }}
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -98,59 +77,59 @@ jobs:
 
       - name: Get latest tag
         id: target_tag
-        run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          if [[ "${{ github.event.inputs.git-tag }}" == "latest" ]]; then
-            echo "::set-output name=tag::$LATEST_TAG"
-          else
-            echo "::set-output name=tag::${{ github.event.inputs.git-tag }}"
-          fi
+        uses: alt-atomic/actions/get-tag@main
+        with:
+          desired-tag: ${{ github.event.inputs.git-tag }}
 
       - name: Checkout target tag
         run: |
           git fetch --all --tags --force
           git checkout ${{ steps.target_tag.outputs.tag }}
 
-      - name: Login to registry
-        run: |
-          podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
-
       - name: Build sisyphus default image
         run: |
-          YEAR=$(date --date="${{ steps.date.outputs.date }}" +"%Y")
-          MONTH=$(date --date="${{ steps.date.outputs.date }}" +"%m")
-          DAY=$(date --date="${{ steps.date.outputs.date }}" +"%d")
-
           podman build \
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
             --build-arg IMAGE=$REGISTRY/alt-atomic/core/stable:${{ steps.date.outputs.date }} \
             --build-arg IMAGE_TYPE=stable \
             --file ./container-files/main \
-            --label "org.altlinux.repo.date=$YEAR-$MONTH-$DAY" \
+            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
       - name: Build sisyphus NVIDIA image
         run: |
-          YEAR=$(date --date="${{ steps.date.outputs.date }}" +"%Y")
-          MONTH=$(date --date="${{ steps.date.outputs.date }}" +"%m")
-          DAY=$(date --date="${{ steps.date.outputs.date }}" +"%d")
-
           podman build \
             --tag $LOCAL_BUILD_NAME_NV \
             --platform linux/amd64 \
             --build-arg IMAGE=$LOCAL_BUILD_NAME \
             --build-arg IMAGE_TYPE=stable \
             --file ./container-files/main-nvidia \
-            --label "org.altlinux.repo.date=$YEAR-$MONTH-$DAY" \
+            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
-      - name: Push images
-        run: |
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:${{ steps.date.outputs.date }}
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:${{ steps.target_tag.outputs.tag }}
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/stable:latest
+      - name: Push and sign images
+        uses: alt-atomic/actions/push-and-sign@main
+        with:
+          registry: ${{ env.REGISTRY }}
+          registry-username: "<token>"
+          registry-password: ${{ secrets.REGISTRY_TOKEN }}
+          image-name: ${{ github.repository }}/stable
+          image-tag: latest
+          image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
+          local-build-name: ${{ env.LOCAL_BUILD_NAME}}
+          cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
+          cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/stable:${{ steps.date.outputs.date }}
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY-nvidia/stable:${{ steps.target_tag.outputs.tag }}
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/stable:latest
+      - name: Push and sign nvidia images
+        uses: alt-atomic/actions/push-and-sign@main
+        with:
+          registry: ${{ env.REGISTRY }}
+          registry-username: "<token>"
+          registry-password: ${{ secrets.REGISTRY_TOKEN }}
+          image-name: ${{ github.repository }}-nvidia/stable
+          image-tag: latest
+          image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
+          local-build-name: ${{ env.LOCAL_BUILD_NAME_NV}}
+          cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
+          cosign-password: ${{ secrets.COSIGN_PASSWORD }}

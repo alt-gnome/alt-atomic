@@ -27,68 +27,96 @@ jobs:
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
+      - name: Prepare env
+        uses: alt-atomic/actions/prepare-env@main
+
       - name: Get date
         id: date
-        run: |
-          DATE=${{ github.event.inputs.date }}
-          if [[ -z "$DATE" || "$DATE" == "latest" ]]; then
-            echo "::set-output name=date::$(date +%Y%m%d)"
-          else
-            echo "::set-output name=date::$DATE"
-          fi
+        uses: alt-atomic/actions/parse-date@main
+        with:
+          date: ${{ github.event.inputs.date }}
 
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Login to registry
-        if: github.event_name != 'pull_request'
-        run: |
-          podman login --username="<token>" --password=${{ secrets.REGISTRY_TOKEN }} $REGISTRY
-
       - name: Build sisyphus default image
         run: |
-          YEAR=$(date --date="${{ steps.date.outputs.date }}" +"%Y")
-          MONTH=$(date --date="${{ steps.date.outputs.date }}" +"%m")
-          DAY=$(date --date="${{ steps.date.outputs.date }}" +"%d")
-
           podman build \
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
             --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} \
             --build-arg IMAGE_TYPE=nightly \
             --file ./container-files/main \
-            --label "org.altlinux.repo.date=$YEAR-$MONTH-$DAY" \
+            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
       - name: Build sisyphus NVIDIA image
         run: |
-          YEAR=$(date --date="${{ steps.date.outputs.date }}" +"%Y")
-          MONTH=$(date --date="${{ steps.date.outputs.date }}" +"%m")
-          DAY=$(date --date="${{ steps.date.outputs.date }}" +"%d")
-
           podman build \
             --tag $LOCAL_BUILD_NAME_NV \
             --platform linux/amd64 \
             --build-arg IMAGE=$LOCAL_BUILD_NAME \
             --build-arg IMAGE_TYPE=nightly \
             --file ./container-files/main-nvidia \
-            --label "org.altlinux.repo.date=$YEAR-$MONTH-$DAY" \
+            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
-      - name: Push main branch images
+      - name: Push and sign images
+        uses: alt-atomic/actions/push-and-sign@main
         if: >
-          ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name == 'main') ||
-          github.event_name == 'schedule'
-        run: |
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:${{ steps.date.outputs.date }}
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly:latest
+          contains(fromJSON('["push", "workflow_dispatch", "schedule"]'), github.event_name)
+        with:
+          registry: ${{ env.REGISTRY }}
+          registry-username: "<token>"
+          registry-password: ${{ secrets.REGISTRY_TOKEN }}
+          image-name: >-
+            ${{ 
+              github.ref_name == 'main' && 
+              '${{ github.repository }}/nightly' || 
+              '${{ github.repository }}/nightly-branch' 
+            }}
+          image-tag: >-
+            ${{ 
+              github.ref_name == 'main' && 
+              'latest' || 
+              github.ref_name 
+            }}
+          image-aliases: >-
+            ${{ 
+              github.ref_name == 'main' && 
+              steps.date.outputs.date || 
+              ''
+            }}
+          local-build-name: ${{ env.LOCAL_BUILD_NAME}}
+          cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
+          cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/nightly:${{ steps.date.outputs.date }}
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY-nvidia/nightly:latest
-
-      - name: Push not main branches images
-        if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref_name != 'main'
-        run: |
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME $REGISTRY/$GITHUB_REPOSITORY/nightly-branch:$GITHUB_REF_NAME
-
-          podman push --compression-format zstd --compress $LOCAL_BUILD_NAME_NV $REGISTRY/$GITHUB_REPOSITORY/nightly-branch:$GITHUB_REF_NAME-nvidia
+      - name: Push and sign nvidia images
+        uses: alt-atomic/actions/push-and-sign@main
+        if: >
+          contains(fromJSON('["push", "workflow_dispatch", "schedule"]'), github.event_name)
+        with:
+          registry: ${{ env.REGISTRY }}
+          registry-username: "<token>"
+          registry-password: ${{ secrets.REGISTRY_TOKEN }}
+          image-name: >-
+            ${{ 
+              github.ref_name == 'main' && 
+              '${{ github.repository }}-nvidia/nightly' || 
+              '${{ github.repository }}-nvidia/nightly-branch' 
+            }}
+          image-tag: >-
+            ${{ 
+              github.ref_name == 'main' && 
+              'latest' || 
+              github.ref_name 
+            }}
+          image-aliases: >-
+            ${{ 
+              github.ref_name == 'main' && 
+              steps.date.outputs.date || 
+              ''
+            }}
+          local-build-name: ${{ env.LOCAL_BUILD_NAME_NV}}
+          cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
+          cosign-password: ${{ secrets.COSIGN_PASSWORD }}

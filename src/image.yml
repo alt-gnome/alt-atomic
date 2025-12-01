@@ -1,28 +1,22 @@
-name: onyx
-hostname: alt-atomic-onyx
-
-repos:
-  tasks:
-    - 397468
-
-branding:
-  name: alt-atomic-onyx
-  plymouth-theme: atomic
+image: ${{ Env.IMAGE }}
 
 modules:
-  - name: Copy root
-    type: copy
-    body:
-      target: root
-      destination: /
-      replace: true
-
   - type: include
+    if: Env.WITH_NVIDIA == "no"
     body:
       targets:
-        - packages.yml
-        - systemd.yml
-        - settings.yml
+        - regular.yml
+
+  - type: include
+    if: Env.WITH_NVIDIA == "yes"
+    body:
+      targets:
+        - nvidia.yml
+
+  # TODO: Should be removed after https://altlinux.space/alt-atomic/apm/commit/8163f97f6d2c8c45120b297f6c4f6c5b88bf90ed will be released
+  - type: kernel
+    body:
+      rebuild-initrd-method: dracut
 
   - name: Cleanup
     type: include

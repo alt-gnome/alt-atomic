@@ -1,0 +1,22 @@
+modules:
+  - name: Set branding
+    type: branding
+    body:
+      name: alt-atomic-${{ Env.IMAGE_NAME }}
+      build-type: ${{ Env.IMAGE_TYPE }}
+      plymouth-theme: atomic
+
+  - name: Copy root
+    type: copy
+    body:
+      target: root
+      destination: /
+      replace: true
+
+  - type: include
+    body:
+      targets:
+        - packages.yml
+        - network.yml
+        - systemd.yml
+        - settings.yml
