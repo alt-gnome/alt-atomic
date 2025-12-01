@@ -8,7 +8,7 @@ modules:
   - name: Copy NV root
     type: copy
     body:
-      target: root-nv
+      source: root-nv
       destination: /
       replace: true
 
