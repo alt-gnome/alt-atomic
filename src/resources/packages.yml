@@ -75,7 +75,6 @@ modules:
         - resources
         - samba-usershares
         - showtime
-        - sushi
         - xdg-user-dirs-gtk
         - yelp
 
