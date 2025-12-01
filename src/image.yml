@@ -21,4 +21,5 @@ modules:
   - name: Cleanup
     type: include
     body:
-      target: https://altlinux.space/alt-atomic/core/raw/branch/main/src/resources/cleanup.yml
+      targets:
+        - https://altlinux.space/alt-atomic/core/raw/branch/main/src/resources/cleanup.yml

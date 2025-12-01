@@ -4,7 +4,7 @@ modules:
   - type: link
     body:
       target: /var/lib/openvpn/dev/urandom
-      destination: /dev/urandom
+      to: /dev/urandom
       replace: true
 
   - name: Fix gnome-software
