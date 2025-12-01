@@ -22,5 +22,6 @@ modules:
       enabled: true
   - type: systemd
     body:
-      target: packagekit
+      targets:
+        - packagekit
       masked: true
