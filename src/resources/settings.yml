@@ -6,6 +6,12 @@ modules:
       target: /var/lib/openvpn/dev/urandom
       to: /dev/urandom
       replace: true
+  
+  - name: Control things
+    type: shell
+    body:
+      command: |
+        control xdg-user-dirs enabled
 
   - name: Fix gnome-software
     type: shell
