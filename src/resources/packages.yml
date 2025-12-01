@@ -46,7 +46,6 @@ modules:
         - gnome-logs
         - gnome-maps
         - gnome-session-wayland
-        - gnome-session-xsession
         - gnome-shell
         - gnome-shell-extension-appindicator
         - gnome-shell-extension-clipboard-indicator
