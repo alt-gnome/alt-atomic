@@ -9,8 +9,10 @@ modules:
         - pipewire-pulse.socket
         - pipewire.socket
         - wireplumber
+        - spice-vdagent
       enabled: true
       global: true
+
   - type: systemd
     body:
       targets:
@@ -20,6 +22,7 @@ modules:
         - gdm
         - wsdd
       enabled: true
+
   - type: systemd
     body:
       targets:
