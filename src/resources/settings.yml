@@ -29,7 +29,7 @@ modules:
   - type: copy
     if: Env.IMAGE_TYPE == "nightly"
     body:
-      target: files/00-plymouth-debug.toml
+      source: files/00-plymouth-debug.toml
       destination: /usr/lib/bootc/kargs.d/00-plymouth-debug.toml
 
   - type: shell

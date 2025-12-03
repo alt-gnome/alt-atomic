@@ -9,7 +9,7 @@ modules:
   - name: Copy root
     type: copy
     body:
-      target: root
+      source: root
       destination: /
       replace: true
 
