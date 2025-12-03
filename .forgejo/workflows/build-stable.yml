@@ -97,6 +97,13 @@ jobs:
             --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
+      - name: Rechunk image
+        uses: alt-atomic/actions/rechunk@main
+        id: rechunk
+        with:
+          ref: ${{ env.LOCAL_BUILD_NAME }}
+          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}/stable:latest
+
       - name: Build sisyphus NVIDIA image
         run: |
           podman build \
@@ -108,6 +115,13 @@ jobs:
             --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
+      - name: Rechunk nvidia image
+        uses: alt-atomic/actions/rechunk@main
+        id: rechunk-nv
+        with:
+          ref: ${{ env.LOCAL_BUILD_NAME_NV }}
+          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}-nvidia/stable:latest
+
       - name: Push and sign images
         uses: alt-atomic/actions/push-and-sign@main
         with:
@@ -117,7 +131,7 @@ jobs:
           image-name: ${{ github.repository }}/stable
           image-tag: latest
           image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
-          local-build-name: ${{ env.LOCAL_BUILD_NAME}}
+          local-build-name: ${{ steps.rechunk.outputs.ref }}
           cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
           cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
@@ -130,6 +144,6 @@ jobs:
           image-name: ${{ github.repository }}-nvidia/stable
           image-tag: latest
           image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
-          local-build-name: ${{ env.LOCAL_BUILD_NAME_NV}}
+          local-build-name: ${{ steps.rechunk-nv.outputs.ref }}
           cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
           cosign-password: ${{ secrets.COSIGN_PASSWORD }}
