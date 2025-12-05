@@ -96,7 +96,7 @@ modules:
         - xorg-drv-qxl
         - xorg-drv-spiceqxl
         - xorg-drv-vmware
-        
+
         # Wayland utils
         - qt5-wayland
         - qt6-wayland
@@ -114,7 +114,7 @@ modules:
         - fwupd
         - libnss-mdns
         - wsdd
-        
+
         # Fonts
         - fonts-otf-abattis-cantarell
         - fonts-ttf-fira-code-nerd
