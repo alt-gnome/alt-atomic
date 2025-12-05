@@ -55,12 +55,12 @@ jobs:
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
-          # prev-ref: >-
-          #   ${{
-          #     github.ref_name == 'main' &&
-          #     '${{ env.REGISTRY }}/${{ github.repository }}/nightly:latest' || 
-          #     '${{ env.REGISTRY }}/${{ github.repository }}/nightly-branch:${{ github.ref_name }}'
-          #   }}
+          prev-ref: >-
+            ${{
+              github.ref_name == 'main' &&
+              '${{ env.REGISTRY }}/${{ github.repository }}/nightly:latest' || 
+              '${{ env.REGISTRY }}/${{ github.repository }}/nightly-branch:${{ github.ref_name }}'
+            }}
 
       - name: Build sisyphus NVIDIA image
         run: |
