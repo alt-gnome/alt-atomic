@@ -98,7 +98,7 @@ jobs:
             .
 
       - name: Rechunk image
-        uses: alt-atomic/actions/rechunk@main
+        uses: alt-atomic/actions/rechunk@v1
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
@@ -122,7 +122,7 @@ jobs:
             .
 
       - name: Rechunk nvidia image
-        uses: alt-atomic/actions/rechunk@main
+        uses: alt-atomic/actions/rechunk@v1
         id: rechunk-nv
         with:
           ref: ${{ env.LOCAL_BUILD_NAME_NV }}
