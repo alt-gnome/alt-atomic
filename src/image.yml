@@ -1,14 +1,30 @@
 image: ${{ Env.IMAGE }}
 
 modules:
-  - type: include
-    if: Env.WITH_NVIDIA == "no"
+  - name: Set branding
+    type: branding
     body:
-      targets:
-        - regular.yml
+      name: alt-atomic-${{ Env.IMAGE_NAME }}
+      build-type: ${{ Env.IMAGE_TYPE }}
+      plymouth-theme: atomic
+
+  - name: Copy root
+    type: copy
+    body:
+      source: root
+      destination: /
+      replace: true
 
   - type: include
-    if: Env.WITH_NVIDIA == "yes"
+    body:
+      targets:
+        - packages.yml
+        - network.yml
+        - systemd.yml
+        - settings.yml
+
+  - type: include
+    if: Env.BUILD == "nvidia"
     body:
       targets:
         - nvidia.yml

@@ -22,8 +22,16 @@ env:
 
 jobs:
   build:
-    name: Build image
+    name: Build image ${{ matrix.build }}
     runs-on: alt-sisyphus
+    strategy:
+      matrix:
+        build: [default, nvidia]
+        include:
+          - build: default
+            image-postfix: ''
+          - build: nvidia
+            image-postfix: '-nvidia'
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -45,6 +53,7 @@ jobs:
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
             --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} \
+            --build-arg BUILD=${{ matrix.build }} \
             --build-arg IMAGE_TYPE=nightly \
             --file ./container-files/main \
             --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
@@ -58,42 +67,14 @@ jobs:
           prev-ref: >-
             ${{
               github.ref_name == 'main' &&
-              '${{ env.REGISTRY }}/${{ github.repository }}/nightly:latest' || 
-              '${{ env.REGISTRY }}/${{ github.repository }}/nightly-branch:${{ github.ref_name }}'
+              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.image-postfix }}/nightly:latest' || 
+              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.image-postfix }}/nightly-branch:${{ github.ref_name }}'
             }}
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main
         with:
           ref: ${{ steps.rechunk.outputs.ref }}
-
-      - name: Build sisyphus NVIDIA image
-        run: |
-          podman build \
-            --tag $LOCAL_BUILD_NAME_NV \
-            --platform linux/amd64 \
-            --build-arg IMAGE=$LOCAL_BUILD_NAME \
-            --build-arg IMAGE_TYPE=nightly \
-            --file ./container-files/main-nvidia \
-            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
-            .
-
-      - name: Rechunk nvidia image
-        uses: alt-atomic/actions/rechunk@v1
-        id: rechunk-nv
-        with:
-          ref: ${{ env.LOCAL_BUILD_NAME_NV }}
-          prev-ref: >-
-            ${{
-              github.ref_name == 'main' &&
-              '${{ env.REGISTRY }}/${{ github.repository }}-nvidia/nightly:latest' || 
-              '${{ env.REGISTRY }}/${{ github.repository }}-nvidia/nightly-branch:${{ github.ref_name }}'
-            }}
-
-      - name: Lint image
-        uses: alt-atomic/actions/bootc-lint@main
-        with:
-          ref: ${{ steps.rechunk-nv.outputs.ref }}
 
       - name: Push and sign images
         uses: alt-atomic/actions/push-and-sign@main
@@ -106,8 +87,8 @@ jobs:
           image-name: >-
             ${{ 
               github.ref_name == 'main' && 
-              '${{ github.repository }}/nightly' || 
-              '${{ github.repository }}/nightly-branch' 
+              '${{ github.repository }}${{ matrix.image-postfix }}/nightly' || 
+              '${{ github.repository }}${{ matrix.image-postfix }}/nightly-branch' 
             }}
           image-tag: >-
             ${{ 
@@ -122,35 +103,5 @@ jobs:
               ''
             }}
           local-build-name: ${{ steps.rechunk.outputs.ref }}
-          cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
-          cosign-password: ${{ secrets.COSIGN_PASSWORD }}
-
-      - name: Push and sign nvidia images
-        uses: alt-atomic/actions/push-and-sign@main
-        if: >
-          contains(fromJSON('["push", "workflow_dispatch", "schedule"]'), github.event_name)
-        with:
-          registry: ${{ env.REGISTRY }}
-          registry-username: "<token>"
-          registry-password: ${{ secrets.REGISTRY_TOKEN }}
-          image-name: >-
-            ${{ 
-              github.ref_name == 'main' && 
-              '${{ github.repository }}-nvidia/nightly' || 
-              '${{ github.repository }}-nvidia/nightly-branch' 
-            }}
-          image-tag: >-
-            ${{ 
-              github.ref_name == 'main' && 
-              'latest' || 
-              github.ref_name 
-            }}
-          image-aliases: >-
-            ${{ 
-              github.ref_name == 'main' && 
-              steps.date.outputs.date || 
-              ''
-            }}
-          local-build-name: ${{ steps.rechunk-nv.outputs.ref }}
           cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
           cosign-password: ${{ secrets.COSIGN_PASSWORD }}

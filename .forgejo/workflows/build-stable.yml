@@ -58,6 +58,14 @@ jobs:
     name: Build image
     runs-on: alt-sisyphus
     needs: check-tag-and-date
+    strategy:
+      matrix:
+        build: [default, nvidia]
+        include:
+          - build: default
+            image-postfix: ''
+          - build: nvidia
+            image-postfix: '-nvidia'
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -92,6 +100,7 @@ jobs:
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
             --build-arg IMAGE=$REGISTRY/alt-atomic/core/stable:${{ steps.date.outputs.date }} \
+            --build-arg BUILD=${{ matrix.build }} \
             --build-arg IMAGE_TYPE=stable \
             --file ./container-files/main \
             --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
@@ -102,35 +111,12 @@ jobs:
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
-          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}/stable:latest
+          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.image-postfix }}/stable:latest
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main
         with:
           ref: ${{ steps.rechunk.outputs.ref }}
-
-      - name: Build sisyphus NVIDIA image
-        run: |
-          podman build \
-            --tag $LOCAL_BUILD_NAME_NV \
-            --platform linux/amd64 \
-            --build-arg IMAGE=$LOCAL_BUILD_NAME \
-            --build-arg IMAGE_TYPE=stable \
-            --file ./container-files/main-nvidia \
-            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
-            .
-
-      - name: Rechunk nvidia image
-        uses: alt-atomic/actions/rechunk@main
-        id: rechunk-nv
-        with:
-          ref: ${{ env.LOCAL_BUILD_NAME_NV }}
-          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}-nvidia/stable:latest
-
-      - name: Lint image
-        uses: alt-atomic/actions/bootc-lint@main
-        with:
-          ref: ${{ steps.rechunk-nv.outputs.ref }}
 
       - name: Push and sign images
         uses: alt-atomic/actions/push-and-sign@main
@@ -138,22 +124,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           registry-username: "<token>"
           registry-password: ${{ secrets.REGISTRY_TOKEN }}
-          image-name: ${{ github.repository }}/stable
+          image-name: ${{ github.repository }}${{ matrix.image-postfix }}/stable
           image-tag: latest
           image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
           local-build-name: ${{ steps.rechunk.outputs.ref }}
-          cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
-          cosign-password: ${{ secrets.COSIGN_PASSWORD }}
-
-      - name: Push and sign nvidia images
-        uses: alt-atomic/actions/push-and-sign@main
-        with:
-          registry: ${{ env.REGISTRY }}
-          registry-username: "<token>"
-          registry-password: ${{ secrets.REGISTRY_TOKEN }}
-          image-name: ${{ github.repository }}-nvidia/stable
-          image-tag: latest
-          image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
-          local-build-name: ${{ steps.rechunk-nv.outputs.ref }}
           cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
           cosign-password: ${{ secrets.COSIGN_PASSWORD }}
