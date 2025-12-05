@@ -62,9 +62,9 @@ jobs:
       matrix:
         include:
           - build: default
-            image-postfix: ''
+            postfix: ''
           - build: nvidia
-            image-postfix: '-nvidia'
+            postfix: '-nvidia'
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -110,7 +110,7 @@ jobs:
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
-          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.image-postfix }}/stable:latest
+          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.postfix }}/stable:latest
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main
@@ -123,7 +123,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           registry-username: "<token>"
           registry-password: ${{ secrets.REGISTRY_TOKEN }}
-          image-name: ${{ github.repository }}${{ matrix.image-postfix }}/stable
+          image-name: ${{ github.repository }}${{ matrix.postfix }}/stable
           image-tag: latest
           image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
           local-build-name: ${{ steps.rechunk.outputs.ref }}

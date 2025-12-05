@@ -28,9 +28,9 @@ jobs:
       matrix:
         include:
           - build: default
-            image-postfix: ''
+            postfix: ''
           - build: nvidia
-            image-postfix: '-nvidia'
+            postfix: '-nvidia'
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -66,8 +66,8 @@ jobs:
           prev-ref: >-
             ${{
               github.ref_name == 'main' &&
-              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.image-postfix }}/nightly:latest' || 
-              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.image-postfix }}/nightly-branch:${{ github.ref_name }}'
+              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.postfix }}/nightly:latest' || 
+              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.postfix }}/nightly-branch:${{ github.ref_name }}'
             }}
 
       - name: Lint image
@@ -86,8 +86,8 @@ jobs:
           image-name: >-
             ${{ 
               github.ref_name == 'main' && 
-              '${{ github.repository }}${{ matrix.image-postfix }}/nightly' || 
-              '${{ github.repository }}${{ matrix.image-postfix }}/nightly-branch' 
+              '${{ github.repository }}${{ matrix.postfix }}/nightly' || 
+              '${{ github.repository }}${{ matrix.postfix }}/nightly-branch' 
             }}
           image-tag: >-
             ${{ 
