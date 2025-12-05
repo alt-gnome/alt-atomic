@@ -17,7 +17,6 @@ on:
 
 env:
   LOCAL_BUILD_NAME: localhost/onyx
-  LOCAL_BUILD_NAME_NV: localhost/onyx-nvidia
   REGISTRY: altlinux.space
 
 jobs:
@@ -26,16 +25,21 @@ jobs:
     runs-on: alt-sisyphus
     strategy:
       matrix:
-        include:
-          - build: default
-            postfix: ''
-          - build: nvidia
-            postfix: '-nvidia'
+        build: [default, nvidia]
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
       - name: Prepare env
         uses: alt-atomic/actions/prepare-env@main
+
+      - name: Get postfix
+        id: postfix
+        run: |
+          if [ "${{ matrix.build }}" == "nvidia" ]; then
+            echo "::set-output name=postfix::-nvidia"
+          else
+            echo "::set-output name=postfix::"
+          fi
 
       - name: Get date
         id: date
@@ -66,8 +70,8 @@ jobs:
           prev-ref: >-
             ${{
               github.ref_name == 'main' &&
-              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.postfix }}/nightly:latest' || 
-              '${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.postfix }}/nightly-branch:${{ github.ref_name }}'
+              '${{ env.REGISTRY }}/${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly:latest' || 
+              '${{ env.REGISTRY }}/${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly-branch:${{ github.ref_name }}'
             }}
 
       - name: Lint image
@@ -86,8 +90,8 @@ jobs:
           image-name: >-
             ${{ 
               github.ref_name == 'main' && 
-              '${{ github.repository }}${{ matrix.postfix }}/nightly' || 
-              '${{ github.repository }}${{ matrix.postfix }}/nightly-branch' 
+              '${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly' || 
+              '${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly-branch' 
             }}
           image-tag: >-
             ${{ 

@@ -16,16 +16,30 @@ on:
 
 env:
   LOCAL_BUILD_NAME: localhost/onyx
-  LOCAL_BUILD_NAME_NV: localhost/onyx-nvidia
   REGISTRY: altlinux.space
 
 jobs:
   check-tag-and-date:
     name: Check inputs
     runs-on: alt-sisyphus
+    strategy:
+      matrix:
+        build: [default, nvidia]
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
+      - name: Prepare env
+        uses: alt-atomic/actions/prepare-env@main
+
+      - name: Get postfix
+        id: postfix
+        run: |
+          if [ "${{ matrix.build }}" == "nvidia" ]; then
+            echo "::set-output name=postfix::-nvidia"
+          else
+            echo "::set-output name=postfix::"
+          fi
+
       - name: Get date
         id: date
         uses: alt-atomic/actions/parse-date@main
@@ -60,16 +74,21 @@ jobs:
     needs: check-tag-and-date
     strategy:
       matrix:
-        include:
-          - build: default
-            postfix: ''
-          - build: nvidia
-            postfix: '-nvidia'
+        build: [default, nvidia]
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
       - name: Prepare env
         uses: alt-atomic/actions/prepare-env@main
+
+      - name: Get postfix
+        id: postfix
+        run: |
+          if [ "${{ matrix.build }}" == "nvidia" ]; then
+            echo "::set-output name=postfix::-nvidia"
+          else
+            echo "::set-output name=postfix::"
+          fi
 
       - name: Get date
         id: date
@@ -110,7 +129,7 @@ jobs:
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
-          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}${{ matrix.postfix }}/stable:latest
+          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}${{ steps.postfix.outputs.postfix }}/stable:latest
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main
@@ -123,7 +142,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           registry-username: "<token>"
           registry-password: ${{ secrets.REGISTRY_TOKEN }}
-          image-name: ${{ github.repository }}${{ matrix.postfix }}/stable
+          image-name: ${{ github.repository }}${{ steps.postfix.outputs.postfix }}/stable
           image-tag: latest
           image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
           local-build-name: ${{ steps.rechunk.outputs.ref }}
