@@ -62,6 +62,11 @@ jobs:
               '${{ env.REGISTRY }}/${{ github.repository }}/nightly-branch:${{ github.ref_name }}'
             }}
 
+      - name: Lint image
+        uses: alt-atomic/actions/bootc-lint@main
+        with:
+          ref: ${{ steps.rechunk.outputs.ref }}
+
       - name: Build sisyphus NVIDIA image
         run: |
           podman build \
@@ -84,6 +89,11 @@ jobs:
               '${{ env.REGISTRY }}/${{ github.repository }}-nvidia/nightly:latest' || 
               '${{ env.REGISTRY }}/${{ github.repository }}-nvidia/nightly-branch:${{ github.ref_name }}'
             }}
+
+      - name: Lint image
+        uses: alt-atomic/actions/bootc-lint@main
+        with:
+          ref: ${{ steps.rechunk-nv.outputs.ref }}
 
       - name: Push and sign images
         uses: alt-atomic/actions/push-and-sign@main

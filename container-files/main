@@ -13,7 +13,6 @@ ENV IMAGE=$IMAGE
 RUN --mount=type=bind,source=./src/image.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./src/resources,target=/etc/apm/resources \
     apm system image build
-RUN bootc container lint
 
 WORKDIR /
 

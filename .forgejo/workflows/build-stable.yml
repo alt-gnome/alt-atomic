@@ -104,6 +104,12 @@ jobs:
           ref: ${{ env.LOCAL_BUILD_NAME }}
           prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}/stable:latest
 
+      - name: Lint image
+        uses: alt-atomic/actions/bootc-lint@main
+        with:
+          ref: ${{ steps.rechunk.outputs.ref }}
+
+
       - name: Build sisyphus NVIDIA image
         run: |
           podman build \
@@ -121,6 +127,12 @@ jobs:
         with:
           ref: ${{ env.LOCAL_BUILD_NAME_NV }}
           prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}-nvidia/stable:latest
+
+      - name: Lint image
+        uses: alt-atomic/actions/bootc-lint@main
+        with:
+          ref: ${{ steps.rechunk-nv.outputs.ref }}
+
 
       - name: Push and sign images
         uses: alt-atomic/actions/push-and-sign@main
