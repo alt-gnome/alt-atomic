@@ -60,7 +60,6 @@ jobs:
     needs: check-tag-and-date
     strategy:
       matrix:
-        build: [default, nvidia]
         include:
           - build: default
             image-postfix: ''

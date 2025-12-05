@@ -26,7 +26,6 @@ jobs:
     runs-on: alt-sisyphus
     strategy:
       matrix:
-        build: [default, nvidia]
         include:
           - build: default
             image-postfix: ''
