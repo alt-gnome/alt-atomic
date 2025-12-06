@@ -22,15 +22,6 @@ jobs:
   check-tag-and-date:
     name: Check inputs
     runs-on: alt-sisyphus
-    strategy:
-      matrix:
-        include:
-          - build: default
-            image-name: ${{ github.repository }}
-            name-pretty: ''
-          - build: nvidia
-            image-name: ${{ github.repository }}-nvidia
-            name-pretty: (Nvidia)
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -63,12 +54,18 @@ jobs:
           fi
 
   build:
-    name: Build image
+    name: Build image ${{ matrix.build }}
     runs-on: alt-sisyphus
     needs: check-tag-and-date
     strategy:
       matrix:
-        build: [default, nvidia]
+        include:
+          - build: default
+            image-name: ${{ github.repository }}
+            name-pretty: ''
+          - build: nvidia
+            image-name: ${{ github.repository }}-nvidia
+            name-pretty: (Nvidia)
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
