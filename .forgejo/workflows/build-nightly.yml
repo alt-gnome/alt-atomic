@@ -25,21 +25,16 @@ jobs:
     runs-on: alt-sisyphus
     strategy:
       matrix:
-        build: [default, nvidia]
+        include:
+          - build: default
+            image-name: ${{ github.repository }}
+          - build: nvidia
+            image-name: ${{ github.repository }}-nvidia
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
       - name: Prepare env
         uses: alt-atomic/actions/prepare-env@main
-
-      - name: Get postfix
-        id: postfix
-        run: |
-          if [ "${{ matrix.build }}" == "nvidia" ]; then
-            echo "::set-output name=postfix::-nvidia"
-          else
-            echo "::set-output name=postfix::"
-          fi
 
       - name: Get date
         id: date
@@ -68,10 +63,10 @@ jobs:
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
           prev-ref: >-
-            ${{
+            ${{ 
               github.ref_name == 'main' &&
-              '${{ env.REGISTRY }}/${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly:latest' || 
-              '${{ env.REGISTRY }}/${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly-branch:${{ github.ref_name }}'
+              format('{0}/{1}/nightly:latest', env.REGISTRY, matrix.image-name) ||
+              format('{0}/{1}/nightly-branch:{2}', env.REGISTRY, matrix.image-name, github.ref_name)
             }}
 
       - name: Lint image
@@ -88,10 +83,10 @@ jobs:
           registry-username: "<token>"
           registry-password: ${{ secrets.REGISTRY_TOKEN }}
           image-name: >-
-            ${{ 
-              github.ref_name == 'main' && 
-              '${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly' || 
-              '${{ github.repository }}${{ steps.postfix.outputs.postfix }}/nightly-branch' 
+            ${{
+              github.ref_name == 'main' &&
+              format('{0}/nightly', matrix.image-name) ||
+              format('{0}/nightly-branch', matrix.image-name)
             }}
           image-tag: >-
             ${{ 
