@@ -54,11 +54,10 @@ jobs:
             --build-arg BUILD=${{ matrix.build }} \
             --build-arg IMAGE_TYPE=nightly \
             --file ./container-files/main \
-            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
       - name: Rechunk image
-        uses: alt-atomic/actions/rechunk@v1
+        uses: alt-atomic/actions/rechunk@v1.1
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
@@ -68,6 +67,13 @@ jobs:
               format('{0}/{1}/nightly:latest', env.REGISTRY, matrix.image-name) ||
               format('{0}/{1}/nightly-branch:{2}', env.REGISTRY, matrix.image-name, github.ref_name)
             }}
+          labels: |
+            org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}
+            org.opencontainers.image.title=ALT Atomic Onyx Nightly ${{ matrix.name-pretty }}
+            org.opencontainers.image.description=ALT Atomic with GNOME, nightly build ${{ matrix.name-pretty }}
+            org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
+            org.opencontainers.image.licenses=GPL-3.0-or-later
+            org.opencontainers.image.vendor=ALT Linux Team
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main

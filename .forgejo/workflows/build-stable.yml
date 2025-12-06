@@ -27,8 +27,10 @@ jobs:
         include:
           - build: default
             image-name: ${{ github.repository }}
+            name-pretty: ''
           - build: nvidia
             image-name: ${{ github.repository }}-nvidia
+            name-pretty: (Nvidia)
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -104,15 +106,21 @@ jobs:
             --build-arg BUILD=${{ matrix.build }} \
             --build-arg IMAGE_TYPE=stable \
             --file ./container-files/main \
-            --label "org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}" \
             .
 
       - name: Rechunk image
-        uses: alt-atomic/actions/rechunk@main
+        uses: alt-atomic/actions/rechunk@v1.1
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
           prev-ref: ${{ format('{0}/{1}/stable:latest', env.REGISTRY, matrix.image-name) }}
+          labels: |
+            org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}
+            org.opencontainers.image.title=ALT Atomic Onyx ${{ matrix.name-pretty }}
+            org.opencontainers.image.description=ALT Atomic with GNOME ${{ matrix.name-pretty }}
+            org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
+            org.opencontainers.image.licenses=GPL-3.0-or-later
+            org.opencontainers.image.vendor=ALT Linux Team
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main
