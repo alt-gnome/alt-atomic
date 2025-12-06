@@ -24,22 +24,14 @@ jobs:
     runs-on: alt-sisyphus
     strategy:
       matrix:
-        build: [default, nvidia]
+        include:
+          - build: default
+            image-name: ${{ github.repository }}
+          - build: nvidia
+            image-name: ${{ github.repository }}-nvidia
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
-      - name: Prepare env
-        uses: alt-atomic/actions/prepare-env@main
-
-      - name: Get postfix
-        id: postfix
-        run: |
-          if [ "${{ matrix.build }}" == "nvidia" ]; then
-            echo "::set-output name=postfix::-nvidia"
-          else
-            echo "::set-output name=postfix::"
-          fi
-
       - name: Get date
         id: date
         uses: alt-atomic/actions/parse-date@main
@@ -81,15 +73,6 @@ jobs:
       - name: Prepare env
         uses: alt-atomic/actions/prepare-env@main
 
-      - name: Get postfix
-        id: postfix
-        run: |
-          if [ "${{ matrix.build }}" == "nvidia" ]; then
-            echo "::set-output name=postfix::-nvidia"
-          else
-            echo "::set-output name=postfix::"
-          fi
-
       - name: Get date
         id: date
         uses: alt-atomic/actions/parse-date@main
@@ -129,7 +112,7 @@ jobs:
         id: rechunk
         with:
           ref: ${{ env.LOCAL_BUILD_NAME }}
-          prev-ref: ${{ env.REGISTRY }}/${{ github.repository }}${{ steps.postfix.outputs.postfix }}/stable:latest
+          prev-ref: ${{ format('{0}/{1}/stable:latest', env.REGISTRY, matrix.image-name) }}
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main
@@ -142,7 +125,7 @@ jobs:
           registry: ${{ env.REGISTRY }}
           registry-username: "<token>"
           registry-password: ${{ secrets.REGISTRY_TOKEN }}
-          image-name: ${{ github.repository }}${{ steps.postfix.outputs.postfix }}/stable
+          image-name: ${{ format('{0}/stable', matrix.image-name) }}
           image-tag: latest
           image-aliases: ${{ steps.date.outputs.date }} ${{ steps.latest_tag.outputs.tag }}
           local-build-name: ${{ steps.rechunk.outputs.ref }}
