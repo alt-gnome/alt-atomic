@@ -24,7 +24,7 @@ jobs:
         id: changes
         uses: https://github.com/simbo/changes-between-tags-action@v1
         with:
-          tag-pattern: '^\d+\.\d+\.\d+$'
+          tag-pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
           include-hashes: false
 
       - name: Publish release
