@@ -28,8 +28,10 @@ jobs:
         include:
           - build: default
             image-name: ${{ github.repository }}
+            name-pretty: ''
           - build: nvidia
             image-name: ${{ github.repository }}-nvidia
+            name-pretty: (Nvidia)
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
