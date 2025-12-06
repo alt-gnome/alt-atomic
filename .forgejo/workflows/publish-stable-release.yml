@@ -17,9 +17,7 @@ jobs:
 
       - name: Get latest tag
         id: latest_tag
-        run: |
-          LATEST_TAG=$(git describe --tags --abbrev=0)
-          echo "::set-output name=tag::$LATEST_TAG"
+        uses: alt-atomic/actions/get-tag@main
 
       - name: Checkout latest tag
         run: |
