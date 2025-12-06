@@ -15,20 +15,16 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get latest tag
-        id: latest_tag
-        uses: alt-atomic/actions/get-tag@main
-
       - name: Checkout latest tag
         run: |
           git fetch --all --tags --force
-          git checkout ${{ steps.latest_tag.outputs.tag }}
+          git checkout ${{ github.ref }}
 
       - name: Get changes between tags
         id: changes
         uses: https://github.com/simbo/changes-between-tags-action@v1
         with:
-          tag-pattern: '^.*$'
+          tag-pattern: '^\d+\.\d+\.\d+$'
           include-hashes: false
 
       - name: Publish release
