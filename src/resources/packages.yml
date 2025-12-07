@@ -53,6 +53,7 @@ modules:
         - gnome-shell-extension-session-keeper
         - gnome-shell-extensions
         - gnome-software
+        - gnome-software-plugin-flatpak
         - gnome-text-editor
         - gnome-themes-extra
         - gnome-tour
