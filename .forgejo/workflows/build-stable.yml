@@ -25,6 +25,9 @@ jobs:
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
+      - name: Prepare env
+        uses: alt-atomic/actions/prepare-env@main
+
       - name: Get date
         id: date
         uses: alt-atomic/actions/parse-date@main
@@ -45,7 +48,7 @@ jobs:
       - name: Check Docker image existence
         run: |
           if [[ "${{ steps.date.outputs.date }}" != "latest" ]]; then
-            if podman pull altlinux.space/alt-atomic/core/stable:${{ steps.date.outputs.date }}; then
+            if skopeo inspect docker://altlinux.space/alt-atomic/core/stable:${{ steps.date.outputs.date }}; then
               exit 0
             else
               echo "Image does not exist"
