@@ -5,8 +5,8 @@ on:
     inputs:
       date:
         description: 'Date tag of Core in format YYYYMMDD. Can be `latest`'
-        required: true
         type: string
+        default: 'latest'
   schedule:
     # Every day at 6 a.m.
     - cron: '0 6 * * *'

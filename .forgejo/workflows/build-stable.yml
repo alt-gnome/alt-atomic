@@ -5,14 +5,15 @@ on:
     inputs:
       date:
         description: 'Date tag of Core in format YYYYMMDD. Can be `latest`'
-        required: true
         type: string
         default: 'latest'
       git-tag:
         description: 'Git tag of release. Can be `latest`'
-        required: true
         type: string
         default: 'latest'
+  push:
+    tags:
+      - '*'
 
 env:
   LOCAL_BUILD_NAME: localhost/onyx
