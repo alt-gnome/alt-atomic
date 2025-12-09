@@ -1,1 +1,0 @@
-kargs = ["rhgb", "quiet", "splash", "plymouth.enable=1", "rd.plymouth=1"]
