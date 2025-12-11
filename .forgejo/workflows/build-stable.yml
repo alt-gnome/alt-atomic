@@ -3,6 +3,10 @@ name: Build stable images
 on:
   workflow_dispatch:
     inputs:
+      frozen:
+        description: 'Image frozen or not'
+        type: boolean
+        default: false
       date:
         description: 'Date tag of Core in format YYYYMMDD. Can be `latest`'
         type: string
@@ -11,6 +15,9 @@ on:
         description: 'Git tag of release. Can be `latest`'
         type: string
         default: 'latest'
+  schedule:
+    # Every day at 6 a.m.
+    - cron: '0 6 * * *'
   push:
     tags:
       - '*'
@@ -20,9 +27,11 @@ env:
   REGISTRY: altlinux.space
 
 jobs:
-  check-tag-and-date:
+  check:
     name: Check inputs
     runs-on: alt-sisyphus
+    outputs:
+      frozen: ${{ steps.frozen.outputs.value }}
     container:
       image: altlinux.space/actions/runner/containers:sisyphus
     steps:
@@ -57,10 +66,17 @@ jobs:
             fi
           fi
 
+      - name: Get Latest image frozen
+        id: frozen
+        run : |
+          VAL=$(echo skopeo inspect ${{ format('{0}/{1}/stable:latest', env.REGISTRY, matrix.image-name) }} | jq '.Labels["org.altlinux.image.frozen"]')
+          echo "::set-output name=value::$VAL"
+
   build:
     name: Build image ${{ matrix.build }}
     runs-on: alt-sisyphus
-    needs: check-tag-and-date
+    needs: check
+    if: ${{ github.event_name == 'workflow_dispatch' || needs.check.outputs.frozen == 'false' }}
     strategy:
       matrix:
         include:
@@ -117,6 +133,9 @@ jobs:
           prev-ref: ${{ format('{0}/{1}/stable:latest', env.REGISTRY, matrix.image-name) }}
           labels: |
             org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}
+            org.altlinux.image.frozen=${{
+              github.event_name == 'workflow_dispatch' && inputs.frozen || 'false'
+            }}
             org.opencontainers.image.title=ALT Atomic Onyx ${{ matrix.name-pretty }}
             org.opencontainers.image.description=ALT Atomic with GNOME ${{ matrix.name-pretty }}
             org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx

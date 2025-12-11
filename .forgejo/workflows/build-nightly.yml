@@ -2,11 +2,6 @@ name: Build nightly images
 
 on:
   workflow_dispatch:
-    inputs:
-      date:
-        description: 'Date tag of Core in format YYYYMMDD. Can be `latest`'
-        type: string
-        default: 'latest'
   schedule:
     # Every day at 6 a.m.
     - cron: '0 6 * * *'
