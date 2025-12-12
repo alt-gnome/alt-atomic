@@ -69,7 +69,8 @@ jobs:
       - name: Get Latest image frozen
         id: frozen
         run : |
-          VAL=$(skopeo inspect docker://${{ format('{0}/{1}/stable:latest', env.REGISTRY, matrix.image-name) }} 2> /dev/null || echo '{"Labels":{"org.altlinux.image.frozen":"false"}}' | jq -r '.Labels["org.altlinux.image.frozen"]')
+          INSPECT=$(skopeo inspect docker://altlinux.space/alt-atomic/onyx/stable:latest 2> /dev/null || echo '{"Labels":{"org.altlinux.image.frozen":"false"}}')
+          VAL=$(echo $INSPECT | jq -r '.Labels["org.altlinux.image.frozen"]')
           echo "::set-output name=value::$VAL"
 
   build:
