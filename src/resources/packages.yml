@@ -87,6 +87,7 @@ modules:
         # Misc
         - firefox
         - fprintd
+        - gtk3-ssh-askpass
         - power-profiles-daemon
 
         # Drivers
