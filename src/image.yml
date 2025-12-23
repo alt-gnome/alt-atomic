@@ -27,7 +27,7 @@ modules:
     if: Env.BUILD == "nvidia"
     body:
       targets:
-        - nvidia.yml
+        - https://altlinux.space/alt-atomic/common-includes/raw/branch/main/nvidia.yml
 
   # TODO: Should be removed after https://altlinux.space/alt-atomic/apm/commit/8163f97f6d2c8c45120b297f6c4f6c5b88bf90ed will be released
   - type: kernel
