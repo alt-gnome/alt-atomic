@@ -42,22 +42,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Restore APT cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .cache/apt-archives
-            .cache/apt-lists
-          key: apt-cache-${{ matrix.build }}
-
       - name: Build sisyphus default image
         run: |
-          mkdir -p .cache/apt-archives/partial .cache/apt-lists/partial
           podman build \
             --tag $LOCAL_BUILD_NAME \
             --platform linux/amd64 \
-            --volume $(pwd)/.cache/apt-archives:/var/cache/apt/archives:z \
-            --volume $(pwd)/.cache/apt-lists:/var/lib/apt/lists:z \
             --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} \
             --build-arg BUILD=${{ matrix.build }} \
             --build-arg IMAGE_TYPE=nightly \
