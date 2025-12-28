@@ -18,3 +18,8 @@ Built upon every change in the repository, using the main branch, and on a daily
 Built daily too, but can be frozen.
 
 The OCI storage retains up to 50 versions of each image. Versions, except for latest, live for up to 30 days.
+
+# Owners
+
+- Vladimir Romanov <rirusha@altlinux.org>
+- Dmitry Udalov <udalov@altlinux.org>
