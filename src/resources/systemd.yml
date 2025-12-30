@@ -1,5 +1,6 @@
 modules:
-  - type: systemd
+  - name: User Services (Global)
+    type: systemd
     body:
       targets:
         - gnome-keyring-daemon
@@ -13,7 +14,8 @@ modules:
       enabled: true
       global: true
 
-  - type: systemd
+  - name: System Services
+    type: systemd
     body:
       targets:
         - avahi-daemon
@@ -21,9 +23,12 @@ modules:
         - cups
         - gdm
         - wsdd
+        - smb.service
+        - nmb.service
       enabled: true
 
-  - type: systemd
+  - name: Disabled System Services
+    type: systemd
     body:
       targets:
         - packagekit
