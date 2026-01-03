@@ -16,7 +16,6 @@ modules:
         - ptyxis
         - starship
         - stplr
-        - systemd-ssh-agent
         - zsh
         - zsh-autosuggestions
         - zsh-completions
