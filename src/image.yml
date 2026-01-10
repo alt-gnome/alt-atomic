@@ -27,10 +27,10 @@ modules:
     if: Env.BUILD == "nvidia"
     body:
       targets:
-        - https://altlinux.space/alt-atomic/common-includes/raw/branch/main/nvidia.yml
+        - /usr/share/apm/includes/common/nvidia.yml
 
   - name: Cleanup
     type: include
     body:
       targets:
-        - https://altlinux.space/alt-atomic/core/raw/branch/main/src/resources/cleanup.yml
+        - /usr/share/apm/includes/common/cleanup.yml
