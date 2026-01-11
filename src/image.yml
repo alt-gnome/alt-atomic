@@ -6,7 +6,6 @@ modules:
     body:
       name: alt-atomic-${{ Env.IMAGE_NAME }}
       build-type: ${{ Env.IMAGE_TYPE }}
-      plymouth-theme: atomic
 
   - name: Copy root
     type: copy
@@ -28,6 +27,12 @@ modules:
     body:
       targets:
         - /usr/share/apm/includes/common/nvidia.yml
+
+  - type: kernel
+    body:
+      initrd:
+        method: dracut
+        plymouth-theme: atomic
 
   - name: Cleanup
     type: include
