@@ -141,7 +141,7 @@ jobs:
             org.opencontainers.image.description=ALT Atomic with GNOME ${{ matrix.name-pretty }}
             org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
             org.opencontainers.image.licenses=GPL-3.0-or-later
-            org.opencontainers.image.vendor=ALT Linux Team
+            org.opencontainers.image.vendor=ALT Atomic Team
 
       - name: Lint image
         uses: alt-atomic/actions/bootc-lint@main
