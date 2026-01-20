@@ -6,7 +6,6 @@ modules:
         - distrobox
         - fastfetch
         - flatpak
-        - flatpak-repo-flathub
         - git
         - htop
         - inxi

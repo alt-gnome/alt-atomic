@@ -38,6 +38,11 @@ modules:
         glib-compile-schemas /usr/share/glib-2.0/schemas
         dconf update
 
+  - name: Add flathub repo
+    type: shell
+    body:
+      command: flatpak remote-add flathub https://flathub.org/repo/flathub.flatpakrepo
+
   - name: Mask not available openh264 flatpak package
     type: shell
     body:
