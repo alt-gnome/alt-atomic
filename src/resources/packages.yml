@@ -21,6 +21,7 @@ modules:
 
         # GNOME
         - authenticator
+        - bazaar-software
         - dconf-editor
         - file-roller
         - fonts-ttf-cjkuni-ukai
@@ -38,6 +39,7 @@ modules:
         - gnome-control-center
         - gnome-disk-usage
         - gnome-extension-manager
+        - gnome-firmware
         - gnome-icon-theme
         - gnome-icon-theme-symbolic
         - gnome-keyring
@@ -50,8 +52,6 @@ modules:
         - gnome-shell-extension-dash-to-dock
         - gnome-shell-extension-session-keeper
         - gnome-shell-extensions
-        - gnome-software
-        - gnome-software-plugin-flatpak
         - gnome-text-editor
         - gnome-themes-extra
         - gnome-tour
