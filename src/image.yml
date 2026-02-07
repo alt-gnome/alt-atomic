@@ -7,6 +7,12 @@ modules:
       name: alt-atomic-${{ Env.IMAGE_NAME }}
       build-type: ${{ Env.IMAGE_TYPE }}
 
+  - name: Install packages
+    type: include
+    body:
+      targets:
+        - packages.yml
+
   - name: Copy root
     type: copy
     body:
@@ -17,7 +23,6 @@ modules:
   - type: include
     body:
       targets:
-        - packages.yml
         - network.yml
         - systemd.yml
         - settings.yml
