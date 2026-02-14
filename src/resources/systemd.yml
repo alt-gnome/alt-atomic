@@ -23,6 +23,7 @@ modules:
         - cups
         - gdm
         - wsdd
+        - systemd-oomd
         - smb.service
         - nmb.service
       enabled: true
