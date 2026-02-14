@@ -16,8 +16,8 @@ on:
         type: string
         default: 'latest'
   schedule:
-    # Every day at 6 a.m.
-    - cron: '0 6 * * *'
+    # Every day at 5 a.m.
+    - cron: '0 5 * * *'
   push:
     tags:
       - '*'
