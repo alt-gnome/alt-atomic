@@ -15,9 +15,6 @@ on:
         description: 'Git tag of release. Can be `latest`'
         type: string
         default: 'latest'
-  schedule:
-    # Every day at 5 a.m.
-    - cron: '0 5 * * *'
   push:
     tags:
       - '*'
