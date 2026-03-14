@@ -45,6 +45,9 @@ jobs:
       date: ${{ needs.gather-build-data.outputs.date }}
       pretty-date: ${{ needs.gather-build-data.outputs.pretty-date }}
       commit: ${{ needs.gather-build-data.outputs.commit }}
+      registry-token: ${{ secrets.REGISTRY_TOKEN }}
+      cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
+      cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
   build-nvidia:
     name: Build NVIDIA image
