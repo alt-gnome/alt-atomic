@@ -20,6 +20,23 @@ inputs:
   commit:
     required: true
     description: ''
+  registry-token:
+    required: true
+    description: ''
+  cosign-image-sign:
+    required: true
+    description: ''
+  cosign-password:
+    required: true
+    description: ''
+  local-build-name:
+    required: true
+    description: ''
+    default: localhost/onyx
+  registry:
+    required: true
+    description: ''
+    default: altlinux.space
 
 runs:
   using: composite
@@ -29,13 +46,13 @@ runs:
       set -x
 
       if [[ "${{ inputs.build }}" == "default" ]]; then
-        IMAGE="${{ env.REGISTRY }}/alt-atomic/core/nightly:${{ inputs.date }}"
+        IMAGE="${{ inputs.registry }}/alt-atomic/core/nightly:${{ inputs.date }}"
       else
-        IMAGE="${{ env.REGISTRY }}/${{ github.repository }}/nightly:${{ inputs.commit }}"
+        IMAGE="${{ inputs.registry }}/${{ github.repository }}/nightly:${{ inputs.commit }}"
       fi
 
       podman build \
-        --tag ${{ env.LOCAL_BUILD_NAME }} \
+        --tag ${{ inputs.local-build-name }} \
         --platform linux/amd64 \
         --build-arg IMAGE=$IMAGE \
         --build-arg BUILD=${{ inputs.build }} \
@@ -48,12 +65,12 @@ runs:
     id: rechunk
     if: (github.event_name == 'push' && github.ref_name == 'main' ) || contains(fromJSON('["workflow_dispatch", "schedule"]'), github.event_name)
     with:
-      ref: ${{ env.LOCAL_BUILD_NAME }}
+      ref: ${{ inputs.local-build-name }}
       prev-ref: >-
         ${{ 
           github.ref_name == 'main' &&
-          format('{0}/{1}/nightly:latest', env.REGISTRY, inputs.image-name) ||
-          format('{0}/{1}/nightly-branch:{2}', env.REGISTRY, inputs.image-name, github.ref_name)
+          format('{0}/{1}/nightly:latest', inputs.registry, inputs.image-name) ||
+          format('{0}/{1}/nightly-branch:{2}', inputs.registry, inputs.image-name, github.ref_name)
         }}
       labels: |
         org.altlinux.repo.date=${{ inputs.pretty-date }}
@@ -68,9 +85,9 @@ runs:
     if: >
       contains(fromJSON('["push", "workflow_dispatch", "schedule"]'), github.event_name)
     with:
-      registry: ${{ env.REGISTRY }}
+      registry: ${{ inputs.registry }}
       registry-username: "<token>"
-      registry-password: ${{ secrets.REGISTRY_TOKEN }}
+      registry-password: ${{ inputs.registry-token }}
       image-name: >-
         ${{
           github.ref_name == 'main' &&
@@ -90,5 +107,5 @@ runs:
           ''
         }} ${{ inputs.commit }}
       local-build-name: ${{ steps.rechunk.outputs.ref }}
-      cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
-      cosign-password: ${{ secrets.COSIGN_PASSWORD }}
+      cosign-image-sign: ${{ inputs.cosign-image-sign }}
+      cosign-password: ${{ inputs.cosign-password }}
