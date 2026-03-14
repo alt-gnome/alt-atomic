@@ -48,7 +48,7 @@ runs:
       if [[ "${{ inputs.build }}" == "default" ]]; then
         IMAGE="${{ inputs.registry }}/alt-atomic/core/nightly:${{ inputs.date }}"
       else
-        IMAGE="${{ inputs.registry }}/${{ github.repository }}:${{ inputs.commit }}"
+        IMAGE="${{ inputs.registry }}/${{ github.repository }}/nightly:${{ inputs.commit }}"
       fi
 
       podman build \
