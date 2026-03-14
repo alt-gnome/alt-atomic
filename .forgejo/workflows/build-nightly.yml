@@ -57,9 +57,10 @@ jobs:
         registry-token: ${{ secrets.REGISTRY_TOKEN }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
+        local-build-name: localhost/onyx
 
   build-nvidia:
-    name: Build default image
+    name: Build nvidia image
     needs:
     - gather-build-data
     - build-default
@@ -85,3 +86,4 @@ jobs:
         registry-token: ${{ secrets.REGISTRY_TOKEN }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
+        local-build-name: localhost/onyx/nvidia
