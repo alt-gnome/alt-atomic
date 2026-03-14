@@ -19,6 +19,16 @@ on:
       commit:
         required: true
         type: string
+      registry-token:
+        required: true
+        type: string
+      cosign-image-sign:
+        required: true
+        type: string
+      cosign-password:
+        required: true
+        type: string
+
 
 env:
   LOCAL_BUILD_NAME: localhost/onyx
@@ -86,7 +96,7 @@ jobs:
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
-        registry-password: ${{ secrets.REGISTRY_TOKEN }}
+        registry-password: ${{ inputs.registry-token }}
         image-name: >-
           ${{
             github.ref_name == 'main' &&
@@ -106,5 +116,5 @@ jobs:
             ''
           }} ${{ inputs.commit }}
         local-build-name: ${{ steps.rechunk.outputs.ref }}
-        cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
-        cosign-password: ${{ secrets.COSIGN_PASSWORD }}
+        cosign-image-sign: ${{ inputs.cosign-image-sign }}
+        cosign-password: ${{ inputs.cosign-password }}
