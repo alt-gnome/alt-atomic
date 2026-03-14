@@ -29,14 +29,13 @@ on:
         required: true
         type: string
 
-
 env:
   LOCAL_BUILD_NAME: localhost/onyx
   REGISTRY: altlinux.space
 
 jobs:
   build:
-    name: Build image ${{ inputs.build }}
+    name: Build image
     runs-on: als-huge
 
     container:
