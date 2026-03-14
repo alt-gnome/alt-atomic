@@ -2,18 +2,21 @@ image: ${{ Env.IMAGE }}
 
 modules:
   - name: Set branding
+    if: Env.BUILD == "default"
     type: branding
     body:
       name: alt-atomic-${{ Env.IMAGE_NAME }}
       build-type: ${{ Env.IMAGE_TYPE }}
 
   - name: Install packages
+    if: Env.BUILD == "default"
     type: include
     body:
       targets:
         - packages.yml
 
   - name: Copy root
+    if: Env.BUILD == "default"
     type: copy
     body:
       source: root
@@ -21,6 +24,7 @@ modules:
       replace: true
 
   - type: include
+    if: Env.BUILD == "default"
     body:
       targets:
         - network.yml

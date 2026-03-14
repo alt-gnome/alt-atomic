@@ -4,102 +4,60 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - '*'
+    - 'nightly-*'
+    - 'main'
   pull_request:
 
-env:
-  LOCAL_BUILD_NAME: localhost/onyx
-  REGISTRY: altlinux.space
-
 jobs:
-  build:
-    name: Build image ${{ matrix.build }}
-    runs-on: alt-sisyphus
-    strategy:
-      matrix:
-        include:
-          - build: default
-            image-name: ${{ github.repository }}
-            name-pretty: ''
-          - build: nvidia
-            image-name: ${{ github.repository }}-nvidia
-            name-pretty: (Nvidia)
-    container:
-      image: altlinux.space/actions/runner/containers:sisyphus
+  gather-build-data:
+    name: Gather build data
+    runs-on: als-tiny
+
+    outputs:
+      date: ${{ steps.date.outputs.date }}
+      pretty-date: ${{ steps.date.outputs.pretty-date }}
+      commit: ${{ steps.get_commit.outputs.commit }} 
+
     steps:
-      - name: Prepare env
-        uses: alt-atomic/actions/prepare-env@main
+    - name: Get date
+      id: date
+      uses: alt-atomic/actions/parse-date@main
 
-      - name: Get date
-        id: date
-        uses: alt-atomic/actions/parse-date@main
-        with:
-          date: ${{ github.event.inputs.date }}
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    - id: get_commit
+      name: Get current commit
+      run: |
+        echo "commit=$(git rev-parse HEAD)" >> $FORGEJO_OUTPUT
 
-      - name: Build sisyphus default image
-        run: |
-          podman build \
-            --tag $LOCAL_BUILD_NAME \
-            --platform linux/amd64 \
-            --build-arg IMAGE=$REGISTRY/alt-atomic/core/nightly:${{ steps.date.outputs.date }} \
-            --build-arg BUILD=${{ matrix.build }} \
-            --build-arg IMAGE_TYPE=nightly \
-            --file ./container-files/main \
-            .
+  build-default:
+    name: Build default image
+    needs:
+    - gather-build-data
+    runs-on: als-huge
 
-      - name: Rechunk image
-        uses: alt-atomic/actions/rechunk@v1.1
-        id: rechunk
-        with:
-          ref: ${{ env.LOCAL_BUILD_NAME }}
-          prev-ref: >-
-            ${{ 
-              github.ref_name == 'main' &&
-              format('{0}/{1}/nightly:latest', env.REGISTRY, matrix.image-name) ||
-              format('{0}/{1}/nightly-branch:{2}', env.REGISTRY, matrix.image-name, github.ref_name)
-            }}
-          labels: |
-            org.altlinux.repo.date=${{ steps.date.outputs.pretty-date }}
-            org.opencontainers.image.title=ALT Atomic Onyx Nightly ${{ matrix.name-pretty }}
-            org.opencontainers.image.description=ALT Atomic with GNOME, nightly build ${{ matrix.name-pretty }}
-            org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
-            org.opencontainers.image.licenses=GPL-3.0-or-later
-            org.opencontainers.image.vendor=ALT Atomic Team
+    uses: ./.forgejo/workflows/reusable-build-and-push-nightly-image.yml
+    with:
+      build: default
+      image-name: ${{ github.repository }}
+      name-pretty: ''
+      date: ${{ needs.gather-build-data.outputs.date }}
+      pretty-date: ${{ needs.gather-build-data.outputs.pretty-date }}
+      commit: ${{ needs.gather-build-data.outputs.commit }}
 
-      - name: Lint image
-        uses: alt-atomic/actions/bootc-lint@main
-        with:
-          ref: ${{ steps.rechunk.outputs.ref }}
+  build-nvidia:
+    name: Build NVIDIA image
+    needs:
+    - gather-build-data
+    - build-default
+    runs-on: als-huge
 
-      - name: Push and sign images
-        uses: alt-atomic/actions/push-and-sign@main
-        if: >
-          contains(fromJSON('["push", "workflow_dispatch"]'), github.event_name)
-        with:
-          registry: ${{ env.REGISTRY }}
-          registry-username: "<token>"
-          registry-password: ${{ secrets.REGISTRY_TOKEN }}
-          image-name: >-
-            ${{
-              github.ref_name == 'main' &&
-              format('{0}/nightly', matrix.image-name) ||
-              format('{0}/nightly-branch', matrix.image-name)
-            }}
-          image-tag: >-
-            ${{ 
-              github.ref_name == 'main' && 
-              'latest' || 
-              github.ref_name 
-            }}
-          image-aliases: >-
-            ${{ 
-              github.ref_name == 'main' && 
-              steps.date.outputs.date || 
-              ''
-            }}
-          local-build-name: ${{ steps.rechunk.outputs.ref }}
-          cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
-          cosign-password: ${{ secrets.COSIGN_PASSWORD }}
+    uses: ./.forgejo/workflows/reusable-build-and-push-nightly-image.yml
+    with:
+      build: nvidia
+      image-name: ${{ github.repository }}-nvidia
+      name-pretty: (Nvidia)
+      date: ${{ needs.gather-build-data.outputs.date }}
+      pretty-date: ${{ needs.gather-build-data.outputs.pretty-date }}
+      commit: ${{ needs.gather-build-data.outputs.commit }}
