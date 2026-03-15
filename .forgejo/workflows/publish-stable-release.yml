@@ -20,6 +20,7 @@ jobs:
       with:
         fetch-depth: 0
         fetch-tags: true
+        token: ${{ secrets.ATOMIC_BOT_REPO2 }}
 
     - name: Get tag
       id: get_tag
