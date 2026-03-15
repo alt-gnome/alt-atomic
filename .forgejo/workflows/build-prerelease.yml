@@ -26,6 +26,8 @@ jobs:
     - name: Read DATE
       id: repo_date
       run: |
+        set -e
+
         echo "repo-date=$(cat ./DATE | tr -d '\n')" >> $FORGEJO_OUTPUT
 
     - name: Get date
