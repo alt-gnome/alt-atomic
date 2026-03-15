@@ -1,5 +1,5 @@
-name: Build noightly image
-description: Build, rechunk, lint and push nightly image
+name: Build prerelease image
+description: Build, rechunk, lint and push prerelease image
 
 inputs:
   build:
