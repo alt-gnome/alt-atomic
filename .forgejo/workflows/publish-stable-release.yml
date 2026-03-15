@@ -3,37 +3,86 @@ name: Publish release
 on:
   push:
     tags:
-      - '*'
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+env:
+  REGISTRY: altlinux.space
 
 jobs:
   release:
     name: Publish release
-    runs-on: alt-sisyphus
+    runs-on: als-tiny
+    container:
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        fetch-tags: true
+        token: ${{ secrets.ATOMIC_BOT_REPO2 }}
 
-      - name: Checkout latest tag
-        run: |
-          git fetch --all --tags --force
-          git checkout ${{ github.ref }}
+    - name: Get tag
+      id: get_tag
+      uses: alt-atomic/actions/get-tag@main
+      with:
+        desired-tag: ${{ github.ref_name }}
 
-      - name: Get changes between tags
-        id: changes
-        uses: https://github.com/simbo/changes-between-tags-action@v1
-        with:
-          tag-pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
-          include-hashes: false
+    - id: get_images
+      name: Get images
+      run: |
+        echo "image=${{ env.REGISTRY }}/${{ github.repository }}/prerelease:${{ steps.get_tag.outputs.commit }}" >> $FORGEJO_OUTPUT
+        echo "image-nv=${{ env.REGISTRY }}/${{ github.repository }}-nvidia/prerelease:${{ steps.get_tag.outputs.commit }}" >> $FORGEJO_OUTPUT
 
-      - name: Publish release
-        id: create_release
-        uses: https://github.com/softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.changes.outputs.tag }}
-          name: "Release ${{ steps.changes.outputs.tag }}"
-          body: "${{ steps.changes.outputs.changes }}"
-          draft: false
-          prerelease: false
-          token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Check image existence
+      run: |
+        if skopeo inspect docker://${{ steps.get_images.outputs.image }} &>/dev/null && \
+           skopeo inspect docker://${{ steps.get_images.outputs.image-nv }} &>/dev/null; then
+          exit 0
+        else
+          echo "Image does not exist, deleting tag ${{ github.ref_name }}"
+          git config user.name "CI Bot"
+          git config user.email "ci@altlinux.space"
+
+          git tag -d "${{ github.ref_name }}"
+          git push origin --delete "${{ github.ref_name }}"
+          exit 1
+        fi
+
+    - name: Copy default image
+      uses: alt-atomic/actions/release@main
+      with:
+        registry: ${{ env.REGISTRY }}
+        registry-username: "<token>"
+        registry-password: ${{ inputs.registry-token }}
+        image-from: docker://${{ steps.get_images.outputs.image }}
+        image-name-to: ${{ github.repository }}/stable
+        image-tags: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
+
+    - name: Copy nvidia image
+      uses: alt-atomic/actions/release@main
+      with:
+        registry: ${{ env.REGISTRY }}
+        registry-username: "<token>"
+        registry-password: ${{ inputs.registry-token }}
+        image-from: docker://${{ steps.get_images.outputs.image-nv }}
+        image-name-to: ${{ github.repository }}-nvidia/stable
+        image-tags: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
+
+    - name: Get changes between tags
+      id: changes
+      uses: https://github.com/simbo/changes-between-tags-action@v1
+      with:
+        tag-pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
+        include-hashes: false
+
+    - name: Publish release
+      id: create_release
+      uses: https://github.com/softprops/action-gh-release@v2
+      with:
+        tag_name: ${{ steps.changes.outputs.tag }}
+        name: "Release ${{ steps.changes.outputs.tag }}"
+        body: "${{ steps.changes.outputs.changes }}"
+        draft: false
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}
