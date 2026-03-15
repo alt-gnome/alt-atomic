@@ -46,9 +46,9 @@ runs:
       set -x
 
       if [[ "${{ inputs.build }}" == "default" ]]; then
-        IMAGE="${{ inputs.registry }}/alt-atomic/core/nightly:${{ inputs.date }}"
+        IMAGE="${{ inputs.registry }}/alt-atomic/core/stable:${{ inputs.date }}"
       else
-        IMAGE="${{ inputs.registry }}/${{ github.repository }}/nightly:${{ inputs.commit }}"
+        IMAGE="${{ inputs.registry }}/${{ github.repository }}/prerelease:${{ inputs.commit }}"
       fi
 
       podman build \
@@ -56,7 +56,7 @@ runs:
         --platform linux/amd64 \
         --build-arg IMAGE=$IMAGE \
         --build-arg BUILD=${{ inputs.build }} \
-        --build-arg IMAGE_TYPE=nightly \
+        --build-arg IMAGE_TYPE=prerelease \
         --file ./container-files/main \
         .
 
@@ -65,45 +65,23 @@ runs:
     id: rechunk
     with:
       ref: ${{ inputs.local-build-name }}
-      prev-ref: >-
-        ${{ 
-          github.ref_name == 'main' &&
-          format('{0}/{1}/nightly:latest', inputs.registry, inputs.image-name) ||
-          format('{0}/{1}/nightly-branch:{2}', inputs.registry, inputs.image-name, github.ref_name)
-        }}
+      prev-ref: ${{ format('{0}/{1}/prerelease:latest', inputs.registry, inputs.image-name) }}
       labels: |
         org.altlinux.repo.date=${{ inputs.pretty-date }}
-        org.opencontainers.image.title=ALT Atomic Onyx Nightly ${{ inputs.name-pretty }}
-        org.opencontainers.image.description=ALT Atomic with GNOME, nightly build ${{ inputs.name-pretty }}
+        org.opencontainers.image.title=ALT Atomic Onyx Prerelease ${{ inputs.name-pretty }}
+        org.opencontainers.image.description=ALT Atomic with GNOME, prerelease build ${{ inputs.name-pretty }}
         org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
         org.opencontainers.image.licenses=GPL-3.0-or-later
         org.opencontainers.image.vendor=ALT Atomic Team
 
   - name: Push and sign images
     uses: alt-atomic/actions/push-and-sign@main
-    if: github.event_name != 'pull_request'
     with:
       registry: ${{ inputs.registry }}
       registry-username: "<token>"
       registry-password: ${{ inputs.registry-token }}
-      image-name: >-
-        ${{
-          github.ref_name == 'main' &&
-          format('{0}/nightly', inputs.image-name) ||
-          format('{0}/nightly-branch', inputs.image-name)
-        }}
-      image-tag: >-
-        ${{ 
-          github.ref_name == 'main' && 
-          'latest' || 
-          github.ref_name 
-        }}
-      image-aliases: >-
-        ${{ 
-          github.ref_name == 'main' && 
-          inputs.date || 
-          ''
-        }} ${{ inputs.commit }}
+      image-name: ${{ format('{0}/prerelease', inputs.image-name) }}
+      image-tag: ${{ inputs.commit }}
       local-build-name: ${{ steps.rechunk.outputs.ref }}
       cosign-image-sign: ${{ inputs.cosign-image-sign }}
       cosign-password: ${{ inputs.cosign-password }}
