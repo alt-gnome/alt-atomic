@@ -63,7 +63,6 @@ runs:
   - name: Rechunk image
     uses: alt-atomic/actions/rechunk@main
     id: rechunk
-    if: (github.event_name == 'push' && github.ref_name == 'main' ) || contains(fromJSON('["workflow_dispatch", "schedule"]'), github.event_name)
     with:
       ref: ${{ inputs.local-build-name }}
       prev-ref: >-
