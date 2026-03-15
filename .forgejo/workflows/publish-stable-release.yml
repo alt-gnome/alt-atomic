@@ -11,7 +11,7 @@ env:
 jobs:
   release:
     name: Publish release
-    runs-on: alt-tiny
+    runs-on: als-tiny
     container:
       image: altlinux.space/alt-atomic/builder-image:sisyphus
     steps:
