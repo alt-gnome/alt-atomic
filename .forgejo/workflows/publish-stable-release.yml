@@ -54,7 +54,7 @@ jobs:
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
-        registry-password: ${{ inputs.registry-token }}
+        registry-password: ${{ secrets.REGISTRY_TOKEN }}
         image-from: docker://${{ steps.get_images.outputs.image }}
         image-name-to: ${{ github.repository }}/stable
         image-tags: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
@@ -64,7 +64,7 @@ jobs:
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
-        registry-password: ${{ inputs.registry-token }}
+        registry-password: ${{ secrets.REGISTRY_TOKEN }}
         image-from: docker://${{ steps.get_images.outputs.image-nv }}
         image-name-to: ${{ github.repository }}-nvidia/stable
         image-tags: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
