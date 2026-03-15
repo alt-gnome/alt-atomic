@@ -50,7 +50,7 @@ jobs:
         fi
 
     - name: Copy default image
-      uses: alt-atomic/actions/release@a58290d956a836d87e2d130ee3cdb3c0d096974c
+      uses: alt-atomic/actions/release@main
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
@@ -60,7 +60,7 @@ jobs:
         image-tags: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
 
     - name: Copy nvidia image
-      uses: alt-atomic/actions/release@a58290d956a836d87e2d130ee3cdb3c0d096974c
+      uses: alt-atomic/actions/release@main
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
