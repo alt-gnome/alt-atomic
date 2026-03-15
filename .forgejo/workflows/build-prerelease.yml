@@ -43,7 +43,7 @@ jobs:
 
   build-default:
     name: Build default image
-    runs-on: alt-sisyphus
+    runs-on: als-huge
     needs:
     - gather-build-data
     container:
@@ -71,7 +71,7 @@ jobs:
 
   build-nvidia:
     name: Build nvidia image
-    runs-on: alt-sisyphus
+    runs-on: als-huge
     needs:
     - gather-build-data
     - build-default
