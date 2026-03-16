@@ -57,7 +57,7 @@ jobs:
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
         image-from: docker://${{ steps.get_images.outputs.image }}
         image-name-to: ${{ github.repository }}/stable
-        image-tags: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
+        image-tags: latest ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
 
     - name: Copy nvidia image
       uses: alt-atomic/actions/release@main
@@ -67,7 +67,7 @@ jobs:
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
         image-from: docker://${{ steps.get_images.outputs.image-nv }}
         image-name-to: ${{ github.repository }}-nvidia/stable
-        image-tags: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
+        image-tags: latest ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
 
     - name: Get changes between tags
       id: changes
