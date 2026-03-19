@@ -14,7 +14,7 @@ modules:
         - openssh-server
         - ptyxis
         - starship
-        - stplr
+        # - stplr
         - zsh
         - zsh-autosuggestions
         - zsh-completions
