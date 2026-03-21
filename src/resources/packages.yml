@@ -68,6 +68,7 @@ modules:
         - nautilus-open-any-terminal
         - nautilus-python
         - nautilus-share
+        - orca
         - papers
         - pika-backup
         - pinentry-gnome3

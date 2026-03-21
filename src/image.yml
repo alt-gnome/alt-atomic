@@ -1,6 +1,11 @@
 image: ${{ Env.IMAGE }}
 
 modules:
+  - name: Update packages
+    type: packages
+    body:
+      update: true
+
   - name: Set branding
     if: Env.BUILD == "default"
     type: branding
