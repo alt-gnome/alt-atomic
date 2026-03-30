@@ -13,6 +13,8 @@ jobs:
   gather-build-data:
     name: Gather build data
     runs-on: als-tiny
+    container:
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
 
     outputs:
       core-tag: ${{ steps.core_tag.outputs.core-tag }}
@@ -28,14 +30,16 @@ jobs:
       run: |
         set -e
 
-        echo "core-tag=$(cat ./CORE_TAG | tr -d '\n')" >> $FORGEJO_OUTPUT
+        tag=$(cat ./CORE_TAG)
+        echo "core-tag=$tag" >> $FORGEJO_OUTPUT
 
     - name: Get core repo date
       id: date
       run: |
         set -e
 
-        echo "repo-date=$(skopeo inspect --format '{{index .Labels "org.altlinux.repo.date"}}' docker://altlinux.space/alt-atomic/core/stable:${{ steps.core_tag.outputs.core-tag }})" >> $FORGEJO_OUTPUT
+        date=$(skopeo inspect --format '{{index .Labels "org.altlinux.repo.date"}}' docker://altlinux.space/alt-atomic/core/stable:${{ steps.core_tag.outputs.core-tag }})
+        echo "repo-date=$date" >> $FORGEJO_OUTPUT
 
     - id: get_commit
       name: Get current commit
