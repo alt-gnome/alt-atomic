@@ -15,26 +15,27 @@ jobs:
     runs-on: als-tiny
 
     outputs:
-      date: ${{ steps.date.outputs.date }}
-      pretty-date: ${{ steps.date.outputs.pretty-date }}
+      core-tag: ${{ steps.core_tag.outputs.core-tag }}
+      repo-date: ${{ steps.date.outputs.repo-date }}
       commit: ${{ steps.get_commit.outputs.commit }} 
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Read DATE
-      id: repo_date
+    - name: Read CORE_TAG
+      id: core_tag
       run: |
         set -e
 
-        echo "repo-date=$(cat ./DATE | tr -d '\n')" >> $FORGEJO_OUTPUT
+        echo "core-tag=$(cat ./CORE_TAG | tr -d '\n')" >> $FORGEJO_OUTPUT
 
-    - name: Get date
+    - name: Get core repo date
       id: date
-      uses: alt-atomic/actions/parse-date@main
-      with:
-        date: ${{ steps.repo_date.outputs.repo-date }}
+      run: |
+        set -e
+
+        echo "repo-date=$(skopeo inspect --format '{{index .Labels "org.altlinux.repo.date"}}' docker://altlinux.space/alt-atomic/core/stable:${{ steps.core_tag.outputs.core-tag }})" >> $FORGEJO_OUTPUT
 
     - id: get_commit
       name: Get current commit
@@ -61,8 +62,8 @@ jobs:
         build: default
         image-name: ${{ github.repository }}
         name-pretty: ''
-        date: ${{ needs.gather-build-data.outputs.date }}
-        pretty-date: ${{ needs.gather-build-data.outputs.pretty-date }}
+        core-tag: ${{ needs.gather-build-data.outputs.core-tag }}
+        pretty-date: ${{ needs.gather-build-data.outputs.repo-date }}
         commit: ${{ needs.gather-build-data.outputs.commit }}
         registry-token: ${{ secrets.REGISTRY_TOKEN }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
@@ -90,8 +91,8 @@ jobs:
         build: nvidia
         image-name: ${{ github.repository }}-nvidia
         name-pretty: (Nvidia)
-        date: ${{ needs.gather-build-data.outputs.date }}
-        pretty-date: ${{ needs.gather-build-data.outputs.pretty-date }}
+        core-tag: ${{ needs.gather-build-data.outputs.core-tag }}
+        pretty-date: ${{ needs.gather-build-data.outputs.repo-date }}
         commit: ${{ needs.gather-build-data.outputs.commit }}
         registry-token: ${{ secrets.REGISTRY_TOKEN }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}

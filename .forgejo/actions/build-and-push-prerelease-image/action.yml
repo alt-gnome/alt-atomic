@@ -11,7 +11,7 @@ inputs:
   name-pretty:
     required: true
     description: ''
-  date:
+  core-tag:
     required: true
     description: ''
   pretty-date:
@@ -46,7 +46,7 @@ runs:
       set -x
 
       if [[ "${{ inputs.build }}" == "default" ]]; then
-        IMAGE="${{ inputs.registry }}/alt-atomic/core/stable:${{ inputs.date }}"
+        IMAGE="${{ inputs.registry }}/alt-atomic/core/stable:${{ inputs.core-tag }}"
       else
         IMAGE="${{ inputs.registry }}/${{ github.repository }}/prerelease:${{ inputs.commit }}"
       fi
