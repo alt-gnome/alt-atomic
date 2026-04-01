@@ -70,7 +70,7 @@ modules:
         - nautilus-share
         - orca
         - papers
-        - pika-backup
+        - deja-dup
         - pinentry-gnome3
         - resources
         - samba-usershares
