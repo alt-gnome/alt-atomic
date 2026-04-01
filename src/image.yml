@@ -12,6 +12,8 @@ modules:
     body:
       name: alt-atomic-${{ Env.IMAGE_NAME }}
       build-type: ${{ Env.IMAGE_TYPE }}
+      release-overrides:
+        VERSION: ${{ Env.VERSION }}
 
   - name: Install packages
     if: Env.BUILD == "default"

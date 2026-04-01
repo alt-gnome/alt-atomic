@@ -57,6 +57,7 @@ runs:
         --build-arg IMAGE=$IMAGE \
         --build-arg BUILD=${{ inputs.build }} \
         --build-arg IMAGE_TYPE=nightly \
+        --build-arg VERSION=${{ inputs.date }} \
         --file ./container-files/main \
         .
 
@@ -75,6 +76,7 @@ runs:
         org.altlinux.repo.date=${{ inputs.pretty-date }}
         org.opencontainers.image.title=ALT Atomic Onyx Nightly ${{ inputs.name-pretty }}
         org.opencontainers.image.description=ALT Atomic with GNOME, nightly build ${{ inputs.name-pretty }}
+        org.opencontainers.image.version=${{ inputs.date }}
         org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
         org.opencontainers.image.licenses=GPL-3.0-or-later
         org.opencontainers.image.vendor=ALT Atomic Team
