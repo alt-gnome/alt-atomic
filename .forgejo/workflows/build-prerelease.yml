@@ -1,7 +1,6 @@
 name: Build stable images
 
 on:
-  workflow_dispatch:
   push:
     branches:
     - 'release-*'
@@ -19,11 +18,15 @@ jobs:
     outputs:
       core-tag: ${{ steps.core_tag.outputs.core-tag }}
       repo-date: ${{ steps.date.outputs.repo-date }}
-      commit: ${{ steps.get_commit.outputs.commit }} 
+      commit: ${{ steps.get_commit.outputs.commit }}
+      version: ${{ steps.version.outputs.version }}
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        fetch-tags: true
 
     - name: Read CORE_TAG
       id: core_tag
@@ -32,6 +35,22 @@ jobs:
 
         tag=$(cat ./CORE_TAG)
         echo "core-tag=$tag" >> $FORGEJO_OUTPUT
+
+    - name: Calcualte next tag version
+      id: version
+      run: |
+        set -e
+
+        PREFIX=${GITHUB_REF_NAME#release-}
+        LAST_TAG=$(git tag -l "${PREFIX}.*" | sort -V | tail -n 1)
+
+        if [ -z "$LAST_TAG" ]; then
+            VERSION="${PREFIX}.0"
+        else
+            VERSION="${LAST_TAG%.*}.$(( ${LAST_TAG##*.} + 1 ))"
+        fi
+
+        echo "version=$VERSION" >> $FORGEJO_OUTPUT
 
     - name: Get core repo date
       id: date
@@ -69,6 +88,7 @@ jobs:
         core-tag: ${{ needs.gather-build-data.outputs.core-tag }}
         pretty-date: ${{ needs.gather-build-data.outputs.repo-date }}
         commit: ${{ needs.gather-build-data.outputs.commit }}
+        version: ${{ needs.gather-build-data.outputs.version }}
         registry-token: ${{ secrets.REGISTRY_TOKEN }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
@@ -98,6 +118,7 @@ jobs:
         core-tag: ${{ needs.gather-build-data.outputs.core-tag }}
         pretty-date: ${{ needs.gather-build-data.outputs.repo-date }}
         commit: ${{ needs.gather-build-data.outputs.commit }}
+        version: ${{ needs.gather-build-data.outputs.version }}
         registry-token: ${{ secrets.REGISTRY_TOKEN }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}

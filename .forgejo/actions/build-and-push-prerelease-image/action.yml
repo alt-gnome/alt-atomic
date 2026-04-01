@@ -20,6 +20,9 @@ inputs:
   commit:
     required: true
     description: ''
+  version:
+    required: true
+    description: ''
   registry-token:
     required: true
     description: ''
@@ -56,7 +59,8 @@ runs:
         --platform linux/amd64 \
         --build-arg IMAGE=$IMAGE \
         --build-arg BUILD=${{ inputs.build }} \
-        --build-arg IMAGE_TYPE=prerelease \
+        --build-arg IMAGE_TYPE=stable \
+        --build-arg VERSION=${{ inputs.version }} \
         --file ./container-files/main \
         .
 
@@ -68,8 +72,8 @@ runs:
       prev-ref: ${{ format('{0}/{1}/prerelease:latest', inputs.registry, inputs.image-name) }}
       labels: |
         org.altlinux.repo.date=${{ inputs.pretty-date }}
-        org.opencontainers.image.title=ALT Atomic Onyx Prerelease ${{ inputs.name-pretty }}
-        org.opencontainers.image.description=ALT Atomic with GNOME, prerelease build ${{ inputs.name-pretty }}
+        org.opencontainers.image.title=ALT Atomic Onyx ${{ inputs.name-pretty }}
+        org.opencontainers.image.description=ALT Atomic with GNOME, build ${{ inputs.name-pretty }}
         org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
         org.opencontainers.image.licenses=GPL-3.0-or-later
         org.opencontainers.image.vendor=ALT Atomic Team

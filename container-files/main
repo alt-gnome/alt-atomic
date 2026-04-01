@@ -5,11 +5,13 @@ FROM $IMAGE
 ARG BUILD
 ARG IMAGE
 ARG IMAGE_TYPE
+ARG VERSION
 
 ENV BUILD=$BUILD
 ENV IMAGE_NAME="onyx"
 ENV IMAGE_TYPE=$IMAGE_TYPE
 ENV IMAGE=$IMAGE
+ARG VERSION=$VERSION
 
 RUN --mount=type=bind,source=./src/image.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./src/resources,target=/etc/apm/resources \
