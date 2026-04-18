@@ -1,0 +1,33 @@
+[org/gnome/desktop/app-folders]
+folder-children=['Utilities', 'Development', 'Graphics', 'Office', 'Network', 'Multimedia']
+
+[org/gnome/desktop/app-folders/folders/Utilities]
+name='Utilities'
+translate=true
+categories=['Utility', 'System', 'Settings']
+apps=['gnome-abrt.desktop', 'gnome-system-log.desktop', 'gnome-system-monitor.desktop', 'gnome-control-center.desktop', 'org.gnome.Settings.desktop', 'gnome-printers-panel.desktop', 'org.gnome.Settings.Printers.desktop', 'ca.desrt.dconf-editor.desktop', 'org.gnome.DiskUtility.desktop', 'gnome-usage.desktop', 'org.gnome.Usage.desktop']
+
+[org/gnome/desktop/app-folders/folders/Development]
+name='Dev'
+translate=true
+categories=['Development']
+
+[org/gnome/desktop/app-folders/folders/Graphics]
+name='Graphics'
+translate=true
+categories=['Graphics']
+
+[org/gnome/desktop/app-folders/folders/Office]
+name='Office'
+translate=true
+categories=['Office']
+
+[org/gnome/desktop/app-folders/folders/Network]
+name='Network'
+translate=true
+categories=['Network']
+
+[org/gnome/desktop/app-folders/folders/Multimedia]
+name='Multimedia'
+translate=true
+categories=['AudioVideo', 'Audio', 'Video', 'Player']
