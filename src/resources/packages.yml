@@ -102,18 +102,19 @@ modules:
 
         # Fonts & Themes
         - fonts-otf-abattis-cantarell
+        - fonts-ttf-cjkuni-ukai
+        - fonts-ttf-dejavu
+        - fonts-ttf-fira-code-nerd
+        - fonts-ttf-google-noto-emoji
+        - fonts-ttf-google-noto-emoji-color
+        - fonts-ttf-jetbrains-mono-nl
+        - fonts-ttf-liberation
         - gnome-icon-theme
         - gnome-icon-theme-symbolic
         - gnome-themes-extra
         - icon-theme-adwaita
         - icon-theme-morewaita
         - libgtk2-engine-adwaita
-        - fonts-ttf-cjkuni-ukai
-        - fonts-ttf-dejavu
-        - fonts-ttf-fira-code-nerd
-        - fonts-ttf-google-noto-emoji
-        - fonts-ttf-jetbrains-mono-nl
-        - fonts-ttf-liberation
 
         # Third-party
         - firefox
