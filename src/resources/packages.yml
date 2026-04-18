@@ -5,6 +5,7 @@ modules:
         # CLI & Development
         - distrobox
         - fastfetch
+        - fish
         - flatpak
         - git
         - htop
