@@ -2,47 +2,34 @@ modules:
   - type: packages
     body:
       install:
-        # Base
+        # CLI & Development
         - distrobox
         - fastfetch
         - flatpak
         - git
         - htop
         - inxi
-        - iucode_tool
         - notify-send
-        - openssh-server
-        - ptyxis
         - starship
-        # - stplr
         - zsh
         - zsh-autosuggestions
         - zsh-completions
+        # - stplr
 
-        # GNOME
-        - authenticator
+        # System & Hardware Services
+        - fprintd
+        - fwupd
+        - iucode_tool
+        - power-profiles-daemon
+        - xdg-user-dirs-gtk
+
+        # GNOME Core & Shell
         - dconf-editor
-        - file-roller
-        - fonts-ttf-cjkuni-ukai
-        - fonts-ttf-dejavu
-        - fonts-ttf-liberation
         - fuse-gvfs
-        - g4music
         - gnome-backgrounds
-        - gnome-boxes
         - gnome-browser-connector
-        - gnome-calculator
-        - gnome-calendar
-        - gnome-characters
-        - gnome-clocks
         - gnome-control-center
-        - gnome-disk-usage
-        - gnome-extension-manager
-        - gnome-icon-theme
-        - gnome-icon-theme-symbolic
         - gnome-keyring
-        - gnome-logs
-        - gnome-maps
         - gnome-session-wayland
         - gnome-shell
         - gnome-shell-extension-appindicator
@@ -52,16 +39,27 @@ modules:
         - gnome-shell-extensions
         - gnome-software
         - gnome-software-plugin-flatpak
+        - gvfs-backends
+        - pinentry-gnome3
+
+        # GNOME Applications
+        - authenticator
+        - file-roller
+        - g4music
+        - gnome-boxes
+        - gnome-calculator
+        - gnome-calendar
+        - gnome-characters
+        - gnome-clocks
+        - gnome-disk-usage
+        - gnome-extension-manager
+        - gnome-logs
+        - gnome-maps
         - gnome-text-editor
-        - gnome-themes-extra
         - gnome-tour
         - gnome-user-docs
         - gnome-weather
-        - gvfs-backends
-        - icon-theme-adwaita
-        - icon-theme-morewaita
         - key-rack
-        - libgtk2-engine-adwaita
         - loupe
         - nautilus
         - nautilus-code
@@ -70,26 +68,26 @@ modules:
         - nautilus-share
         - orca
         - papers
+        - ptyxis
         - deja-dup
-        - pinentry-gnome3
         - resources
-        - samba-usershares
         - showtime
-        - xdg-user-dirs-gtk
         - yelp
 
-        # ALT
-        - foldy
-        - tuner
-        - tuner-tweaks
-
-        # Misc
-        - firefox
-        - fprintd
+        # Network & Printing
+        - avahi-daemon
+        - cups
+        - cups-browsed
         - gtk3-ssh-askpass
-        - power-profiles-daemon
+        - libnss-mdns
+        - openssh-server
+        - wsdd
 
-        # Drivers
+        # Graphics, Display & Input
+        - qt5-wayland
+        - qt6-wayland
+        - vulkan-tools
+        - wayland-utils
         - xorg-drv-amdgpu
         - xorg-drv-intel
         - xorg-drv-libinput
@@ -98,26 +96,29 @@ modules:
         - xorg-drv-spiceqxl
         - xorg-drv-vmware
 
-        # Wayland utils
-        - qt5-wayland
-        - qt6-wayland
-        - vulkan-tools
-        - wayland-utils
-        
-        # Sound
+        # Audio
         - pipewire
         - wireplumber
-        
-        # Print
-        - avahi-daemon
-        - cups
-        - cups-browsed
-        - fwupd
-        - libnss-mdns
-        - wsdd
 
-        # Fonts
+        # Fonts & Themes
         - fonts-otf-abattis-cantarell
+        - gnome-icon-theme
+        - gnome-icon-theme-symbolic
+        - gnome-themes-extra
+        - icon-theme-adwaita
+        - icon-theme-morewaita
+        - libgtk2-engine-adwaita
+        - fonts-ttf-cjkuni-ukai
+        - fonts-ttf-dejavu
         - fonts-ttf-fira-code-nerd
         - fonts-ttf-google-noto-emoji
         - fonts-ttf-jetbrains-mono-nl
+        - fonts-ttf-liberation
+
+        # Third-party
+        - firefox
+
+        # ALT
+        - foldy
+        - tuner
+        - tuner-tweaks
