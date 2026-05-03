@@ -13,19 +13,6 @@ modules:
       command: |
         control xdg-user-dirs enabled
 
-  - name: Fix gnome-software
-    type: shell
-    body:
-      command: |
-        for dir in /usr/lib64/gnome-software/plugins-*; do
-          if [ -d "$dir" ]; then
-            file="$dir/libgs_plugin_packagekit.so"
-            if [ -e "$file" ]; then
-              mv "$file" "${file}.disabled"
-            fi
-          fi
-        done
-
   - type: copy
     if: Env.IMAGE_TYPE == "nightly"
     body:
