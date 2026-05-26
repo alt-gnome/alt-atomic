@@ -126,3 +126,4 @@ modules:
         - tuner
         - tuner-osinfo
         - tuner-tweaks
+        - capsule
