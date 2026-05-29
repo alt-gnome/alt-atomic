@@ -127,3 +127,10 @@ modules:
         - tuner-osinfo
         - tuner-tweaks
         - capsule
+
+        # ReadySet
+        - ready-set-gdm
+        - ready-set-plugin-keyboard
+        - ready-set-plugin-language
+        - ready-set-plugin-user-passwdqc
+        - ready-set-plugin-welcome
