@@ -1,10 +1,18 @@
 image: ${{ Env.IMAGE }}
 
 modules:
+  - name: Add ready-set nightly repo
+    type: repos
+    if: Env.BUILD == "default"
+    body:
+      custom:
+        - rpm https://altlinux.space/api/packages/alt-gnome/alt/group/ready-set-nightly/main/sisyphus.repo _arch_ classic
+
   - name: Update packages
     type: packages
     body:
       update: true
+      upgrade: true
 
   - name: Set branding
     if: Env.BUILD == "default"
