@@ -79,7 +79,7 @@ runs:
         org.opencontainers.image.version=${{ inputs.date }}
         org.opencontainers.image.source=https://altlinux.space/alt-atomic/onyx
         org.opencontainers.image.licenses=GPL-3.0-or-later
-        org.opencontainers.image.vendor=ALT Linux Team
+        org.opencontainers.image.vendor=ALT Atomic Team
         org.altlinux.installer.has-initial-setup=true
 
   - name: Push and sign images
