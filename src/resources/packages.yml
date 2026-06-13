@@ -5,10 +5,12 @@ modules:
         # CLI & Development
         - distrobox
         - fastfetch
+        - ffmpeg
         - fish
         - flatpak
         - git
         - htop
+        - ImageMagick
         - inxi
         - notify-send
         - starship
