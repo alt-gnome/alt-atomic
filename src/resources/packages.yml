@@ -85,6 +85,7 @@ modules:
         - gtk3-ssh-askpass
         - libnss-mdns
         - openssh-server
+        - sane
         - wsdd
 
         # Graphics, Display & Input
