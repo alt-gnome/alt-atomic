@@ -46,7 +46,7 @@ runs:
       set -x
 
       if [[ "${{ inputs.build }}" == "default" ]]; then
-        IMAGE="${{ inputs.registry }}/alt-atomic/core/nightly:${{ inputs.date }}"
+        IMAGE="${{ inputs.registry }}/alt-atomic/core/nightly/amd64:${{ inputs.date }}"
       else
         IMAGE="${{ inputs.registry }}/${{ github.repository }}/${{ github.ref_name == 'main' && 'nightly' || 'nightly-branch' }}:${{ inputs.commit }}"
       fi
