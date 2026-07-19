@@ -34,3 +34,10 @@ modules:
     type: shell
     body:
       command: flatpak mask org.freedesktop.Platform.openh264
+
+  - name: Fix gnome-user-share
+    type: replace
+    body:
+      target: /usr/share/gnome-user-share/dav_user_2.4.conf
+      pattern: '^(LoadModule (unixd_module|mpm_prefork_module).*)$'
+      repl: '# $1'
