@@ -1,3 +1,0 @@
-#!/bin/sh -e
-
-apm system image sync-groups --ft plain
