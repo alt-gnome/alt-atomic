@@ -28,7 +28,7 @@ modules:
   - name: Add flathub repo
     type: shell
     body:
-      command: flatpak remote-add flathub https://flathub.org/repo/flathub.flatpakrepo
+      command: flatpak remote-add flathub https://flathub.alt-gnome.ru/repo/flathub.flatpakrepo
 
   - name: Mask not available openh264 flatpak package
     type: shell
