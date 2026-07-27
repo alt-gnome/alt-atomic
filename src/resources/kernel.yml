@@ -1,0 +1,6 @@
+modules:
+  - type: kernel
+    body:
+      initrd:
+        method: dracut
+        plymouth-theme: atomic

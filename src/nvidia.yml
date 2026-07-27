@@ -1,0 +1,21 @@
+image: ${{ Env.IMAGE }}
+
+modules:
+  - type: include
+    body:
+      targets:
+        - update.yml
+
+  - name: Set branding
+    type: branding
+    body:
+      release-overrides:
+        VARIANT: Nvidia
+        VARIANT_ID: ${{ Env.BUILD }}
+
+  - type: include
+    body:
+      targets:
+        - /usr/share/apm/includes/common/nvidia.yml
+        - kernel.yml
+        - /usr/share/apm/includes/common/cleanup.yml
