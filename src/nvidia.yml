@@ -10,7 +10,7 @@ modules:
     type: branding
     body:
       release-overrides:
-        VARIANT: Nvidia
+        VARIANT: NVIDIA
         VARIANT_ID: ${{ Env.BUILD }}
 
   - type: include
