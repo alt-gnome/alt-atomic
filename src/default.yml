@@ -1,13 +1,12 @@
 image: ${{ Env.IMAGE }}
 
 modules:
-  - name: Update packages
-    type: packages
+  - type: include
     body:
-      update: true
+      targets:
+        - update.yml
 
   - name: Set branding
-    if: Env.BUILD == "default"
     type: branding
     body:
       name: alt-atomic-${{ Env.IMAGE_NAME }}
@@ -17,23 +16,13 @@ modules:
         VARIANT: Default
         VARIANT_ID: ${{ Env.BUILD }}
 
-  - name: Set branding
-    if: Env.BUILD == "nvidia"
-    type: branding
-    body:
-      release-overrides:
-        VARIANT: Nvidia
-        VARIANT_ID: ${{ Env.BUILD }}
-
   - name: Install packages
-    if: Env.BUILD == "default"
     type: include
     body:
       targets:
         - packages.yml
 
   - name: Copy root
-    if: Env.BUILD == "default"
     type: copy
     body:
       source: root
@@ -41,27 +30,10 @@ modules:
       replace: true
 
   - type: include
-    if: Env.BUILD == "default"
     body:
       targets:
         - network.yml
         - systemd.yml
         - settings.yml
-
-  - type: include
-    if: Env.BUILD == "nvidia"
-    body:
-      targets:
-        - /usr/share/apm/includes/common/nvidia.yml
-
-  - type: kernel
-    body:
-      initrd:
-        method: dracut
-        plymouth-theme: atomic
-
-  - name: Cleanup
-    type: include
-    body:
-      targets:
+        - kernel.yml
         - /usr/share/apm/includes/common/cleanup.yml

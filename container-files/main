@@ -13,7 +13,7 @@ ENV IMAGE_TYPE=$IMAGE_TYPE
 ENV IMAGE=$IMAGE
 ENV VERSION=$VERSION
 
-RUN --mount=type=bind,source=./src/image.yml,target=/etc/apm/image.yml \
+RUN --mount=type=bind,source=./src/${BUILD}.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./src/resources,target=/etc/apm/resources \
     apm system image build
 
