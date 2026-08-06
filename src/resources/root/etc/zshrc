@@ -184,6 +184,8 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<-
 autoload -U colors
 colors
 
+[ -f /etc/zshrc.d/command-not-found.zsh ] && source /etc/zshrc.d/command-not-found.zsh
+
 #####################
 # User configuration
 #####################
