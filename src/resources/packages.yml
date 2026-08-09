@@ -2,8 +2,6 @@ modules:
   - type: packages
     body:
       install:
-        - ptyxis
-
         # CLI & Development
         - distrobox
         - fastfetch
@@ -74,6 +72,7 @@ modules:
         - hashsum-nautilus
         - orca
         - papers
+        - ptyxis
         - deja-dup
         - resources
         - showtime
