@@ -1,10 +1,11 @@
 image: ${{ Env.IMAGE }}
 
 modules:
-  - type: include
+  - name: Install packages
+    type: include
     body:
       targets:
-        - update.yml
+        - packages.yml
 
   - name: Set branding
     type: branding
@@ -15,12 +16,6 @@ modules:
         VERSION: ${{ Env.VERSION }}
         VARIANT: Default
         VARIANT_ID: ${{ Env.BUILD }}
-
-  - name: Install packages
-    type: include
-    body:
-      targets:
-        - packages.yml
 
   - name: Copy root
     type: copy
