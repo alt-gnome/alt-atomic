@@ -55,6 +55,7 @@ modules:
         - gnome-calendar
         - gnome-characters
         - gnome-clocks
+        - gnome-contacts
         - gnome-disk-usage
         - gnome-extension-manager
         - gnome-logs
@@ -76,6 +77,7 @@ modules:
         - deja-dup
         - resources
         - showtime
+        - snapshot
         - yelp
 
         # Network & Printing
