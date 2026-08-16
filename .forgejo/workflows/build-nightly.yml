@@ -60,7 +60,6 @@ jobs:
         - amd64
         include:
         - arch: amd64
-          larch: x86_64
           runner: als-huge
 
     steps:
@@ -98,12 +97,8 @@ jobs:
           org.altlinux.installer.has-initial-setup=true
 
         build-args: |
-          YEAR=${{ needs.gather-build-data.outputs.year }}
-          MONTH=${{ needs.gather-build-data.outputs.month }}
-          DAY=${{ needs.gather-build-data.outputs.day }}
           IMAGE_TYPE=nightly
           IMAGE=${{ format('{0}/alt-atomic/core/nightly/{1}:{2}', env.REGISTRY, matrix.arch, needs.gather-build-data.outputs.date) }}
-          ARCH=${{ matrix.larch }}
           VERSION=${{ needs.gather-build-data.outputs.date }}
           BUILD=default
 
@@ -138,12 +133,8 @@ jobs:
           org.altlinux.installer.has-initial-setup=true
 
         build-args: |
-          YEAR=${{ needs.gather-build-data.outputs.year }}
-          MONTH=${{ needs.gather-build-data.outputs.month }}
-          DAY=${{ needs.gather-build-data.outputs.day }}
           IMAGE_TYPE=nightly
           IMAGE=${{ steps.build-default.outputs.ref }}
-          ARCH=${{ matrix.larch }}
           VERSION=${{ needs.gather-build-data.outputs.date }}
           BUILD=nvidia
 

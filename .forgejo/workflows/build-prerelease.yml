@@ -126,7 +126,6 @@ jobs:
           BUILD=default
           IMAGE_TYPE=stable
           VERSION=${{ needs.gather-build-data.outputs.version }}
-          ARCH=${{ matrix.larch }}
 
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
@@ -161,7 +160,6 @@ jobs:
           BUILD=nvidia
           IMAGE_TYPE=stable
           VERSION=${{ needs.gather-build-data.outputs.version }}
-          ARCH=${{ matrix.larch }}
 
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
