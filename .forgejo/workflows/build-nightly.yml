@@ -71,7 +71,7 @@ jobs:
 
     - name: Build default image
       id: build-default
-      uses: alt-atomic/actions/build-and-push@97592f96a36d4006572bd375a4c0cd370c3c6461
+      uses: alt-atomic/actions/build-and-push@79d44bd09148e22c2fb5ad195e7fed49e5d34d8c
       with:
         image-name: ${{ format('{0}/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.tag }}
@@ -111,7 +111,7 @@ jobs:
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
     - name: Build nvidia image
-      uses: alt-atomic/actions/build-and-push@97592f96a36d4006572bd375a4c0cd370c3c6461
+      uses: alt-atomic/actions/build-and-push@79d44bd09148e22c2fb5ad195e7fed49e5d34d8c
       with:
         image-name: ${{ format('{0}-nvidia/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.tag }}
