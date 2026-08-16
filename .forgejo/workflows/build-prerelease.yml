@@ -8,6 +8,13 @@ on:
 env:
   REGISTRY: altlinux.space
 
+  PRETTY_NAME: ALT Atomic Onyx
+  VENDOR: ALT Atomic Team
+  DESCRIPTION: ALT Atomic with GNOME, stable build
+  LICENSES: GPL-3.0-or-later
+  URL: atomic.alt-gnome.ru
+  AUTHORS: ALT Atomic Team
+
 jobs:
   gather-build-data:
     name: Gather build data
@@ -65,13 +72,22 @@ jobs:
       run: |
         echo "commit=$(git rev-parse HEAD)" >> $FORGEJO_OUTPUT
 
-  build-default:
-    name: Build default image
-    runs-on: als-huge
+  build:
+    name: Build ${{ matrix.arch }} images
     needs:
     - gather-build-data
+    runs-on: ${{ matrix.runner }}
     container:
       image: altlinux.space/alt-atomic/builder-image:sisyphus
+    strategy:
+      matrix:
+        arch:
+        - amd64
+        include:
+        - arch: amd64
+          larch: x86_64
+          runner: als-huge
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -80,46 +96,102 @@ jobs:
         ref: ${{ needs.gather-build-data.outputs.commit }}
 
     - name: Build default image
-      uses: ./.forgejo/actions/build-and-push-prerelease-image
+      id: build-default
+      uses: alt-atomic/actions/build-and-push@48ae7df7152c3c9b41fe8611cfa73b3d594a216b
       with:
-        build: default
-        image-name: ${{ github.repository }}
-        name-pretty: ''
-        core-tag: ${{ needs.gather-build-data.outputs.core-tag }}
-        pretty-date: ${{ needs.gather-build-data.outputs.repo-date }}
-        commit: ${{ needs.gather-build-data.outputs.commit }}
-        version: ${{ needs.gather-build-data.outputs.version }}
-        registry-token: ${{ secrets.REGISTRY_TOKEN }}
-        cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
-        cosign-password: ${{ secrets.COSIGN_PASSWORD }}
+        image-name: ${{ format('{0}/prerelease/{1}', github.repository, matrix.arch) }}
+        image-tag: ${{ needs.gather-build-data.outputs.commit }}
+        arch: ${{ matrix.arch }}
+        containerfile-path: ./container-files/main
         local-build-name: localhost/onyx
 
-  build-nvidia:
-    name: Build nvidia image
-    runs-on: als-huge
-    needs:
-    - gather-build-data
-    - build-default
-    container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        ref: ${{ needs.gather-build-data.outputs.commit }}
+        registry-password: ${{ secrets.REGISTRY_TOKEN }}
+        rechunk-enabled: true
+        experimental-use-chunkah: true
 
-    - name: Build default image
-      uses: ./.forgejo/actions/build-and-push-prerelease-image
-      with:
-        build: nvidia
-        image-name: ${{ github.repository }}-nvidia
-        name-pretty: (Nvidia)
-        core-tag: ${{ needs.gather-build-data.outputs.core-tag }}
-        pretty-date: ${{ needs.gather-build-data.outputs.repo-date }}
-        commit: ${{ needs.gather-build-data.outputs.commit }}
+        pretty-name: ${{ env.PRETTY_NAME }}
         version: ${{ needs.gather-build-data.outputs.version }}
-        registry-token: ${{ secrets.REGISTRY_TOKEN }}
+        vendor: ${{ env.VENDOR }}
+        description: ${{ env.DESCRIPTION }}
+        licenses: ${{ env.LICENSES }}
+        url: ${{ env.URL }}
+        authors: ${{ env.AUTHORS }}
+        repo-date: ${{ needs.gather-build-data.outputs.repo-date }}
+
+        extra-labels: |
+          org.altlinux.installer.has-initial-setup=true
+
+        build-args: |
+          IMAGE=${{ format('{0}/alt-atomic/core/stable:{1}', env.REGISTRY, needs.gather-build-data.outputs.core-tag) }}
+          BUILD=default
+          IMAGE_TYPE=stable
+          VERSION=${{ needs.gather-build-data.outputs.version }}
+          ARCH=${{ matrix.larch }}
+
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
-        local-build-name: localhost/onyx/nvidia
+
+    - name: Build nvidia image
+      uses: alt-atomic/actions/build-and-push@48ae7df7152c3c9b41fe8611cfa73b3d594a216b
+      with:
+        image-name: ${{ format('{0}-nvidia/prerelease/{1}', github.repository, matrix.arch) }}
+        image-tag: ${{ needs.gather-build-data.outputs.commit }}
+        arch: ${{ matrix.arch }}
+        containerfile-path: ./container-files/main
+        local-build-name: localhost/onyx-nvidia
+
+        registry-password: ${{ secrets.REGISTRY_TOKEN }}
+        rechunk-enabled: true
+        experimental-use-chunkah: true
+
+        pretty-name: ${{ env.PRETTY_NAME }} (Nvidia)
+        version: ${{ needs.gather-build-data.outputs.version }}
+        vendor: ${{ env.VENDOR }}
+        description: ${{ env.DESCRIPTION }} (Nvidia)
+        licenses: ${{ env.LICENSES }}
+        url: ${{ env.URL }}
+        authors: ${{ env.AUTHORS }}
+        repo-date: ${{ needs.gather-build-data.outputs.repo-date }}
+
+        extra-labels: |
+          org.altlinux.installer.has-initial-setup=true
+
+        build-args: |
+          IMAGE=${{ steps.build-default.outputs.ref }}
+          BUILD=nvidia
+          IMAGE_TYPE=stable
+          VERSION=${{ needs.gather-build-data.outputs.version }}
+          ARCH=${{ matrix.larch }}
+
+        cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
+        cosign-password: ${{ secrets.COSIGN_PASSWORD }}
+
+  manifest:
+    name: Multiarch ${{ matrix.name }} manifest push
+    needs:
+    - build
+    - gather-build-data
+    runs-on: als-tiny
+    container:
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
+    strategy:
+      matrix:
+        include:
+        - name: default
+          suffix: ''
+        - name: nvidia
+          suffix: '-nvidia'
+
+    steps:
+    - name: Create manifest
+      uses: alt-atomic/actions/create-manifest@0a7fd4632a415b0f4316c37d9be29325dbe32af9
+      with:
+        registry: ${{ env.REGISTRY }}
+        registry-username: "<token>"
+        registry-password: ${{ secrets.REGISTRY_TOKEN }}
+        image-name: ${{ format('{0}{1}/prerelease', github.repository, matrix.suffix) }}
+        arch-tags: amd64
+        image-wildcard: ${{ format('{0}/{1}{2}/prerelease/@ARCH@:{3}', env.REGISTRY, github.repository, matrix.suffix, needs.gather-build-data.outputs.commit) }}
+        image-tag: ${{ needs.gather-build-data.outputs.commit }}
+        cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
+        cosign-password: ${{ secrets.COSIGN_PASSWORD }}
