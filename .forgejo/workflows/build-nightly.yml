@@ -70,7 +70,7 @@ jobs:
 
     - name: Build default image
       id: build-default
-      uses: alt-atomic/actions/build-and-push@79d44bd09148e22c2fb5ad195e7fed49e5d34d8c
+      uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
       with:
         image-name: ${{ format('{0}/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.tag }}
@@ -83,6 +83,7 @@ jobs:
         push-enabled: ${{ github.event_name != 'pull_request' }}
         rechunk-enabled: true
         experimental-use-chunkah: true
+        rechunk-max-layers: 128
 
         pretty-name: ${{ env.PRETTY_NAME }}
         version: ${{ needs.gather-build-data.outputs.date }}
@@ -106,7 +107,7 @@ jobs:
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
     - name: Build nvidia image
-      uses: alt-atomic/actions/build-and-push@79d44bd09148e22c2fb5ad195e7fed49e5d34d8c
+      uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
       with:
         image-name: ${{ format('{0}-nvidia/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.tag }}
@@ -119,6 +120,7 @@ jobs:
         push-enabled: ${{ github.event_name != 'pull_request' }}
         rechunk-enabled: true
         experimental-use-chunkah: true
+        rechunk-max-layers: 128
 
         pretty-name: ${{ env.PRETTY_NAME }} (Nvidia)
         version: ${{ needs.gather-build-data.outputs.date }}
