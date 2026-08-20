@@ -3,6 +3,8 @@ modules:
     body:
       install:
         # CLI & Development
+        - apmdo
+        - apmdo-actions
         - distrobox
         - fastfetch
         - ffmpeg
