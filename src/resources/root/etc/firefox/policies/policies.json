@@ -1,0 +1,17 @@
+{
+  "policies": {
+    "SearchEngines": {
+      "Add": [
+        {
+          "Name": "Яндекс (ru)",
+          "URLTemplate": "https://yandex.ru/search/?text={searchTerms}",
+          "Method": "GET",
+          "IconURL": "https://ya.ru/favicon.ico",
+          "Alias": "ya",
+          "SuggestURLTemplate": "https://suggest.yandex.ru/suggest-ff.cgi?part={searchTerms}"
+        }
+      ]
+    },
+    "SearchSuggestEnabled": true
+  }
+}
