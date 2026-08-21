@@ -84,6 +84,7 @@ modules:
 
         # Network & Printing
         - avahi-daemon
+        - ca-certificates-digital.gov.ru
         - cups
         - cups-browsed
         - gtk3-ssh-askpass
