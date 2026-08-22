@@ -2,7 +2,7 @@
 
 Неизменяемый образ с рабочим окружением GNOME, основанный на https://altlinux.space/alt-atomic/core
 
-Документация: https://atomic.alt-gnome.ru/
+Документация: https://alt-atomic.org/
 
 ### Образы
 
