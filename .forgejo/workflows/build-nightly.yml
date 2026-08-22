@@ -15,7 +15,7 @@ env:
   VENDOR: ALT Atomic Team
   DESCRIPTION: ALT Atomic with GNOME, nightly build
   LICENSES: GPL-3.0-or-later
-  URL: atomic.alt-gnome.ru
+  URL: alt-atomic.org
   AUTHORS: ALT Atomic Team
 
 jobs:
