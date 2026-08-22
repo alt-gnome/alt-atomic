@@ -2,7 +2,7 @@
 
 Immutable image with GNOME desktop environment based on https://altlinux.space/alt-atomic/core
 
-Documentation: https://atomic.alt-gnome.ru/
+Documentation: https://alt-atomic.org/en
 
 ### Images
 
