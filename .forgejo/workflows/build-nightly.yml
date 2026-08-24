@@ -98,10 +98,10 @@ jobs:
           org.altlinux.installer.has-initial-setup=true
 
         build-args: |
-          IMAGE_TYPE=nightly
-          IMAGE=${{ format('{0}/alt-atomic/core/nightly/{1}:{2}', env.REGISTRY, matrix.arch, needs.gather-build-data.outputs.date) }}
-          VERSION=${{ needs.gather-build-data.outputs.date }}
-          BUILD=default
+          ARG_IMAGE_TYPE=nightly
+          ARG_IMAGE=${{ format('{0}/alt-atomic/core/nightly/{1}:{2}', env.REGISTRY, matrix.arch, needs.gather-build-data.outputs.date) }}
+          ARG_VERSION=${{ needs.gather-build-data.outputs.date }}
+          ARG_BUILD=default
 
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
@@ -135,10 +135,10 @@ jobs:
           org.altlinux.installer.has-initial-setup=true
 
         build-args: |
-          IMAGE_TYPE=nightly
-          IMAGE=${{ steps.build-default.outputs.ref }}
-          VERSION=${{ needs.gather-build-data.outputs.date }}
-          BUILD=nvidia
+          ARG_IMAGE_TYPE=nightly
+          ARG_IMAGE=${{ steps.build-default.outputs.ref }}
+          ARG_VERSION=${{ needs.gather-build-data.outputs.date }}
+          ARG_BUILD=nvidia
 
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}

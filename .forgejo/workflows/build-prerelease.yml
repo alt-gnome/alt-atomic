@@ -123,10 +123,10 @@ jobs:
           org.altlinux.installer.has-initial-setup=true
 
         build-args: |
-          IMAGE=${{ format('{0}/alt-atomic/core/stable:{1}', env.REGISTRY, needs.gather-build-data.outputs.core-tag) }}
-          BUILD=default
-          IMAGE_TYPE=stable
-          VERSION=${{ needs.gather-build-data.outputs.version }}
+          ARG_IMAGE=${{ format('{0}/alt-atomic/core/stable:{1}', env.REGISTRY, needs.gather-build-data.outputs.core-tag) }}
+          ARG_BUILD=default
+          ARG_IMAGE_TYPE=stable
+          ARG_VERSION=${{ needs.gather-build-data.outputs.version }}
 
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
@@ -158,10 +158,10 @@ jobs:
           org.altlinux.installer.has-initial-setup=true
 
         build-args: |
-          IMAGE=${{ steps.build-default.outputs.ref }}
-          BUILD=nvidia
-          IMAGE_TYPE=stable
-          VERSION=${{ needs.gather-build-data.outputs.version }}
+          ARG_IMAGE=${{ steps.build-default.outputs.ref }}
+          ARG_BUILD=nvidia
+          ARG_IMAGE_TYPE=stable
+          ARG_VERSION=${{ needs.gather-build-data.outputs.version }}
 
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
