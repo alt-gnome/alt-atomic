@@ -1,19 +1,19 @@
-ARG IMAGE
+ARG ARG_IMAGE
 
-FROM $IMAGE
+FROM $ARG_IMAGE
 
-ARG BUILD
-ARG IMAGE
-ARG IMAGE_TYPE
-ARG VERSION
+ARG ARG_BUILD
+ARG ARG_IMAGE
+ARG ARG_IMAGE_TYPE
+ARG ARG_VERSION
 
-ENV BUILD=$BUILD
+ENV BUILD=$ARG_BUILD
 ENV IMAGE_NAME="onyx"
-ENV IMAGE_TYPE=$IMAGE_TYPE
-ENV IMAGE=$IMAGE
-ENV VERSION=$VERSION
+ENV IMAGE_TYPE=$ARG_IMAGE_TYPE
+ENV IMAGE=$ARG_IMAGE
+ENV VERSION=$ARG_VERSION
 
-RUN --mount=type=bind,source=./src/${BUILD}.yml,target=/etc/apm/image.yml \
+RUN --mount=type=bind,source=./src/${ARG_BUILD}.yml,target=/etc/apm/image.yml \
     --mount=type=bind,source=./src/resources,target=/etc/apm/resources \
     apm system image build
 
