@@ -14,8 +14,8 @@ modules:
       build-type: ${{ Env.IMAGE_TYPE }}
       release-overrides:
         VERSION: ${{ Env.VERSION }}
-        VARIANT: Default
-        VARIANT_ID: ${{ Env.BUILD }}
+        VARIANT: Onyx
+        VARIANT_ID: onyx
 
   - name: Copy root
     type: copy

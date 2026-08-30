@@ -10,8 +10,8 @@ modules:
     type: branding
     body:
       release-overrides:
-        VARIANT: NVIDIA
-        VARIANT_ID: ${{ Env.BUILD }}
+        VARIANT: Onyx (Nvidia)
+        VARIANT_ID: onyx-nvidia
 
   - type: include
     body:
