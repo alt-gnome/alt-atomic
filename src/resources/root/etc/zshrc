@@ -230,9 +230,3 @@ _src_etc_profile_d()
 _src_etc_profile_d
 
 unset -f pathmunge _src_etc_profile_d
-
-export STARSHIP_CONFIG=/etc/starship/starship.toml
-# Starship
-if type "starship" > /dev/null; then
-  eval "$(starship init zsh)"
-fi

@@ -15,7 +15,6 @@ modules:
         - ImageMagick
         - inxi
         - notify-send
-        - starship
         - zsh
         - zsh-autosuggestions
         - zsh-completions
