@@ -4,7 +4,6 @@ on:
   workflow_dispatch:
   push:
     branches:
-    - 'nightly-*'
     - 'main'
   pull_request:
 
@@ -30,9 +29,9 @@ jobs:
       day: ${{ steps.date.outputs.day }}
       pretty-date: ${{ steps.date.outputs.pretty-date }}
       commit: ${{ steps.get_commit.outputs.commit }}
-      channel: ${{ github.ref_name == 'main' && 'nightly' || 'nightly-branch' }}
-      tag: ${{ github.ref_name == 'main' && 'latest' || github.ref_name }}
-      aliases: ${{ github.ref_name == 'main' && format('{0} {1}', steps.date.outputs.date, steps.get_commit.outputs.commit) || steps.get_commit.outputs.commit }}
+      channel: ${{ github.event_name == 'pull_request' && 'pr' || 'nightly' }}
+      tag: ${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'latest' }}
+      aliases: ${{ github.event_name == 'pull_request' && '' || steps.date.outputs.date }}
 
     steps:
     - name: Get date
@@ -51,16 +50,13 @@ jobs:
     name: Build ${{ matrix.arch }} images
     needs:
     - gather-build-data
-    runs-on: ${{ matrix.runner }}
+    runs-on: als-huge
     container:
       image: altlinux.space/alt-atomic/builder-image:sisyphus
     strategy:
       matrix:
         arch:
         - amd64
-        include:
-        - arch: amd64
-          runner: als-huge
 
     steps:
     - name: Checkout repository
