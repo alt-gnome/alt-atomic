@@ -58,7 +58,7 @@ jobs:
         image-from: docker://${{ steps.get_images.outputs.image }}
         image-name-to: ${{ github.repository }}/stable
         image-tag: latest
-        image-aliases: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
+        image-aliases: ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
@@ -71,7 +71,7 @@ jobs:
         image-from: docker://${{ steps.get_images.outputs.image-nv }}
         image-name-to: ${{ github.repository }}-nvidia/stable
         image-tag: latest
-        image-aliases: ${{ steps.get_tag.outputs.commit }} ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
+        image-aliases: ${{ steps.get_tag.outputs.tag }} ${{ steps.get_tag.outputs.release }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
