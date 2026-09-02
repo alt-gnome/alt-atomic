@@ -135,3 +135,7 @@ modules:
         - tuner-osinfo
         - tuner-ready-set-software
         - tuner-tweaks
+
+        # Virtualization
+        - spice-vdagent
+        - spice-webdavd
