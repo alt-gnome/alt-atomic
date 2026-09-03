@@ -97,7 +97,7 @@ jobs:
 
     - name: Build default image
       id: build-default
-      uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
+      uses: alt-atomic/actions/build-and-push@e835eedfc64536d16df2a43259d034c5cb25e8ce
       with:
         image-name: ${{ format('{0}/rc/{1}', github.repository, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
@@ -132,7 +132,7 @@ jobs:
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
     - name: Build nvidia image
-      uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
+      uses: alt-atomic/actions/build-and-push@e835eedfc64536d16df2a43259d034c5cb25e8ce
       with:
         image-name: ${{ format('{0}-nvidia/rc/{1}', github.repository, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
@@ -184,7 +184,7 @@ jobs:
 
     steps:
     - name: Create manifest
-      uses: alt-atomic/actions/create-manifest@0a7fd4632a415b0f4316c37d9be29325dbe32af9
+      uses: alt-atomic/actions/create-manifest@e835eedfc64536d16df2a43259d034c5cb25e8ce
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"

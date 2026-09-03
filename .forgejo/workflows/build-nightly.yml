@@ -36,7 +36,7 @@ jobs:
     steps:
     - name: Get date
       id: date
-      uses: alt-atomic/actions/parse-date@main
+      uses: alt-atomic/actions/parse-date@e835eedfc64536d16df2a43259d034c5cb25e8ce
 
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -66,7 +66,7 @@ jobs:
 
     - name: Build default image
       id: build-default
-      uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
+      uses: alt-atomic/actions/build-and-push@e835eedfc64536d16df2a43259d034c5cb25e8ce
       with:
         image-name: ${{ format('{0}/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.tag }}
@@ -103,7 +103,7 @@ jobs:
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
     - name: Build nvidia image
-      uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
+      uses: alt-atomic/actions/build-and-push@e835eedfc64536d16df2a43259d034c5cb25e8ce
       with:
         image-name: ${{ format('{0}-nvidia/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.tag }}
@@ -158,7 +158,7 @@ jobs:
 
     steps:
     - name: Create manifest
-      uses: alt-atomic/actions/create-manifest@0a7fd4632a415b0f4316c37d9be29325dbe32af9
+      uses: alt-atomic/actions/create-manifest@e835eedfc64536d16df2a43259d034c5cb25e8ce
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
