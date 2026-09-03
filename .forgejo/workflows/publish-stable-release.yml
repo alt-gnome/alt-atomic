@@ -31,8 +31,8 @@ jobs:
     - id: get_images
       name: Get images
       run: |
-        echo "image=${{ env.REGISTRY }}/${{ github.repository }}/prerelease:${{ steps.get_tag.outputs.commit }}" >> $FORGEJO_OUTPUT
-        echo "image-nv=${{ env.REGISTRY }}/${{ github.repository }}-nvidia/prerelease:${{ steps.get_tag.outputs.commit }}" >> $FORGEJO_OUTPUT
+        echo "image=${{ env.REGISTRY }}/${{ github.repository }}/rc:${{ steps.get_tag.outputs.commit }}" >> $FORGEJO_OUTPUT
+        echo "image-nv=${{ env.REGISTRY }}/${{ github.repository }}-nvidia/rc:${{ steps.get_tag.outputs.commit }}" >> $FORGEJO_OUTPUT
 
     - name: Check image existence
       run: |

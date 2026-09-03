@@ -99,7 +99,7 @@ jobs:
       id: build-default
       uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
       with:
-        image-name: ${{ format('{0}/prerelease/{1}', github.repository, matrix.arch) }}
+        image-name: ${{ format('{0}/rc/{1}', github.repository, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
         arch: ${{ matrix.arch }}
         containerfile-path: ./container-files/main
@@ -134,7 +134,7 @@ jobs:
     - name: Build nvidia image
       uses: alt-atomic/actions/build-and-push@5ad502a0d068531855a953ccc19481c7e13d8f1a
       with:
-        image-name: ${{ format('{0}-nvidia/prerelease/{1}', github.repository, matrix.arch) }}
+        image-name: ${{ format('{0}-nvidia/rc/{1}', github.repository, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
         arch: ${{ matrix.arch }}
         containerfile-path: ./container-files/main
@@ -189,9 +189,9 @@ jobs:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
-        image-name: ${{ format('{0}{1}/prerelease', github.repository, matrix.suffix) }}
+        image-name: ${{ format('{0}{1}/rc', github.repository, matrix.suffix) }}
         arch-tags: amd64
-        image-wildcard: ${{ format('{0}/{1}{2}/prerelease/@ARCH@:{3}', env.REGISTRY, github.repository, matrix.suffix, needs.gather-build-data.outputs.commit) }}
+        image-wildcard: ${{ format('{0}/{1}{2}/rc/@ARCH@:{3}', env.REGISTRY, github.repository, matrix.suffix, needs.gather-build-data.outputs.commit) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
