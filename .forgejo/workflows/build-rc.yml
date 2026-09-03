@@ -193,5 +193,6 @@ jobs:
         arch-tags: amd64
         image-wildcard: ${{ format('{0}/{1}{2}/rc/@ARCH@:{3}', env.REGISTRY, github.repository, matrix.suffix, needs.gather-build-data.outputs.commit) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
+        image-aliases: ${{ needs.gather-build-data.outputs.version }}
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
