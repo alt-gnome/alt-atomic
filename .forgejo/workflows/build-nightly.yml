@@ -39,7 +39,7 @@ jobs:
       uses: alt-atomic/actions/parse-date@e835eedfc64536d16df2a43259d034c5cb25e8ce
 
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
     - id: get_commit
       name: Get current commit
@@ -60,7 +60,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       with:
         ref: ${{ needs.gather-build-data.outputs.commit }}
 
