@@ -13,7 +13,7 @@ jobs:
     name: Publish release
     runs-on: als-tiny
     container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus
+      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:070a2c55b25246cae280142afb1d332bfbfc94dbe5db67a33007c03726ae2d18
     steps:
     - name: Checkout repository
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -77,14 +77,14 @@ jobs:
 
     - name: Get changes between tags
       id: changes
-      uses: https://github.com/simbo/changes-between-tags-action@v1
+      uses: https://github.com/simbo/changes-between-tags-action@d928245922fdac861c45da7176178040533b92e0 # v1
       with:
         tag-pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
         include-hashes: false
 
     - name: Publish release
       id: create_release
-      uses: https://github.com/softprops/action-gh-release@v2
+      uses: https://github.com/softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2
       with:
         tag_name: ${{ steps.changes.outputs.tag }}
         name: "Release ${{ steps.changes.outputs.tag }}"
