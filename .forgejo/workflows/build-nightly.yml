@@ -29,9 +29,9 @@ jobs:
       day: ${{ steps.date.outputs.day }}
       pretty-date: ${{ steps.date.outputs.pretty-date }}
       commit: ${{ steps.get_commit.outputs.commit }}
-      channel: ${{ github.event_name == 'pull_request' && 'pr' || 'nightly' }}
-      tag: ${{ github.event_name == 'pull_request' && github.event.pull_request.number || 'latest' }}
-      aliases: ${{ github.event_name == 'pull_request' && '' || steps.date.outputs.date }}
+      channel: ${{ github.event_name != 'pull_request' && 'nightly' || 'pr' }}
+      tag: ${{ github.event_name != 'pull_request' && 'latest' || github.event.pull_request.number }}
+      aliases: ${{ github.event_name != 'pull_request' && steps.date.outputs.date || '' }}
 
     steps:
     - name: Get date
