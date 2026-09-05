@@ -76,7 +76,7 @@ jobs:
         local-build-name: localhost/onyx
 
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
-        push-enabled: ${{ github.event_name != 'pull_request' }}
+        push-enabled: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
         rechunk-enabled: true
         experimental-use-chunkah: true
         rechunk-max-layers: 128
@@ -113,7 +113,7 @@ jobs:
         local-build-name: localhost/onyx-nvidia
 
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
-        push-enabled: ${{ github.event_name != 'pull_request' }}
+        push-enabled: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
         rechunk-enabled: true
         experimental-use-chunkah: true
         rechunk-max-layers: 128
@@ -144,7 +144,7 @@ jobs:
     needs:
     - build
     - gather-build-data
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: als-tiny
     container:
       image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:070a2c55b25246cae280142afb1d332bfbfc94dbe5db67a33007c03726ae2d18
