@@ -1,0 +1,35 @@
+name: GNOME
+description: GDM is up with a greeter session and the GNOME stack is in place
+
+steps:
+  - name: gdm is active
+    run: systemctl is-active gdm
+    wait: 120s
+    on-fail: journalctl -b -u gdm --no-pager -o cat | tail -40
+
+  # A fresh install has no users, so GDM shows gnome-initial-setup instead of
+  # the login screen; both run as a session of class "greeter".
+  - name: greeter session exists
+    run: loginctl list-sessions --no-legend
+    wait: 120s
+    expect:
+      stdout: greeter
+    on-fail: loginctl list-sessions; journalctl -b -u gdm --no-pager -o cat | tail -30
+
+  - name: gdm logged no errors
+    run: journalctl -b -u gdm -p err -q --no-pager
+    expect:
+      empty: true
+    continue: true
+
+  - name: GNOME packages are installed
+    run: rpm -q gnome-shell gnome-session-wayland gnome-control-center nautilus gnome-software gnome-keyring
+    on-fail: rpm -qa 'gnome-*' | sort
+
+  - name: glib schemas are compiled
+    run: test -f /usr/share/glib-2.0/schemas/gschemas.compiled
+
+  - name: openh264 flatpak is masked
+    run: flatpak mask
+    expect:
+      stdout: org.freedesktop.Platform.openh264

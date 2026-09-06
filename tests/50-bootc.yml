@@ -1,0 +1,35 @@
+name: bootc and kernel arguments
+description: The image is installed via bootc and boots with the arguments from kargs.d
+
+steps:
+  - name: bootc status works
+    run: bootc status
+
+  - name: bootc reports an onyx image
+    run: bootc status --format json
+    expect:
+      stdout: "~\"image\":\\s*\"[^\"]*onyx"
+
+  - name: /usr is read-only
+    run: findmnt -no OPTIONS -T /usr
+    expect:
+      stdout: "~(^|,)ro(,|$)"
+    on-fail: findmnt -T /usr
+
+  - name: plymouth kernel arguments are applied
+    run: cat /proc/cmdline
+    expect:
+      stdout: "~rhgb quiet splash plymouth.enable=1"
+    on-fail: ls /usr/lib/bootc/kargs.d; cat /usr/lib/bootc/kargs.d/*.toml
+
+  - name: nightly boots with plymouth.debug
+    only:
+      RELEASE_TYPE: [ development ]
+    run: cat /proc/cmdline
+    expect:
+      stdout: plymouth.debug
+
+  - name: audit is disabled
+    run: cat /proc/cmdline
+    expect:
+      stdout: audit=0

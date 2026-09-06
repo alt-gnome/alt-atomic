@@ -1,0 +1,37 @@
+name: Branding
+description: /etc/os-release names Onyx and matches the release type
+
+steps:
+  - name: ID names onyx
+    run: . /etc/os-release && echo "$ID"
+    expect:
+      stdout: "~^alt-atomic-onyx-(nightly|stable)$"
+    on-fail: cat /etc/os-release
+
+  - name: VARIANT_ID is onyx or onyx-nvidia
+    run: . /etc/os-release && echo "$VARIANT_ID"
+    expect:
+      stdout: "~^onyx(-nvidia)?$"
+
+  - name: nightly is marked as development
+    only:
+      RELEASE_TYPE: [ development ]
+    run: . /etc/os-release && echo "$ID $VERSION_ID"
+    expect:
+      stdout: "~-nightly"
+
+  - name: stable is marked as stable
+    only:
+      RELEASE_TYPE: [ stable ]
+    run: . /etc/os-release && echo "$ID $VERSION_ID"
+    expect:
+      stdout: "~-stable"
+
+  - name: VERSION_ID matches IMAGE_VERSION
+    run: . /etc/os-release && test "$VERSION_ID" = "$IMAGE_VERSION"
+    on-fail: grep -E '^(VERSION_ID|IMAGE_VERSION|BUILD_ID)=' /etc/os-release
+
+  - name: hostname comes from the image
+    run: hostname
+    expect:
+      stdout: "~^alt-atomic"

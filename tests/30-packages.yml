@@ -1,0 +1,16 @@
+name: Packages
+description: Tools promised by packages.yml are present
+
+steps:
+  - name: shells and utilities
+    run: rpm -q zsh fish fastfetch htop git
+
+  - name: containers and apps
+    run: rpm -q flatpak distrobox apmdo apmdo-actions gnome-boxes
+    on-fail: rpm -qa | sort
+
+  - name: firefox policies are shipped
+    run: test -f /etc/firefox/policies/policies.json
+
+  - name: camera is disabled in wireplumber
+    run: test -f /usr/share/wireplumber/wireplumber.conf.d/10-disable-camera.conf

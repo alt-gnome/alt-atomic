@@ -1,0 +1,22 @@
+name: NVIDIA
+description: The nvidia variant carries the driver stack and its kernel arguments
+only:
+  VARIANT_ID: [ onyx-nvidia ]
+
+steps:
+  - name: driver packages are installed
+    run: rpm -q nvidia_glx_common nvidia-settings nvidia-smi blacklist-nouveau switcheroo-control
+    on-fail: rpm -qa '*nvidia*' | sort
+
+  - name: nvidia_drm.modeset is on the kernel command line
+    run: cat /proc/cmdline
+    expect:
+      stdout: nvidia_drm.modeset=1
+    on-fail: cat /usr/lib/bootc/kargs.d/10-nvidia.toml
+
+  - name: video memory preservation is enabled
+    run: grep -q '^options nvidia NVreg_PreserveVideoMemoryAllocations=1' /etc/modprobe.d/nvidia_common.conf
+    on-fail: cat /etc/modprobe.d/nvidia_common.conf
+
+  - name: power services are enabled
+    run: systemctl is-enabled nvidia-powerd switcheroo-control nvidia-suspend nvidia-resume

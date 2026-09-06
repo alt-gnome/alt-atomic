@@ -1,0 +1,47 @@
+name: systemd
+description: The desktop target is reached and the units from systemd.yml are in the right state
+
+steps:
+  - name: graphical.target reached
+    run: systemctl is-active graphical.target
+    wait: 180s
+    on-fail: systemctl list-jobs --no-pager
+
+  - name: system state is running
+    only:
+      RELEASE_TYPE: [ stable ]
+    run: systemctl is-system-running
+    expect:
+      stdout: running
+    on-fail: systemctl --failed --no-pager
+
+  - name: system state is running or degraded
+    only:
+      RELEASE_TYPE: [ development ]
+    run: systemctl is-system-running || true
+    expect:
+      stdout: "~^(running|degraded)$"
+    on-fail: systemctl list-jobs --no-pager
+
+  - name: no failed units
+    run: systemctl --failed --no-legend --plain
+    expect:
+      empty: true
+    continue: true
+    on-fail: |
+      for u in $(systemctl --failed --no-legend --plain | awk '{print $1}'); do
+        echo "== $u"
+        journalctl -b -u "$u" --no-pager -o cat | tail -20
+      done
+
+  - name: system services are enabled
+    run: systemctl is-enabled gdm avahi-daemon bluetooth cups wsdd smb nmb
+    on-fail: systemctl status gdm avahi-daemon cups --no-pager | head -40
+
+  - name: user services are enabled globally
+    run: systemctl --global is-enabled pipewire pipewire-pulse wireplumber gnome-keyring-daemon spice-vdagent
+
+  - name: packagekit is masked
+    run: systemctl is-enabled packagekit || true
+    expect:
+      stdout: masked

@@ -1,0 +1,9 @@
+name: Journal
+description: Boot without critical errors
+
+steps:
+  - name: no messages at crit level or above
+    run: journalctl -p crit -q -b --no-pager
+    expect:
+      empty: true
+    on-fail: journalctl -p err -b --no-pager | tail -40
