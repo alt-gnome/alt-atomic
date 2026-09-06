@@ -13,7 +13,7 @@ jobs:
     name: Publish release
     runs-on: als-tiny
     container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:070a2c55b25246cae280142afb1d332bfbfc94dbe5db67a33007c03726ae2d18
+      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:780a04c1a9bd49e21734edb003642a0e19132ff1971d4cea301912a6376b309f
     steps:
     - name: Checkout repository
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
