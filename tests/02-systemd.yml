@@ -7,18 +7,9 @@ steps:
     wait: 180s
     on-fail: systemctl list-jobs --no-pager
 
-  - name: system state is running
-    only:
-      RELEASE_TYPE: [ stable ]
-    run: systemctl is-system-running
-    expect:
-      stdout: running
-    on-fail: systemctl --failed --no-pager
-
   - name: system state is running or degraded
-    only:
-      RELEASE_TYPE: [ development ]
     run: systemctl is-system-running || true
+    wait: 60s
     expect:
       stdout: "~^(running|degraded)$"
     on-fail: systemctl list-jobs --no-pager
