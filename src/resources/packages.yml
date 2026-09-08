@@ -28,7 +28,6 @@ modules:
         - xdg-user-dirs-gtk
 
         # GNOME Core & Shell
-        - dconf-editor
         - fuse-gvfs
         - gnome-backgrounds
         - gnome-browser-connector
