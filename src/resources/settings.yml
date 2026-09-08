@@ -6,7 +6,7 @@ modules:
       target: /var/lib/openvpn/dev/urandom
       to: /dev/urandom
       replace: true
-  
+
   - name: Control things
     type: shell
     body:
@@ -29,6 +29,12 @@ modules:
     type: shell
     body:
       command: flatpak mask org.freedesktop.Platform.openh264
+
+  # https://altlinux.space/alt-atomic/onyx/issues/53
+  - name: Fix flatpak tmpdir
+    type: shell
+    body:
+      command: flatpak override --unset-env=TMPDIR --unset-env=TMP
 
   - name: Fix gnome-user-share
     type: replace
