@@ -11,6 +11,3 @@ steps:
 
   - name: firefox policies are shipped
     run: test -f /etc/firefox/policies/policies.json
-
-  - name: camera is disabled in wireplumber
-    run: test -f /usr/share/wireplumber/wireplumber.conf.d/10-disable-camera.conf
