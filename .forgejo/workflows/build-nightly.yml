@@ -52,7 +52,7 @@ jobs:
     - gather-build-data
     runs-on: als-huge
     container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:3f7350ddf028a91285f99e8ff993fa8e021791b7cf40a1c7cce5eac644a57be2
+      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:6233084bf2fcda04ea6b3b3e6f3a4deb8adbd96941eaa2f796b8ee7947740820
     strategy:
       matrix:
         arch:
@@ -147,7 +147,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: als-tiny
     container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:3f7350ddf028a91285f99e8ff993fa8e021791b7cf40a1c7cce5eac644a57be2
+      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:6233084bf2fcda04ea6b3b3e6f3a4deb8adbd96941eaa2f796b8ee7947740820
     strategy:
       matrix:
         include:
