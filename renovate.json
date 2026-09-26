@@ -1,4 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "pinDigests": true
+  "pinDigests": true,
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["altlinux.space/alt-atomic/builder-image"],
+      "enabled": false
+    }
+  ]
 }

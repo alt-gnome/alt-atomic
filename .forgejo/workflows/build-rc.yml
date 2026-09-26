@@ -20,7 +20,7 @@ jobs:
     name: Gather build data
     runs-on: als-tiny
     container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:90683bbf2c3e7140c2ce91e28a394219f785937d5f806448ba95aaba07d67a1c
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
 
     outputs:
       core-tag: ${{ steps.core_tag.outputs.core-tag }}
@@ -78,7 +78,7 @@ jobs:
     - gather-build-data
     runs-on: ${{ matrix.runner }}
     container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:90683bbf2c3e7140c2ce91e28a394219f785937d5f806448ba95aaba07d67a1c
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
     strategy:
       matrix:
         arch:
@@ -173,7 +173,7 @@ jobs:
     - gather-build-data
     runs-on: als-tiny
     container:
-      image: altlinux.space/alt-atomic/builder-image:sisyphus@sha256:90683bbf2c3e7140c2ce91e28a394219f785937d5f806448ba95aaba07d67a1c
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
     strategy:
       matrix:
         include:
