@@ -97,7 +97,7 @@ jobs:
 
     - name: Build default image
       id: build-default
-      uses: alt-atomic/actions/build-and-push@e835eedfc64536d16df2a43259d034c5cb25e8ce
+      uses: alt-atomic/actions/build-and-push@f80e6dbf99a2e4ef1a0f1285e8089ebc5df4c43b
       with:
         image-name: ${{ format('{0}/rc/{1}', github.repository, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
@@ -109,6 +109,7 @@ jobs:
         rechunk-enabled: true
         experimental-use-chunkah: true
         rechunk-max-layers: 128
+        layersize-enabled: true
 
         pretty-name: ${{ env.PRETTY_NAME }}
         version: ${{ needs.gather-build-data.outputs.version }}
@@ -132,7 +133,7 @@ jobs:
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
     - name: Build nvidia image
-      uses: alt-atomic/actions/build-and-push@e835eedfc64536d16df2a43259d034c5cb25e8ce
+      uses: alt-atomic/actions/build-and-push@f80e6dbf99a2e4ef1a0f1285e8089ebc5df4c43b
       with:
         image-name: ${{ format('{0}-nvidia/rc/{1}', github.repository, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.commit }}
@@ -144,6 +145,7 @@ jobs:
         rechunk-enabled: true
         experimental-use-chunkah: true
         rechunk-max-layers: 128
+        layersize-enabled: true
 
         pretty-name: ${{ env.PRETTY_NAME }} (Nvidia)
         version: ${{ needs.gather-build-data.outputs.version }}
