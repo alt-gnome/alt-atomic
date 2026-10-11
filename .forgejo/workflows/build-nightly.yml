@@ -36,7 +36,7 @@ jobs:
     steps:
     - name: Get date
       id: date
-      uses: alt-atomic/actions/parse-date@e835eedfc64536d16df2a43259d034c5cb25e8ce
+      uses: alt-atomic/actions/parse-date@6a7b19fb7e8dbbf5bc1858e1bd4efa102a34baa4
 
     - name: Checkout repository
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -160,7 +160,7 @@ jobs:
 
     steps:
     - name: Create manifest
-      uses: alt-atomic/actions/create-manifest@e835eedfc64536d16df2a43259d034c5cb25e8ce
+      uses: alt-atomic/actions/create-manifest@6a7b19fb7e8dbbf5bc1858e1bd4efa102a34baa4
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
