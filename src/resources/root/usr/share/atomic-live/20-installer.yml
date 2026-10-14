@@ -1,0 +1,13 @@
+modules:
+  - name: Add atomic-installer nightly repo
+    type: repos
+    body:
+      name: atomic-installer-nightly
+      custom:
+        - rpm https://altlinux.space/api/packages/alt-atomic/alt/group/atomic-installer-nightly/sisyphus.repo x86_64 classic
+
+  - name: Install atomic-installer
+    type: packages
+    body:
+      install:
+        - atomic-installer

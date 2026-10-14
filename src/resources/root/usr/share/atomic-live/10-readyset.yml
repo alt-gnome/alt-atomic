@@ -1,0 +1,12 @@
+modules:
+  - name: Disable ReadySet existing user mode
+    type: copy
+    body:
+      source: files/99-atomic-live-iso.gschema.override
+      destination: /usr/share/glib-2.0/schemas/99-atomic-live-iso.gschema.override
+      replace: true
+
+  - name: Compile glib schemas
+    type: shell
+    body:
+      command: glib-compile-schemas /usr/share/glib-2.0/schemas
