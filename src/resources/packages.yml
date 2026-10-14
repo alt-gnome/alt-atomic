@@ -78,6 +78,7 @@ modules:
         - resources
         - showtime
         - snapshot
+        - tailor-adw
         - yelp
 
         # Network & Printing
