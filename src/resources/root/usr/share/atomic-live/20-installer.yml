@@ -11,3 +11,8 @@ modules:
     body:
       install:
         - atomic-installer
+
+  - name: Offer the embedded image in the installer
+    type: shell
+    body:
+      command: bash scripts/installer-images.sh
