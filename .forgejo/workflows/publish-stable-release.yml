@@ -24,7 +24,7 @@ jobs:
 
     - name: Get tag
       id: get_tag
-      uses: alt-atomic/actions/get-tag@6a7b19fb7e8dbbf5bc1858e1bd4efa102a34baa4
+      uses: alt-atomic/actions/get-tag@ba5ed9ae611ff7bd44ff701296a2203c181b9ce4
       with:
         desired-tag: ${{ github.ref_name }}
 
@@ -50,7 +50,7 @@ jobs:
         fi
 
     - name: Copy default image
-      uses: alt-atomic/actions/release@6a7b19fb7e8dbbf5bc1858e1bd4efa102a34baa4
+      uses: alt-atomic/actions/release@ba5ed9ae611ff7bd44ff701296a2203c181b9ce4
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
@@ -63,7 +63,7 @@ jobs:
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
     - name: Copy nvidia image
-      uses: alt-atomic/actions/release@6a7b19fb7e8dbbf5bc1858e1bd4efa102a34baa4
+      uses: alt-atomic/actions/release@ba5ed9ae611ff7bd44ff701296a2203c181b9ce4
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
