@@ -11,7 +11,7 @@ env:
 jobs:
   release:
     name: Publish release
-    runs-on: als-tiny
+    runs-on: als-huge
     container:
       image: altlinux.space/alt-atomic/builder-image:sisyphus
     steps:
@@ -75,6 +75,19 @@ jobs:
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
+    - name: Build and publish Live ISO
+      id: live_iso
+      uses: alt-atomic/actions/live-iso@15f659309180cf658d0c49803ec7d3901c7ba3f8
+      with:
+        image: altlinux.space/${{ github.repository }}/stable:latest
+        embed-image: |
+          altlinux.space/${{ github.repository }}/stable:latest
+          altlinux.space/${{ github.repository }}-nvidia/stable:latest
+        output: onyx-live-${{ github.ref_name }}.iso
+        upload-enabled: true
+        registry-password: ${{ secrets.REGISTRY_TOKEN }}
+        package-version: ${{ github.ref_name }}
+
     - name: Get changes between tags
       id: changes
       uses: https://github.com/simbo/changes-between-tags-action@d928245922fdac861c45da7176178040533b92e0 # v1
@@ -82,13 +95,19 @@ jobs:
         tag-pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
         include-hashes: false
 
-    - name: Publish release
+    - name: Publish releasePublish release
       id: create_release
       uses: https://github.com/softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3
       with:
         tag_name: ${{ steps.changes.outputs.tag }}
         name: "Release ${{ steps.changes.outputs.tag }}"
-        body: "${{ steps.changes.outputs.changes }}"
+        body: |
+          ${{ steps.changes.outputs.changes }}
+
+          ## Live ISO
+
+          [Download ISO](${{ steps.live_iso.outputs.url }})
+          [SHA256](${{ steps.live_iso.outputs.url }}.sha256)
         draft: false
         prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}

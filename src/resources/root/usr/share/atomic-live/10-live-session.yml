@@ -1,0 +1,17 @@
+modules:
+  - name: Disable sleep in the live session
+    type: systemd
+    body:
+      targets:
+        - sleep.target
+        - suspend.target
+        - hibernate.target
+        - hybrid-sleep.target
+      masked: true
+
+  - name: Allow the live administrator to use Polkit
+    type: copy
+    body:
+      source: files/50-live-wheel.rules
+      destination: /etc/polkit-1/rules.d/50-live-wheel.rules
+      replace: true
