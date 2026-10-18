@@ -1,22 +1,17 @@
 #!/usr/bin/env bash
-# Offers both images embedded into the live ISO in the installer
+# Offers both Onyx images embedded into the live ISO in the installer.
 set -euo pipefail
 
 conf=${ATOMIC_INSTALLER_IMAGES_FILE:-/etc/atomic-installer/images.yml}
-ref=altlinux.space/alt-atomic/onyx/$IMAGE_TYPE:latest
-nvidia_ref=altlinux.space/alt-atomic/onyx-nvidia/$IMAGE_TYPE:latest
 
-cat > "$conf" <<EOF
-images:
-  - image: containers-storage:$ref
-    target: $ref
-    title:
-      en: ALT Atomic Onyx (GNOME)
-      ru: ALT Atomic Onyx (GNOME)
+for suffix in "" -nvidia; do
+    ref=altlinux.space/alt-atomic/onyx$suffix/$IMAGE_TYPE:latest
+    pattern="^  - image: docker://altlinux[.]space/alt-atomic/onyx$suffix/[^[:space:]]+\$"
 
-  - image: containers-storage:$nvidia_ref
-    target: $nvidia_ref
-    title:
-      en: ALT Atomic Onyx (GNOME) with NVIDIA drivers
-      ru: ALT Atomic Onyx (GNOME) с драйверами NVIDIA
-EOF
+    if ! grep -qE "$pattern" "$conf"; then
+        echo "Onyx$suffix image not found in $conf" >&2
+        exit 1
+    fi
+
+    sed -i -E "s|$pattern|  - image: containers-storage:$ref\n    target: $ref|" "$conf"
+done
