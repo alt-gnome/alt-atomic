@@ -1,0 +1,27 @@
+name: Build nightly Live ISO
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 5'
+
+jobs:
+  live-iso:
+    name: Build and publish Live ISO
+    runs-on: als-huge
+    container:
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
+
+    steps:
+    - name: Build and publish Live ISO
+      id: live_iso
+      uses: alt-atomic/actions/live-iso@15f659309180cf658d0c49803ec7d3901c7ba3f8
+      with:
+        image: altlinux.space/${{ github.repository }}/nightly:latest
+        embed-image: |
+          altlinux.space/${{ github.repository }}/nightly:latest
+          altlinux.space/${{ github.repository }}-nvidia/nightly:latest
+        output: onyx-live-nightly.iso
+        upload-enabled: true
+        registry-password: ${{ secrets.REGISTRY_TOKEN }}
+        package-version: latest
