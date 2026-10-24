@@ -9,9 +9,12 @@ modules:
   - name: Set branding
     type: branding
     body:
+      build-type: ${{ Env.IMAGE_TYPE }}
       release-overrides:
-        VARIANT: Onyx (Nvidia)
-        VARIANT_ID: onyx-nvidia
+        VERSION: ${{ Env.VERSION }}
+        IMAGE_ID: alt-atomic-onyx-nvidia
+        VARIANT: NVIDIA
+        VARIANT_ID: nvidia
 
   - type: include
     body:
