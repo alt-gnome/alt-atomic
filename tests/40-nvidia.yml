@@ -1,9 +1,15 @@
 name: NVIDIA
 description: The nvidia variant carries the driver stack and its kernel arguments
 only:
-  VARIANT_ID: [ onyx-nvidia ]
+  VARIANT_ID: [ nvidia ]
 
 steps:
+  - name: NVIDIA branding is present
+    run: . /etc/os-release && printf '%s\n' "$VARIANT $IMAGE_ID $VERSION_ID"
+    expect:
+      stdout: "~^NVIDIA alt-atomic-onyx-nvidia(-nightly)? [0-9]{8}-nvidia$"
+    on-fail: cat /etc/os-release
+
   - name: driver packages are installed
     run: rpm -q nvidia_glx_common nvidia-settings nvidia-smi blacklist-nouveau switcheroo-control
     on-fail: rpm -qa '*nvidia*' | sort
