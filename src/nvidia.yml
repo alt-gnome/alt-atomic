@@ -11,8 +11,7 @@ modules:
     body:
       build-type: ${{ Env.IMAGE_TYPE }}
       release-overrides:
-        VERSION: ${{ Env.VERSION }}
-        IMAGE_ID: alt-atomic-onyx-nvidia
+        VERSION_ID: ${{ Env.VERSION }}
         VARIANT: NVIDIA
         VARIANT_ID: nvidia
 
