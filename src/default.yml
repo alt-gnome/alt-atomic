@@ -1,6 +1,18 @@
 image: ${{ Env.IMAGE }}
 
 modules:
+  - name: Add tasks with bugfixes
+    type: repos
+    body:
+      tasks:
+        # CVE with ca-certificates
+        - 438128
+
+  - name: Upgrade with tasks
+    type: packages
+    body:
+      upgrade: true
+
   - name: Install packages
     type: include
     body:
