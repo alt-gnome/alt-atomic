@@ -13,9 +13,15 @@ modules:
       name: alt-atomic-${{ Env.IMAGE_NAME }}
       build-type: ${{ Env.IMAGE_TYPE }}
       release-overrides:
+<<<<<<< HEAD
         VERSION: ${{ Env.VERSION }}
         VARIANT: ""
         VARIANT_ID: ""
+=======
+        VERSION_ID: ${{ Env.VERSION }}
+        VARIANT: Onyx
+        VARIANT_ID: onyx
+>>>>>>> cd9a3d4 (feat: Use `VERSION_ID` instead of `VERSION`)
 
   - name: Copy root
     type: copy
