@@ -5,27 +5,27 @@ steps:
   - name: ID names onyx
     run: . /etc/os-release && echo "$ID"
     expect:
-      stdout: "~^alt-atomic-onyx(-nightly)?$"
+      stdout: "~^org[.]alt_atomic[.]Onyx(-nightly)?$"
     on-fail: cat /etc/os-release
 
-  - name: variant is absent or NVIDIA
-    run: . /etc/os-release && printf '%s:%s\n' "${VARIANT-}" "${VARIANT_ID-}"
+  - name: VERSION_ID identifies onyx or onyx-nvidia
+    run: . /etc/os-release && echo "$VERSION_ID"
     expect:
-      stdout: "~^(:|NVIDIA:nvidia)$"
+      stdout: "~^[0-9]+(-nvidia)?$"
 
   - name: nightly is marked as development
     only:
       RELEASE_TYPE: [ development ]
     run: . /etc/os-release && echo "$ID"
     expect:
-      stdout: alt-atomic-onyx-nightly
+      stdout: "~^org[.]alt_atomic[.]Onyx-nightly$"
 
   - name: stable ID has no release suffix
     only:
       RELEASE_TYPE: [ stable ]
     run: . /etc/os-release && echo "$ID"
     expect:
-      stdout: alt-atomic-onyx
+      stdout: "~^org[.]alt_atomic[.]Onyx$"
 
   - name: VERSION_ID matches IMAGE_VERSION
     run: . /etc/os-release && test "$VERSION_ID" = "$IMAGE_VERSION"
