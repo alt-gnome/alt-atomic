@@ -1,6 +1,15 @@
 image: ${{ Env.IMAGE }}
 
 modules:
+  - name: 0.6 Maintenance tasks
+    type: repos
+    body:
+      tasks:
+        # Tuner crash on `About application`
+        - 439495
+        # Tailor crash on `About application`
+        - 439485
+
   - name: Install packages
     type: include
     body:
