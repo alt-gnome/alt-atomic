@@ -23,7 +23,6 @@ modules:
         # System & Hardware Services
         - fprintd
         - fwupd
-        - iucode_tool
         - power-profiles-daemon
         - xdg-user-dirs-gtk
 
