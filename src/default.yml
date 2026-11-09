@@ -9,6 +9,8 @@ modules:
         - 439495
         # Tailor crash on `About application`
         - 439485
+        # ReadySet `existing-user-mode-enabled` doesn't work in live iso
+        - 440445
 
   - name: Install packages
     type: include
