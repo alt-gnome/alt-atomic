@@ -24,7 +24,7 @@ jobs:
 
     - name: Get tag
       id: get_tag
-      uses: alt-atomic/actions/get-tag@ba5ed9ae611ff7bd44ff701296a2203c181b9ce4
+      uses: alt-atomic/actions/get-tag@916bd6b5ffbdaa0e2079c1e02180f72b01990a32
       with:
         desired-tag: ${{ github.ref_name }}
 
@@ -50,7 +50,7 @@ jobs:
         fi
 
     - name: Copy default image
-      uses: alt-atomic/actions/release@ba5ed9ae611ff7bd44ff701296a2203c181b9ce4
+      uses: alt-atomic/actions/release@916bd6b5ffbdaa0e2079c1e02180f72b01990a32
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
@@ -63,7 +63,7 @@ jobs:
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
     - name: Copy nvidia image
-      uses: alt-atomic/actions/release@ba5ed9ae611ff7bd44ff701296a2203c181b9ce4
+      uses: alt-atomic/actions/release@916bd6b5ffbdaa0e2079c1e02180f72b01990a32
       with:
         registry: ${{ env.REGISTRY }}
         registry-username: "<token>"
@@ -77,7 +77,7 @@ jobs:
 
     - name: Build and publish Live ISO
       id: live_iso
-      uses: alt-atomic/actions/live-iso@15f659309180cf658d0c49803ec7d3901c7ba3f8
+      uses: alt-atomic/actions/live-iso@916bd6b5ffbdaa0e2079c1e02180f72b01990a32
       with:
         image: altlinux.space/${{ github.repository }}/stable:latest
         embed-image: |

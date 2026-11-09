@@ -15,7 +15,7 @@ jobs:
     steps:
     - name: Build and publish Live ISO
       id: live_iso
-      uses: alt-atomic/actions/live-iso@15f659309180cf658d0c49803ec7d3901c7ba3f8
+      uses: alt-atomic/actions/live-iso@916bd6b5ffbdaa0e2079c1e02180f72b01990a32
       with:
         image: altlinux.space/${{ github.repository }}/nightly:latest
         embed-image: |
