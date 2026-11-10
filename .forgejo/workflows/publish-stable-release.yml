@@ -75,39 +75,36 @@ jobs:
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
+  live-iso:
+    name: Build and publish Live ISO
+    needs: release
+    runs-on: als-huge
+    container:
+      image: altlinux.space/alt-atomic/builder-image:sisyphus
+    steps:
+
     - name: Build and publish Live ISO
       id: live_iso
       uses: alt-atomic/actions/live-iso@fed21a21ea3491b4e2a5a24100d10885ed7daa48
       with:
-        image: altlinux.space/${{ github.repository }}/stable:latest
+        image: altlinux.space/${{ github.repository }}/stable:${{ github.ref_name }}
         embed-image: |
-          altlinux.space/${{ github.repository }}/stable:latest
-          altlinux.space/${{ github.repository }}-nvidia/stable:latest
+          altlinux.space/${{ github.repository }}/stable:${{ github.ref_name }}
+          altlinux.space/${{ github.repository }}-nvidia/stable:${{ github.ref_name }}
         output: onyx-live-${{ github.ref_name }}.iso
         upload-enabled: true
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
         package-version: ${{ github.ref_name }}
 
-    - name: Get changes between tags
-      id: changes
-      uses: https://github.com/simbo/changes-between-tags-action@d928245922fdac861c45da7176178040533b92e0 # v1
-      with:
-        tag-pattern: '^[0-9]+\.[0-9]+\.[0-9]+$'
-        include-hashes: false
-
-    - name: Publish releasePublish release
-      id: create_release
+    - name: Add ISO links to release
       uses: https://github.com/softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3
       with:
-        tag_name: ${{ steps.changes.outputs.tag }}
-        name: "Release ${{ steps.changes.outputs.tag }}"
+        tag_name: ${{ github.ref_name }}
+        append_body: true
         body: |
-          ${{ steps.changes.outputs.changes }}
 
           ## Live ISO
 
           [Download ISO](${{ steps.live_iso.outputs.url }})
           [SHA256](${{ steps.live_iso.outputs.url }}.sha256)
-        draft: false
-        prerelease: false
         token: ${{ secrets.GITHUB_TOKEN }}
