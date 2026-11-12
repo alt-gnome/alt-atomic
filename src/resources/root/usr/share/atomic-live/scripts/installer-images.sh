@@ -1,27 +1,16 @@
 #!/usr/bin/env bash
-# Offers both Onyx images embedded into the live ISO in the installer.
 set -euo pipefail
 
 conf=${ATOMIC_INSTALLER_IMAGES_FILE:-/etc/atomic-installer/images.yml}
 
-# for suffix in "" -nvidia; do
-#     ref=altlinux.space/alt-atomic/onyx$suffix/$IMAGE_TYPE:latest
-#     pattern="^  - image: docker://altlinux[.]space/alt-atomic/onyx$suffix/[^[:space:]]+\$"
-
-#     if ! grep -qE "$pattern" "$conf"; then
-#         echo "Onyx$suffix image not found in $conf" >&2
-#         exit 1
-#     fi
-
-#     sed -i -E "s|$pattern|  - image: containers-storage:$ref\n    target: $ref|" "$conf"
-# done
-
-ref=altlinux.space/alt-atomic/onyx/$IMAGE_TYPE:latest
-pattern="^  - image: docker://altlinux[.]space/alt-atomic/onyx/[^[:space:]]+\$"
-
-if ! grep -qE "$pattern" "$conf"; then
-    echo "Onyx image not found in $conf" >&2
-    exit 1
+# Replace stable with nightly for all Onyx images.
+if [[ ${IMAGE_TYPE:-} == "nightly" ]]; then
+    sed -i -E \
+        '/^[[:blank:]]*(-[[:blank:]]+image:|target:)[[:blank:]]+/ s|(altlinux[.]space/alt-atomic/onyx(-[^/[:space:]]+)?/)stable(:[^[:space:]]+)?|\1nightly\3|' \
+        "$conf"
 fi
 
-sed -i -E "s|$pattern|  - image: containers-storage:$ref\n    target: $ref|" "$conf"
+# Replace Onyx image sources with local container storage.
+sed -i -E \
+    's|^([[:blank:]]*)-[[:blank:]]+image:[[:blank:]]+(docker://)?(altlinux[.]space/alt-atomic/onyx(-[^/[:space:]]+)?/[^[:space:]]+)[[:blank:]]*$|\1- image: containers-storage:\3\n\1  target: \3|' \
+    "$conf"
