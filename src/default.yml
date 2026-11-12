@@ -11,6 +11,8 @@ modules:
         - 439485
         # ReadySet `existing-user-mode-enabled` doesn't work in live iso
         - 440445
+        # Session keerep fix for GNOME 51
+        - 440873
 
   - name: Install packages
     type: include
