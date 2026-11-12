@@ -89,12 +89,12 @@ jobs:
       with:
         image: altlinux.space/${{ github.repository }}/stable:${{ github.ref_name }}
         embed-image: |
-          altlinux.space/${{ github.repository }}/stable:${{ github.ref_name }}
-          altlinux.space/${{ github.repository }}-nvidia/stable:${{ github.ref_name }}
-        output: onyx-live-${{ github.ref_name }}.iso
+          altlinux.space/${{ github.repository }}/stable:latest
+          altlinux.space/${{ github.repository }}-nvidia/stable:latest
+        output: onyx-live.iso
         upload-enabled: true
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
-        package-version: ${{ github.ref_name }}
+        package-version: stable
 
     - name: Add ISO links to release
       uses: https://github.com/softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3
