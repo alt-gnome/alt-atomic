@@ -95,16 +95,3 @@ jobs:
         upload-enabled: true
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
         package-version: stable
-
-    - name: Add ISO links to release
-      uses: https://github.com/softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3
-      with:
-        tag_name: ${{ github.ref_name }}
-        append_body: true
-        body: |
-
-          ## Live ISO
-
-          [Download ISO](${{ steps.live_iso.outputs.url }})
-          [SHA256](${{ steps.live_iso.outputs.url }}.sha256)
-        token: ${{ secrets.GITHUB_TOKEN }}
