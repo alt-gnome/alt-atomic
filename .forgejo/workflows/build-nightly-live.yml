@@ -21,7 +21,7 @@ jobs:
         embed-image: |
           altlinux.space/${{ github.repository }}/nightly:latest
           altlinux.space/${{ github.repository }}-nvidia/nightly:latest
-        output: onyx-live-nightly.iso
+        output: onyx-live.iso
         upload-enabled: true
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
-        package-version: latest
+        package-version: nightly
