@@ -34,7 +34,7 @@ jobs:
       if: ${{ inputs.pr_num != '' }}
       uses: actions/upload-artifact@ff15f0306b3f739f7b6fd43fb5d26cd321bd4de5 # v3
       with:
-        name: format('onyx-live-{0}.iso', inputs.pr_num)
+        name: ${{ format('onyx-live-{0}.iso', inputs.pr_num) }}
         path: ${{ steps.live_iso.outputs.path }}
         if-no-files-found: error
         archive: false
