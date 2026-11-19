@@ -5,6 +5,7 @@ on:
     inputs:
       pr_num:
         description: 'PR number'
+        type: string
   schedule:
     - cron: '0 0 * * 5'
 
