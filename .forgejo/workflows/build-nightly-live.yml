@@ -25,6 +25,15 @@ jobs:
           ${{ inputs.pr_num != '' && format('altlinux.space/{0}/pr:{1}', github.repository, inputs.pr_num) || format('altlinux.space/{0}/nightly:latest', github.repository) }}
           ${{ inputs.pr_num != '' && format('altlinux.space/{0}-nvidia/pr:{1}', github.repository, inputs.pr_num) || format('altlinux.space/{0}-nvidia/nightly:latest', github.repository) }}
         output: onyx-live.iso
-        upload-enabled: true
+        upload-enabled: ${{ inputs.pr_num == '' }}
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
         package-version: nightly
+
+    - name: Upload PR live to artifacts
+      if: ${{ inputs.pr_num != '' }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: format('onyx-live-{0}.iso', inputs.pr_num)
+        path: ${{ steps.live_iso.outputs.path }}
+        if-no-files-found: error
+        archive: false
