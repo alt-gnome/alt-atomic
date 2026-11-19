@@ -1,0 +1,8 @@
+[Application]
+steps=language,keyboard,network,installer.image,installer.disk,installer.bootloader,installer.filesystem,user-passwdqc
+resizable=true
+installer=atomic-installer
+
+[Context]
+installer.method.type=to-filesystem
+installer.runtime.type=host

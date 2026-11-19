@@ -1,18 +1,21 @@
 modules:
-  - name: Add atomic-installer nightly repo
+  - name: Add repos
     type: repos
     body:
       name: atomic-installer-nightly
       custom:
-        - rpm https://altlinux.space/api/packages/alt-atomic/alt/group/atomic-installer-nightly/sisyphus.repo x86_64 classic
+        - rpm https://altlinux.space/api/packages/alt-atomic/alt/group/ready-set-plugin-atomic-installer-nightly/sisyphus.repo _arch_ classic
+        - rpm https://altlinux.space/api/packages/alt-atomic/alt/group/installer-nightly/sisyphus.repo _arch_ classic
 
-  - name: Install atomic-installer
+  - name: Install
     type: packages
     body:
       install:
-        - atomic-installer
+        - installer
+        - ready-set-plugin-atomic-installer
 
-  - name: Offer the embedded image in the installer
-    type: shell
+  - name: Create links
+    type: link
     body:
-      command: bash scripts/installer-images.sh
+      target: /usr/lib/systemd/user/gnome-session.target.wants/atomic-installer.service
+      to: ../atomic-installer.service

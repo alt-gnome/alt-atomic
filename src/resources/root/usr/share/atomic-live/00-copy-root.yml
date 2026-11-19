@@ -1,0 +1,7 @@
+modules:
+  - name: Copy root
+    type: copy
+    body:
+      source: root
+      destination: /
+      replace: true

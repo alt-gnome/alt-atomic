@@ -1,4 +1,9 @@
 modules:
+  - name: Compile glib schemas
+    type: shell
+    body:
+      command: glib-compile-schemas /usr/share/glib-2.0/schemas
+
   - type: include
     body:
       targets:

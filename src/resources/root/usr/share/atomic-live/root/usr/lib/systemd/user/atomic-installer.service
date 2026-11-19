@@ -1,0 +1,14 @@
+[Unit]
+Description=ReadySet installer
+
+BindsTo=gnome-session.target
+After=gnome-session.target
+
+# Never run in GDM
+ConditionUser=!@system
+ConditionEnvironment=XDG_SESSION_CLASS=user
+
+[Service]
+Type=oneshot
+ExecStart=/usr/libexec/ready-set --conf-file /usr/share/atomic-installer/config
+Restart=no
