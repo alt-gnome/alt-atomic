@@ -2,6 +2,9 @@ name: Build nightly Live ISO
 
 on:
   workflow_dispatch:
+    inputs:
+      pr_num:
+        description: 'PR number'
   schedule:
     - cron: '0 0 * * 5'
 
@@ -17,10 +20,10 @@ jobs:
       id: live_iso
       uses: alt-atomic/actions/live-iso@fed21a21ea3491b4e2a5a24100d10885ed7daa48
       with:
-        image: altlinux.space/${{ github.repository }}/nightly:latest
+        image: ${{ inputs.pr_num != '' && format('altlinux.space/{0}/pr:{1}', github.repository, inputs.pr_num) || format('altlinux.space/{0}/nightly:latest', github.repository) }}
         embed-image: |
-          altlinux.space/${{ github.repository }}/nightly:latest
-          altlinux.space/${{ github.repository }}-nvidia/nightly:latest
+          ${{ inputs.pr_num != '' && format('altlinux.space/{0}/pr:{1}', github.repository, inputs.pr_num) || format('altlinux.space/{0}/nightly:latest', github.repository) }}
+          ${{ inputs.pr_num != '' && format('altlinux.space/{0}-nvidia/pr:{1}', github.repository, inputs.pr_num) || format('altlinux.space/{0}-nvidia/nightly:latest', github.repository) }}
         output: onyx-live.iso
         upload-enabled: true
         registry-password: ${{ secrets.REGISTRY_TOKEN }}
