@@ -64,10 +64,11 @@ jobs:
       with:
         ref: ${{ needs.gather-build-data.outputs.commit }}
 
-    - name: Build default image
+    - &build-and-push-default
+      name: Build default image
       id: build-default
       uses: alt-atomic/actions/build-and-push@fed21a21ea3491b4e2a5a24100d10885ed7daa48
-      with:
+      with: &build-and-push-default-args
         image-name: ${{ format('{0}/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
         image-tag: ${{ needs.gather-build-data.outputs.tag }}
         image-aliases: ${{ needs.gather-build-data.outputs.aliases }}
@@ -103,43 +104,24 @@ jobs:
         cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
         cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
-    - name: Build nvidia image
-      uses: alt-atomic/actions/build-and-push@fed21a21ea3491b4e2a5a24100d10885ed7daa48
+        sbom-attestation-enabled: true
+
+    - <<: *build-and-push-default
+      name: Build nvidia image
+      id: build-nvidia
       with:
+        <<: *build-and-push-default-args
         image-name: ${{ format('{0}-nvidia/{1}/{2}', github.repository, needs.gather-build-data.outputs.channel, matrix.arch) }}
-        image-tag: ${{ needs.gather-build-data.outputs.tag }}
-        image-aliases: ${{ needs.gather-build-data.outputs.aliases }}
-        arch: ${{ matrix.arch }}
-        containerfile-path: ./container-files/main
         local-build-name: localhost/onyx-nvidia
 
-        registry-password: ${{ secrets.REGISTRY_TOKEN }}
-        push-enabled: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
-        rechunk-enabled: true
-        experimental-use-chunkah: true
-        rechunk-max-layers: 128
-        layersize-enabled: true
-
         pretty-name: ${{ env.PRETTY_NAME }} (Nvidia)
-        version: ${{ needs.gather-build-data.outputs.date }}
-        vendor: ${{ env.VENDOR }}
         description: ${{ env.DESCRIPTION }} (Nvidia)
-        licenses: ${{ env.LICENSES }}
-        url: ${{ env.URL }}
-        authors: ${{ env.AUTHORS }}
-        repo-date: ${{ needs.gather-build-data.outputs.pretty-date }}
-
-        extra-labels: |
-          org.altlinux.installer.has-initial-setup=true
 
         build-args: |
           ARG_IMAGE_TYPE=nightly
           ARG_IMAGE=${{ steps.build-default.outputs.ref }}
           ARG_VERSION=${{ needs.gather-build-data.outputs.date }}
           ARG_BUILD=nvidia
-
-        cosign-image-sign: ${{ secrets.IMAGE_SIGN }}
-        cosign-password: ${{ secrets.COSIGN_PASSWORD }}
 
   manifest:
     name: Multiarch ${{ matrix.name }} manifest push
