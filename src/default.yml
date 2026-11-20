@@ -1,15 +1,11 @@
 image: ${{ Env.IMAGE }}
 
 modules:
-  - name: Install metainfo
-    body:
-      targets:
-        - metainfo.yml
-
-  - name: Install packages
+  - name: Pre
     type: include
     body:
       targets:
+        - metainfo.yml
         - packages.yml
 
   - name: Set branding
