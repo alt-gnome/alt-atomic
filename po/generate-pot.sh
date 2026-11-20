@@ -6,7 +6,7 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 SOURCE_DIR="$PROJECT_DIR/data"
 POT="$SCRIPT_DIR/onyx.pot"
 ITS_BASE="/usr/share/gettext/its/metainfo.its"
-ITS_CUSTOM="/var/home/rirusha/Projects/Atomic/builder-image/atomic-variants.its"
+ITS_CUSTOM="/usr/share/gettext/its/atomic-variants.its"
 
 command -v itstool >/dev/null
 
