@@ -4,7 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 SOURCE_DIR="$PROJECT_DIR/src/resources/metainfo"
-POT="$SCRIPT_DIR/metainfo.pot"
+POT="$SCRIPT_DIR/onyx.pot"
 
 mapfile -d '' FILES < <(
     find "$SOURCE_DIR" -type f \

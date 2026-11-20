@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-POT="$SCRIPT_DIR/metainfo.pot"
+POT="$SCRIPT_DIR/onyx.pot"
 
 if [[ ! -f "$POT" ]]; then
     echo "Missing POT: $POT" >&2
