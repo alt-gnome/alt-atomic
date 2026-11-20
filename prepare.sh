@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -6,11 +5,20 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 METAINFO_DIR="$PROJECT_DIR/data"
 PO_DIR="$PROJECT_DIR/po"
 OUTPUT_DIR="$PROJECT_DIR/src/resources/files"
+ITS_BASE="/usr/share/gettext/its/metainfo.its"
+ITS_CUSTOM="/var/home/rirusha/Projects/Atomic/builder-image/atomic-variants.its"
 
 CURRENT_DATE="$(date -u +%Y-%m-%d)"
 
 command -v itstool >/dev/null
 command -v msgfmt >/dev/null
+
+for RULES in "$ITS_BASE" "$ITS_CUSTOM"; do
+    if [[ ! -f "$RULES" ]]; then
+        echo "Missing ITS rules: $RULES" >&2
+        exit 1
+    fi
+done
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -52,10 +60,11 @@ for SOURCE in "${FILES[@]}"; do
         "$SOURCE" > "$TEMPLATE"
 
     if (( ${#MO_FILES[@]} > 0 )); then
-        itstool \
+        itstool -i "$ITS_BASE" -i "$ITS_CUSTOM" \
             -j "$TEMPLATE" \
             -o "$OUTPUT" \
             "${MO_FILES[@]}"
+
     else
         cp "$TEMPLATE" "$OUTPUT"
     fi
