@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="operating-system">
+  <id>org.alt_atomic.Onyx-nightly</id>
+  <name>ALT Atomic Onyx Nightly</name>
+  <summary>
+    Development builds of the GNOME-based atomic desktop
+  </summary>
+  <description>
+    <p>
+      ALT Atomic Onyx Nightly provides development builds
+      of ALT Atomic Onyx, an image-based Linux distribution
+      featuring the GNOME desktop environment.
+    </p>
+    <p>
+      Nightly builds may contain regressions or
+      incomplete features and are not recommended
+      for production environments.
+    </p>
+  </description>
+
+  <x-variants>
+    <variant>
+      <image>altlinux.space/alt-atomic/onyx/nightly:latest</image>
+      <name>ALT Atomic Onyx Nightly</name>
+      <summary>
+        Latest development image with GNOME
+      </summary>
+      <description>
+        The standard development image of ALT Atomic
+        Onyx, providing early access to new features,
+        updates, and experimental changes.
+      </description>
+    </variant>
+    <variant>
+      <image>altlinux.space/alt-atomic/onyx-nvidia/nightly:latest</image>
+      <name>ALT Atomic Onyx Nightly (NVIDIA)</name>
+      <summary>
+        Development image with integrated NVIDIA drivers
+      </summary>
+      <description>
+        The development image of ALT Atomic Onyx with
+        preinstalled proprietary NVIDIA graphics drivers,
+        intended for testing on supported NVIDIA GPUs.
+      </description>
+    </variant>
+  </x-variants>
+
+  <url type="homepage">https://alt-atomic.org/</url>
+  <url type="help">https://alt-atomic.org/en/</url>
+  <url type="bugtracker">https://altlinux.space/alt-atomic/onyx/issues</url>
+  <url type="vcs-browser">https://altlinux.space/alt-atomic/onyx</url>
+
+  <metadata_license>FSFAP</metadata_license>
+  <developer id="org.alt_atomic">
+    <name>ALT Atomic Team</name>
+  </developer>
+
+  <releases>
+    <release version="nightly" type="development" date="@DATE@">
+      <description>
+        <p>
+          Continuously updated development builds
+          featuring the latest changes to ALT Atomic
+          Onyx and its GNOME desktop environment.
+        </p>
+      </description>
+    </release>
+  </releases>
+</component>

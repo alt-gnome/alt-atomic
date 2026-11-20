@@ -1,6 +1,11 @@
 image: ${{ Env.IMAGE }}
 
 modules:
+  - name: Install metainfo
+    body:
+      targets:
+        - metainfo.yml
+
   - name: Install packages
     type: include
     body:

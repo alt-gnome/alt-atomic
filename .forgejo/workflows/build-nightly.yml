@@ -7,6 +7,7 @@ on:
     - .forgejo/workflows/build-nightly-live.yml
     - .forgejo/workflows/publish-stable-release.yml
     - .forgejo/workflows/build-rc.yml
+    - data/org.alt_atomic.Onyx.metainfo.xml.in
     - 'docs/**'
     branches:
     - 'main'
@@ -68,6 +69,10 @@ jobs:
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       with:
         ref: ${{ needs.gather-build-data.outputs.commit }}
+
+    - name: Prepare
+      run: |
+        ./prepare.sh
 
     - &build-and-push-default
       name: Build default image

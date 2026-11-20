@@ -1,0 +1,12 @@
+modules:
+  - type: copy
+    if: Env.IMAGE_TYPE == "nightly"
+    body:
+      source: files/org.alt_atomic.Onyx-nightly.metainfo.xml
+      destination: /usr/share/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml
+
+  - type: copy
+    if: Env.IMAGE_TYPE == "stable"
+    body:
+      source: files/org.alt_atomic.Onyx.metainfo.xml
+      destination: /usr/share/metainfo/org.alt_atomic.Onyx.metainfo.xml

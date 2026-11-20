@@ -1,0 +1,181 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2026-11-20 14:37+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. (itstool) path: component/id
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:3
+msgid "org.alt_atomic.Onyx"
+msgstr ""
+
+#. (itstool) path: component/name
+#. (itstool) path: variant/name
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:4
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:17
+msgid "ALT Atomic Onyx"
+msgstr ""
+
+#. (itstool) path: component/summary
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:5
+msgid "Atomic desktop operating system with GNOME"
+msgstr ""
+
+#. (itstool) path: description/p
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:7
+msgid "ALT Atomic Onyx is a modern, image-based Linux distribution built on ALT Linux and featuring the GNOME desktop environment."
+msgstr ""
+
+#. (itstool) path: variant/image
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:16
+msgid "altlinux.space/alt-atomic/onyx/stable:latest"
+msgstr ""
+
+#. (itstool) path: variant/summary
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:18
+msgid "Standard image for everyday desktop use"
+msgstr ""
+
+#. (itstool) path: variant/description
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:21
+msgid "The standard ALT Atomic Onyx image with GNOME, designed for everyday computing and general-purpose desktop workloads."
+msgstr ""
+
+#. (itstool) path: variant/image
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:28
+msgid "altlinux.space/alt-atomic/onyx-nvidia/stable:latest"
+msgstr ""
+
+#. (itstool) path: variant/name
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:29
+msgid "ALT Atomic Onyx (NVIDIA)"
+msgstr ""
+
+#. (itstool) path: variant/summary
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:30
+msgid "Desktop image with integrated proprietary NVIDIA drivers"
+msgstr ""
+
+#. (itstool) path: variant/description
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:33
+msgid "ALT Atomic Onyx with preinstalled proprietary NVIDIA graphics drivers, intended for systems equipped with supported NVIDIA GPUs."
+msgstr ""
+
+#. (itstool) path: component/url
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:41
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:48
+msgid "https://alt-atomic.org/"
+msgstr ""
+
+#. (itstool) path: component/url
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:42
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:49
+msgid "https://alt-atomic.org/en/"
+msgstr ""
+
+#. (itstool) path: component/url
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:43
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:50
+msgid "https://altlinux.space/alt-atomic/onyx/issues"
+msgstr ""
+
+#. (itstool) path: component/url
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:44
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:51
+msgid "https://altlinux.space/alt-atomic/onyx"
+msgstr ""
+
+#. (itstool) path: component/metadata_license
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:46
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:53
+msgid "FSFAP"
+msgstr ""
+
+#. (itstool) path: developer/name
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:48
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:55
+msgid "ALT Atomic Team"
+msgstr ""
+
+#. (itstool) path: ol/li
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:55
+msgid "Fixed offline installation in live iso."
+msgstr ""
+
+#. (itstool) path: ol/li
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx.metainfo.xml.in:56
+msgid "Fixed session-keeper extension for gnome 51."
+msgstr ""
+
+#. (itstool) path: component/id
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:3
+msgid "org.alt_atomic.Onyx-nightly"
+msgstr ""
+
+#. (itstool) path: component/name
+#. (itstool) path: variant/name
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:4
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:24
+msgid "ALT Atomic Onyx Nightly"
+msgstr ""
+
+#. (itstool) path: component/summary
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:5
+msgid "Development builds of the GNOME-based atomic desktop"
+msgstr ""
+
+#. (itstool) path: description/p
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:9
+msgid "ALT Atomic Onyx Nightly provides development builds of ALT Atomic Onyx, an image-based Linux distribution featuring the GNOME desktop environment."
+msgstr ""
+
+#. (itstool) path: description/p
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:14
+msgid "Nightly builds may contain regressions or incomplete features and are not recommended for production environments."
+msgstr ""
+
+#. (itstool) path: variant/image
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:23
+msgid "altlinux.space/alt-atomic/onyx/nightly:latest"
+msgstr ""
+
+#. (itstool) path: variant/summary
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:25
+msgid "Latest development image with GNOME"
+msgstr ""
+
+#. (itstool) path: variant/description
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:28
+msgid "The standard development image of ALT Atomic Onyx, providing early access to new features, updates, and experimental changes."
+msgstr ""
+
+#. (itstool) path: variant/image
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:35
+msgid "altlinux.space/alt-atomic/onyx-nvidia/nightly:latest"
+msgstr ""
+
+#. (itstool) path: variant/name
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:36
+msgid "ALT Atomic Onyx Nightly (NVIDIA)"
+msgstr ""
+
+#. (itstool) path: variant/summary
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:37
+msgid "Development image with integrated NVIDIA drivers"
+msgstr ""
+
+#. (itstool) path: variant/description
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:40
+msgid "The development image of ALT Atomic Onyx with preinstalled proprietary NVIDIA graphics drivers, intended for testing on supported NVIDIA GPUs."
+msgstr ""
+
+#. (itstool) path: description/p
+#: /var/home/rirusha/Projects/Atomic/onyx/src/resources/metainfo/org.alt_atomic.Onyx-nightly.metainfo.xml.in:61
+msgid "Continuously updated development builds featuring the latest changes to ALT Atomic Onyx and its GNOME desktop environment."
+msgstr ""
+
