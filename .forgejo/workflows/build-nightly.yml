@@ -74,6 +74,9 @@ jobs:
       run: |
         ./prepare.sh
 
+    - name: Check metainfo
+      uses: alt-gnome/coding-style-actions/metainfo@main
+
     - &build-and-push-default
       name: Build default image
       id: build-default
